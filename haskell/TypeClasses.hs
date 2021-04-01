@@ -1,4 +1,4 @@
 module TypeClasses where
 
-class Stringify a where
+class Stringfy a where
   toString :: a -> String

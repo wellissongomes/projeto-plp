@@ -24,7 +24,7 @@ instance Show Doce where
                                        "Preço: " ++ (show preco) ++
                                        "\n-----------------------\n"
 
-instance Stringify Doce where
+instance Stringfy Doce where
   toString (Doce id nome descricao preco) = show id ++ "," ++
                                             nome ++ "," ++
                                             descricao ++ "," ++

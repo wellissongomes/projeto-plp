@@ -24,7 +24,7 @@ instance Show Compra where
                                                     "ID do cliente: " ++ show idCliente ++ "\n" ++
                                                     "\nDoces: " ++ show doces
           
-instance Stringify Compra where
+instance Stringfy Compra where
   toString (Compra id idFuncionario idCliente doces) = show id ++ "," ++
                                                        show idFuncionario ++ "," ++
                                                        show idCliente ++ "," ++

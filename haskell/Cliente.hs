@@ -29,7 +29,7 @@ instance Show Cliente where
                                               "Endereço: " ++ endereco ++
                                               "\n-----------------------\n"
 
-instance Stringify Cliente where
+instance Stringfy Cliente where
   toString (Cliente id cpf nome idade endereco) = show id ++ "," ++
                                                   cpf ++ "," ++
                                                   nome ++ "," ++

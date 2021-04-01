@@ -30,7 +30,7 @@ instance Show Funcionario where
                                                 "Idade: " ++ (show idade) ++
                                                 "\n-----------------------\n"
 
-instance Stringify Funcionario where
+instance Stringfy Funcionario where
   toString (Funcionario id cpf nome idade funcao) = show id ++ "," ++
                                                     cpf ++ "," ++
                                                     nome ++ "," ++
