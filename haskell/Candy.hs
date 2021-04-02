@@ -17,7 +17,7 @@ data Candy = Candy {
 
 instance Show Candy where
   show (Candy _ name description price) = "\n-----------------------\n" ++
-                                       "name: " ++ name ++ "\n" ++
+                                       "Nome: " ++ name ++ "\n" ++
                                        "Descrição: " ++ description ++ "\n" ++ 
                                        "Preço: " ++ (show price) ++
                                        "\n-----------------------\n"
