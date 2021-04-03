@@ -24,3 +24,17 @@ instance Show CandyMenu where
 instance Stringfy CandyMenu where
   toString (CandyMenu candies drinks) = show (listOfAnythingToListOfToString candies) ++ ";" ++
                                         show (listOfAnythingToListOfToString drinks)
+
+listOfStringToListOfCandy l = map read l :: [Candy]
+listOfStringToListOfDrink l = map read l :: [Drink]
+stringToListOfString str = read str :: [String]
+
+stringToListOfCandies str = listOfStringToListOfCandy $ stringToListOfString str
+stringToListOfDrinks str = listOfStringToListOfDrink $ stringToListOfString str
+
+instance Read CandyMenu where
+  readsPrec _ str = do
+  let l = splitOn ";" str
+  let candies = stringToListOfCandies (l !! 0)
+  let drinks = stringToListOfDrinks (l !! 1)
+  [(CandyMenu candies drinks, "")]
