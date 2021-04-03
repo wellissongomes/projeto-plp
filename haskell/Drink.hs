@@ -31,8 +31,8 @@ instance Stringfy Drink where
 instance Read Drink where
   readsPrec _ str = do
   let l = splitOn "," str
-  let id = read (l !! 0) :: Int
-  let name = read (l !! 1) :: String
-  let description = read (l !! 2) :: String
-  let price = read (l !! 3) :: Float
+  let id = read (l !! 0) :: DrinkID
+  let name = l !! 1
+  let description = l !! 2
+  let price = read (l !! 3) :: Price
   [(Drink id name description price, "")]
