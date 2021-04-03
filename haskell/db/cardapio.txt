@@ -1,1 +1,0 @@
-["1,Sorvete de chocolate,Sorvete de chocolate e calda morango,15.96","2,Sorvete misto,Sorvete de baunilha e de chocolate,16.5"];["1,Chocolate quente,Achocolatado aquecido,10.0","2,Milkshake de ovomaltine,Milkshake de baunilha com ovomaltine,15.0"]
