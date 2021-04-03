@@ -15,24 +15,24 @@ data Employee = Employee {
   ssn :: Ssn,
   name :: Name,
   age :: Age,
-  funcao :: Role
+  role :: Role
 } 
 
 instance Show Employee where
-  show (Employee id ssn name age funcao) = "\n-----------------------\n" ++
+  show (Employee id ssn name age role) = "\n-----------------------\n" ++
                                                 "ID: " ++ (show id) ++ "\n" ++
                                                 "CPF: " ++ ssn ++ "\n" ++
                                                 "Nome: " ++ name ++ "\n" ++
-                                                "Função: " ++ funcao ++ "\n" ++
+                                                "Função: " ++ role ++ "\n" ++
                                                 "Idade: " ++ (show age) ++
                                                 "\n-----------------------\n"
 
 instance Stringfy Employee where
-  toString (Employee id ssn name age funcao) = show id ++ "," ++
+  toString (Employee id ssn name age role) = show id ++ "," ++
                                                     ssn ++ "," ++
                                                     name ++ "," ++
                                                     show age ++ "," ++
-                                                    funcao
+                                                    role
 
 instance Read Employee where
   readsPrec _ str = do
@@ -41,5 +41,5 @@ instance Read Employee where
   let ssn = l !! 1
   let name = l !! 2
   let age = read (l !! 3) :: Age
-  let funcao = l !! 4
-  [(Employee id ssn name age funcao, "")]
+  let role = l !! 4
+  [(Employee id ssn name age role, "")]
