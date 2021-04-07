@@ -3,6 +3,9 @@ module Utils where
 import Candy 
 import Drink
 
+import System.IO ( hFlush, stdout )
+import System.Process
+
 import Data.List.Split
 import TypeClasses
 
@@ -28,3 +31,13 @@ stringToListOfString str = read str :: [String]
 
 stringToListOfCandies str = listOfStringToListOfCandy $ stringToListOfString str
 stringToListOfDrinks str = listOfStringToListOfDrink $ stringToListOfString str
+
+clear = do
+    _ <- system "clear"
+    return ()
+
+input :: String -> IO String
+input text = do
+    putStr text
+    hFlush stdout
+    getLine
