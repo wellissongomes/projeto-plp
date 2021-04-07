@@ -20,7 +20,7 @@ instance Show Drink where
                                          "Nome: " ++ name ++ "\n" ++
                                          "Descrição: " ++ description ++ "\n" ++
                                          "Preço: " ++ (show price) ++ "\n" ++
-                                         "\n-----------------------\n"
+                                         "-----------------------\n"
 
 instance Stringfy Drink where
   toString (Drink id name description price) = show id ++ "," ++
