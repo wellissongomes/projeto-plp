@@ -1,5 +1,7 @@
 module DB where
 
+import qualified System.IO.Strict as SIO
+
 import Employee
 import Candy
 import Customer
@@ -26,9 +28,12 @@ listOfStringToListOfDrinks l = map read l :: [Drink]
 stringToCandyMenu str = read str :: CandyMenu
 
 addToFile :: Stringfy a => FilePath -> a -> IO ()
-addToFile path content = appendFile path (toString content ++ "\n")
+addToFile path content = appendFile ("./db/" ++ path) (toString content ++ "\n")
 
-readFile' path = readFile $ "./db/" ++ path
+writeToFile :: Stringfy a => FilePath -> [a] -> IO ()
+writeToFile path content = writeFile ("./db/" ++ path) (listOfAnythingToString content)
+
+readFile' path = SIO.readFile $ "./db/" ++ path
 
 connect :: IO DB
 connect = do

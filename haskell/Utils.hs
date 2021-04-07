@@ -10,6 +10,10 @@ listOfAnythingToListOfToString :: (Stringfy a) => [a] -> [String]
 listOfAnythingToListOfToString [] = []
 listOfAnythingToListOfToString (x:xs) = toString x : listOfAnythingToListOfToString xs
 
+listOfAnythingToString :: (Stringfy a) => [a] -> String
+listOfAnythingToString [] = ""
+listOfAnythingToString (x:xs) = (toString x) ++ "\n" ++ (listOfAnythingToString xs)
+
 splitForFile :: String -> [String]
 splitForFile str = init $ splitOn "\n" str
 

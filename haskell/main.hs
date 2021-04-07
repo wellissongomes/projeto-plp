@@ -20,8 +20,12 @@ main = do
   let pedido = Order [d1, d1] [refri, refri]
   let compra = Purchase 1 1 1 5 pedido 5
 
-  DB.addToFile "./db/compra.txt" compra
+  content <- DB.readFile' "compra.txt"
+  print content
 
+  -- DB.addToFile "./db/compra.txt" compra
   dados <- DB.connect
 
-  putStr $ showList' $ DB.purchases dados
+  DB.writeToFile "compra.txt" [compra, compra]
+
+  print $ DB.purchases dados
