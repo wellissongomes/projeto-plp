@@ -50,5 +50,4 @@ start db = do
   else do
     putStr "Opção inválida!\n"
     clear
-  
-  start db
+    start db
