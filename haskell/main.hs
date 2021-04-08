@@ -1,3 +1,4 @@
+import Chat
 import Employee
 import Candy
 import Customer
@@ -21,6 +22,7 @@ main = do
   let compra = Purchase 1 1 1 5 pedido 5
 
   -- content <- DB.readFile' "compra.txt"
+
   -- print content
 
   -- DB.addToFile "./db/compra.txt" compra
@@ -35,3 +37,26 @@ main = do
   let purchases = listOfStringToListOfPurchases $ splitForFile content
   print purchases
   
+
+  -- print $ DB.purchases dados
+
+  -- start dados
+
+start :: DB -> IO()
+start db = do
+  putStr options
+
+  option <- input "Número: "
+
+  let number = read option :: Int
+
+  if number == 1 then do
+    putStr ownerOptions
+  else if number == 2 then do
+    putStr customerOptions
+  else if number == 3 then do
+    putStr employeeOptions
+  else do
+    putStr "Opção inválida!\n"
+    clear
+    start db

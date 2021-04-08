@@ -3,6 +3,9 @@ module Utils where
 import Candy 
 import Drink
 
+import System.IO ( hFlush, stdout )
+import System.Process
+
 import Data.List.Split
 import Data.Char(digitToInt)
 
@@ -50,3 +53,13 @@ listOfTupleToListOfString ((qtd, item):xs) = (show qtd ++ "," ++ toString item):
 showListOfItems :: (Show a, Show b) => [(a, b)] -> String
 showListOfItems [] = ""
 showListOfItems ((qtd, item):xs) = ("Quantidade: " ++ show qtd ++ " \n" ++ show item ++ "\n") ++ showListOfItems xs
+
+clear = do
+    _ <- system "clear"
+    return ()
+
+input :: String -> IO String
+input text = do
+    putStr text
+    hFlush stdout
+    getLine
