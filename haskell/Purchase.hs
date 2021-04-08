@@ -1,6 +1,7 @@
 module Purchase where
 
 import Candy
+import Drink
 import Order
 
 import TypeClasses
@@ -47,8 +48,13 @@ instance Read Purchase where
   let employeeID = read (l !! 1) :: EmployeeID
   let customerID = read (l !! 2) :: CustomerID
   let score = read (l !! 3) :: Score
-  let drinks = stringToListOfCandies (l !! 4)
-  let candies = stringToListOfDrinks (l !! 5)
+
+  let drinksStr = l !! 4
+  let candiesStr = l !! 5
+
+  let drinks = map stringToTupleOfDrinks $ stringToListOfString drinksStr
+  let candies = map stringToTupleOfCandies $ stringToListOfString candiesStr
+
   let order = Order drinks candies
   let price = read (l !! 6) :: PurchasePrice
   [(Purchase id employeeID customerID score order price, "")]

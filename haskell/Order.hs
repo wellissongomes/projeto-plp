@@ -8,17 +8,19 @@ import Utils
 
 import Data.List.Split
 
+type Quantity = Int
+
 data Order = Order {
-  candies :: [Candy],
-  drinks :: [Drink]
+  drinks :: [(Quantity, Drink)],
+  candies :: [(Quantity, Candy)]
 }
 
 instance Show Order where
-  show (Order candies drinks) = "\nDoces" ++ "\n" ++
-                                showList' candies ++
-                                "\nBebidas" ++  "\n" ++
-                                showList' drinks
+  show (Order drinks candies) = "\nBebidas" ++  "\n" ++
+                                "\n" ++ showListOfItems drinks ++ "\n" ++
+                                "\nDoces" ++ "\n" ++
+                                "\n" ++ showListOfItems candies 
 
 instance Stringfy Order where
-  toString (Order candies drinks) = show (listOfAnythingToListOfToString candies) ++ ";" ++
-                                    show (listOfAnythingToListOfToString drinks)
+  toString (Order drinks candies) = show (listOfTupleToListOfString drinks) ++ ";" ++
+                                    show (listOfTupleToListOfString candies)

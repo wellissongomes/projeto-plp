@@ -4,6 +4,8 @@ import Candy
 import Drink
 
 import Data.List.Split
+import Data.Char(digitToInt)
+
 import TypeClasses
 
 listOfAnythingToListOfToString :: (Stringfy a) => [a] -> [String]
@@ -28,3 +30,23 @@ stringToListOfString str = read str :: [String]
 
 stringToListOfCandies str = listOfStringToListOfCandy $ stringToListOfString str
 stringToListOfDrinks str = listOfStringToListOfDrink $ stringToListOfString str
+
+listOfStringToString [] = ""
+listOfStringToString (x:xs) = x ++ "," ++ listOfStringToString xs
+
+stringWithoutLastComma str = init str 
+
+getQuantityItem str = digitToInt $ head str
+stringToDrink str = read (drop 3 str) :: Drink
+stringToCandy str = read (drop 3 str) :: Candy
+
+stringToTupleOfDrinks str = (getQuantityItem str, stringToDrink str)
+stringToTupleOfCandies str = (getQuantityItem str, stringToCandy str)
+
+listOfTupleToListOfString :: (Show a, Stringfy b) => [(a, b)] -> [String]
+listOfTupleToListOfString [] = []
+listOfTupleToListOfString ((qtd, item):xs) = (show qtd ++ "," ++ toString item):(listOfTupleToListOfString xs)
+
+showListOfItems :: (Show a, Show b) => [(a, b)] -> String
+showListOfItems [] = ""
+showListOfItems ((qtd, item):xs) = ("Quantidade: " ++ show qtd ++ " \n" ++ show item ++ "\n") ++ showListOfItems xs
