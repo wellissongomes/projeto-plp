@@ -26,17 +26,23 @@ main = do
   -- print content
 
   -- DB.addToFile "./db/compra.txt" compra
-  -- dados <- DB.connect
+  -- c <- DB.readFile' "empId.txt"
+  -- print c
 
-  DB.addToFile "compra.txt" compra
+  -- DB.addToFile "compra.txt" compra
 
   -- print $ DB.purchases dados
 
-  content <- DB.readFile' "compra.txt"
+  -- content <- DB.readFile' "compra.txt"
   
-  let purchases = listOfStringToListOfPurchases $ splitForFile content
-  print purchases
-  
+  -- let purchases = listOfStringToListOfPurchases $ splitForFile content
+  dados <- DB.connect
+  print $ DB.currentIdCustomer dados
+
+  let newId = (DB.currentIdCustomer dados) + 1
+  let newDB = dados {DB.currentIdCustomer = newId}
+  print $ DB.currentIdCustomer newDB
+  DB.writeIdToFile "custId.txt" newId
 
   -- print $ DB.purchases dados
 
