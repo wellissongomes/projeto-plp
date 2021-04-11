@@ -14,3 +14,6 @@ deleteCandyFromCandyMenu id candyMenu = [c | c <- (CandyMenu.candies candyMenu),
 
 deleteDrinkFromCandyMenu :: Int -> CandyMenu -> [Drink]
 deleteDrinkFromCandyMenu id candyMenu = [d | d <- (CandyMenu.drinks candyMenu), (Drink.id d) /= id]
+
+showCandyMenu :: Show a => a -> String
+showCandyMenu candyMenu = show candyMenu
