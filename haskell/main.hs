@@ -9,6 +9,7 @@ import Drink
 import Order
 import Utils
 import DB
+import CandyMenuController
 
 import Data.List.Split 
 
@@ -25,28 +26,24 @@ main = do
 
   -- print content
 
-  -- DB.addToFile "./db/compra.txt" compra
+  -- DB.addToFile "cardapio.txt" cardapio
   -- c <- DB.readFile' "empId.txt"
   -- print c
 
-  -- DB.addToFile "compra.txt" compra
 
   -- print $ DB.purchases dados
 
-  -- content <- DB.readFile' "compra.txt"
   
   -- let purchases = listOfStringToListOfPurchases $ splitForFile content
   dados <- DB.connect
-  print $ DB.currentIdCustomer dados
+  -- print dados
 
-  let newId = (DB.currentIdCustomer dados) + 1
-  let newDB = dados {DB.currentIdCustomer = newId}
-  print $ DB.currentIdCustomer newDB
-  DB.writeIdToFile "custId.txt" newId
+  -- let newId = (DB.currentIdCustomer dados) + 1
+  -- let newDB = dados {DB.currentIdCustomer = newId}
+  -- print $ DB.currentIdCustomer newDB
+  -- DB.writeIdToFile "custId.txt" newId
 
-  -- print $ DB.purchases dados
-
-  -- start dados
+  start dados
 
 start :: DB -> IO()
 start db = do
@@ -57,12 +54,27 @@ start db = do
   let number = read option :: Int
 
   if number == 1 then do
+    clear
     putStr ownerOptions
   else if number == 2 then do
-    putStr customerOptions
+    clear
+    customerInteraction db
   else if number == 3 then do
+    clear
     putStr employeeOptions
   else do
-    putStr "Opção inválida!\n"
     clear
     start db
+
+customerInteraction :: DB -> IO()
+customerInteraction db = do
+  putStr customerOptions
+
+  option <- input "Número: "
+  let num = head option
+
+  clear
+  if num == '2' then
+    putStr $ showCandyMenu $ DB.candyMenu db
+  else 
+    customerInteraction db

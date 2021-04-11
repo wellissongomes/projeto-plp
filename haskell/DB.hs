@@ -43,6 +43,10 @@ writeIdToFile path id = writeFile ("./db/" ++ path) (show id)
 
 readFile' path = SIO.readFile $ "./db/" ++ path
 
+getCandyMenu candyMenuContent
+  | null candyMenuContent = CandyMenu [] []
+  | otherwise = stringToCandyMenu $ (splitForFile candyMenuContent) !! 0
+
 connect :: IO DB
 connect = do
   employeesContent <- readFile' "funcionario.txt"
@@ -63,7 +67,8 @@ connect = do
   let candies = listOfStringToListOfCandies $ splitForFile $ candiesContent
   let purchases = listOfStringToListOfPurchases $ splitForFile $ purchasesContent
   let drinks = listOfStringToListOfDrinks $ splitForFile $ drinksContent
-  let candyMenu = stringToCandyMenu $ (splitForFile $ candyMenuContent) !! 0
+
+  let candyMenu = getCandyMenu candyMenuContent
 
   let currentIdEmployee = stringToInt currentIdEmployeeContent
   let currentIdCustomer = stringToInt currentIdCustomerContent

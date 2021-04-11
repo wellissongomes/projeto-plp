@@ -2,16 +2,16 @@ module Chat where
 
 options :: String
 options = "\n---------------\n" ++
-          "Como você deseja logar no sistema?\n" ++
-          "(1) Logar como dono\n" ++
+          "\nComo você deseja logar no sistema?\n" ++
+          "\n(1) Logar como dono\n" ++
           "(2) Logar como cliente\n" ++
           "(3) Logar como funcionário\n" ++
           "\n---------------\n"
 
 ownerOptions :: String
 ownerOptions = "\n---------------\n" ++
-               "O que você deseja fazer?\n" ++
-               "(1) Cadastrar funcionário\n" ++
+               "\nO que você deseja fazer?\n" ++
+               "\n(1) Cadastrar funcionário\n" ++
                "(2) Cadastrar doce\n" ++
                "(3) Cadastrar bebida\n" ++
                "(4) Remover doce\n" ++
@@ -24,19 +24,18 @@ ownerOptions = "\n---------------\n" ++
 
 customerOptions :: String
 customerOptions = "\n---------------\n" ++
-                  "O que você deseja fazer?\n" ++
-                  "(1) Listar produtos bem avaliados\n" ++
+                  "\nO que você deseja fazer?\n" ++
+                  "\n(1) Listar produtos bem avaliados\n" ++
                   "(2) Exibir cardápio\n" ++
-                  "(3) Personalizar pedido\n" ++
-                  "(4) Realizar compra\n" ++
-                  "(5) Listar suas compras\n" ++
-                  "(6) Avaliar suas compras\n" ++
+                  "(3) Realizar compra\n" ++
+                  "(4) Listar suas compras\n" ++
+                  "(5) Avaliar suas compras\n" ++
                   "\n---------------\n"
 
 employeeOptions :: String
 employeeOptions = "\n---------------\n" ++
-                  "O que você deseja fazer?\n" ++
-                  "(1) Cadastrar cliente\n" ++
+                  "\nO que você deseja fazer?\n" ++
+                  "\n(1) Cadastrar cliente\n" ++
                   "(2) Cadastrar venda\n" ++
                   "(3) Listar clientes\n" ++
                   "(4) Listar suas vendas\n" ++

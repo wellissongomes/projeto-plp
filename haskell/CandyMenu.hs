@@ -16,7 +16,7 @@ data CandyMenu = CandyMenu {
 instance Show CandyMenu where
   show (CandyMenu candies drinks) = "Doces" ++ "\n" ++
                                   showList' candies ++
-                                  "Bebidas" ++  "\n" ++
+                                  "\nBebidas" ++  "\n" ++
                                   showList' drinks
 
 instance Stringfy CandyMenu where
