@@ -1,4 +1,10 @@
-module CandyMenuController where
+module CandyMenuController (
+  addCandyToCandyMenu,
+  addDrinkToCandyMenu,
+  deleteCandyFromCandyMenu,
+  deleteDrinkFromCandyMenu,
+  showCandyMenu
+) where
 import CandyMenu
 import Candy
 import Drink

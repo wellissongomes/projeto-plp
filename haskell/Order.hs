@@ -18,7 +18,7 @@ data Order = Order {
 instance Show Order where
   show (Order drinks candies) = "\nBebidas" ++  "\n" ++
                                 "\n" ++ showListOfItems drinks ++ "\n" ++
-                                "\nDoces" ++ "\n" ++
+                                "Doces" ++ "\n" ++
                                 "\n" ++ showListOfItems candies 
 
 instance Stringfy Order where

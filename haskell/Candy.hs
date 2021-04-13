@@ -1,4 +1,7 @@
 module Candy where 
+
+import Prelude hiding (id)
+
 import TypeClasses
 
 import Data.List.Split
@@ -16,10 +19,11 @@ data Candy = Candy {
 }
 
 instance Show Candy where
-  show (Candy _ name description price) = "\n-----------------------\n" ++
+  show (Candy id name description price) = "\n-----------------------\n" ++
+                                       "ID: " ++ show id ++ "\n" ++
                                        "Nome: " ++ name ++ "\n" ++
                                        "Descrição: " ++ description ++ "\n" ++ 
-                                       "Preço: " ++ (show price) ++
+                                       "Preço: " ++ show price ++
                                        "\n-----------------------\n"
 
 instance Stringfy Candy where

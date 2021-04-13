@@ -1,4 +1,7 @@
 module Drink where
+
+import Prelude hiding (id)
+
 import TypeClasses
 
 import Data.List.Split
@@ -16,10 +19,11 @@ data Drink = Drink {
 }
 
 instance Show Drink where
-  show (Drink _ name description price) = "\n-----------------------\n" ++
+  show (Drink id name description price) = "\n-----------------------\n" ++
+                                         "ID: " ++ show id ++ "\n" ++
                                          "Nome: " ++ name ++ "\n" ++
                                          "Descrição: " ++ description ++ "\n" ++
-                                         "Preço: " ++ (show price) ++ "\n" ++
+                                         "Preço: " ++ show price ++ "\n" ++
                                          "-----------------------\n"
 
 instance Stringfy Drink where
