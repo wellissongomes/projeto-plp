@@ -70,10 +70,13 @@ start db = do
   let number = read option
 
   if number == 1 then do
+    clear
     putStr ownerOptions
   else if number == 2 then do
+    clear
     customerInteraction db
   else if number == 3 then do
+    clear
     putStr employeeOptions
   else do
     start db
