@@ -5,3 +5,6 @@ class Stringfy a where
 
 class StringToType a where
   toType :: String -> a
+
+class Item a where
+  itemPrice :: a -> Float

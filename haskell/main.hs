@@ -196,7 +196,7 @@ customerPurchase db currentCustomerId = do
     let purchaseId = (DB.currentIdPurchase db) + 1
     let score = 5 
     let order = Order drinks candies
-    let price = 2 -- faltando calcular o preço
+    let price = calculatePrice order
     let purchase = Purchase purchaseId (read employeeId) currentCustomerId score order price
 
     print purchase
@@ -205,6 +205,6 @@ customerPurchase db currentCustomerId = do
     DB.writeIdToFile "purchaseId.txt" purchaseId
     let newDB = db {DB.purchases = (DB.purchases db) ++ [purchase], DB.currentIdPurchase = purchaseId}
 
-    threadDelay $ 3 * oneSecond
+    threadDelay $ 5 * oneSecond
     clear
     customerInteraction newDB

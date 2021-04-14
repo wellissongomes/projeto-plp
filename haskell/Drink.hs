@@ -18,6 +18,9 @@ data Drink = Drink {
   price :: Price
 }
 
+instance Item Drink where
+  itemPrice drink = Drink.price drink
+
 instance Show Drink where
   show (Drink id name description price) = "\n-----------------------\n" ++
                                          "ID: " ++ show id ++ "\n" ++
