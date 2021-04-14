@@ -39,9 +39,16 @@ listOfStringToString (x:xs) = x ++ "," ++ listOfStringToString xs
 
 stringWithoutLastComma str = init str 
 
-getQuantityItem str = digitToInt $ head str
-stringToDrink str = read (drop 3 str) :: Drink
-stringToCandy str = read (drop 3 str) :: Candy
+findElem' [] _ _ = -1
+findElem' (x:xs) elem index
+  | x == elem = index
+  | otherwise = findElem' xs elem (index + 1)
+
+findFirstOcurr str elem = findElem' str elem 0
+
+getQuantityItem str = read (take ((findFirstOcurr str ',')) str) :: Int
+stringToDrink str = read (drop ((findFirstOcurr str ',') + 1) str) :: Drink
+stringToCandy str = read (drop ((findFirstOcurr str ',') + 1) str) :: Candy
 
 stringToTupleOfDrinks str = (getQuantityItem str, stringToDrink str)
 stringToTupleOfCandies str = (getQuantityItem str, stringToCandy str)
