@@ -3,12 +3,17 @@ module PurchaseController (
   getDrinkById,
   candyExists,
   drinkExists,
-  calculatePrice
+  calculatePrice,
+  getPurchasesByCustomer,
+  customerHasPurchase
 ) where
 
 import Candy
 import Drink
 import Order
+import Purchase
+
+import Utils
 
 import TypeClasses
 
@@ -28,3 +33,9 @@ _calculateTotalPrice l = sum $ map _calculatePrice l
 
 calculatePrice :: Order -> Float
 calculatePrice order = (_calculateTotalPrice $ Order.drinks order) + (_calculateTotalPrice $ Order.candies order)
+
+customerHasPurchase :: Int -> [Purchase] -> Bool
+customerHasPurchase id purchases = not $ null $ getPurchasesByCustomer id purchases
+
+getPurchasesByCustomer :: Int -> [Purchase] -> String
+getPurchasesByCustomer id purchases = showList' [p | p <- purchases, (Purchase.customerID p) == id]

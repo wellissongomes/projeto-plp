@@ -12,6 +12,7 @@ import DB
 import CandyMenuController
 import EmployeeController
 import PurchaseController
+import CustomerController
 
 import Control.Concurrent
 
@@ -21,6 +22,10 @@ import Data.List.Split
 
 oneSecond :: Int
 oneSecond = 1000000
+
+waitTwoSecond = threadDelay $ 2 * oneSecond
+waitThreeSeconds = threadDelay $ 3 * oneSecond
+waitFiveSeconds = threadDelay $ 5 * oneSecond
 
 main = do
   let f1 = Employee 1 "10120379940" "Wellisson Gomes" 20 "vendedor"
@@ -41,6 +46,7 @@ main = do
   DB.addToFile "doce.txt" d1
   DB.addToFile "doce.txt" d2
   DB.addToFile "bebida.txt" refri
+  DB.addToFile "cliente.txt" c1
 
   -- c <- DB.readFile' "empId.txt"
   -- print c
@@ -74,31 +80,48 @@ start db = do
     putStr ownerOptions
   else if number == 2 then do
     clear
-    customerInteraction db
+    cId <- input "Digite o seu ID: "
+
+    clear
+    customerInteraction db (read cId)
   else if number == 3 then do
     clear
     putStr employeeOptions
   else do
     start db
 
-customerInteraction :: DB -> IO()
-customerInteraction db = do
-  putStr customerOptions
+customerInteraction :: DB -> Int -> IO()
+customerInteraction db customerId = do
+  let customers = DB.customers db
 
-  option <- input "Número: "
-  let num = read option
-
-  if num == 2 then do
+  if not $ existsCustomer customerId  customers then do
+    putStr "Usuário inexistente...\n"
+    waitTwoSecond
     clear
-    putStr $ showCandyMenu $ DB.candyMenu db
-    customerInteraction db
-  else if num == 3 then do
-    clear
-    customerPurchase db 1
-  else if num == 6 then do
     start db
   else do
-    customerInteraction db
+    putStr customerOptions
+
+    option <- input "Número: "
+    let num = read option
+
+    if num == 2 then do
+      clear
+      putStr $ showCandyMenu $ DB.candyMenu db
+      waitFiveSeconds
+      clear
+      customerInteraction db customerId
+    else if num == 3 then do
+      clear
+      customerPurchase db customerId
+    else if num == 4 then do
+      clear
+      customerViewCandyMenu db customerId
+    else if num == 6 then do
+      start db
+    else do
+      customerInteraction db customerId
+
 
 _chooseCandy :: DB -> [Int] -> IO (Int, Candy)
 _chooseCandy db candyIds = do
@@ -205,6 +228,25 @@ customerPurchase db currentCustomerId = do
     DB.writeIdToFile "purchaseId.txt" purchaseId
     let newDB = db {DB.purchases = (DB.purchases db) ++ [purchase], DB.currentIdPurchase = purchaseId}
 
-    threadDelay $ 5 * oneSecond
+    waitFiveSeconds
     clear
-    customerInteraction newDB
+    customerInteraction newDB currentCustomerId
+
+backToCustomerInteraction :: DB -> Int -> IO ()
+backToCustomerInteraction db currentCustomerId = do
+  waitThreeSeconds
+  clear
+  customerInteraction db currentCustomerId
+
+customerViewCandyMenu db currentCustomerId = do
+  let purchases = (DB.purchases db)
+  
+  let hasPurchase = customerHasPurchase currentCustomerId purchases
+  if hasPurchase then do
+    putStr $ getPurchasesByCustomer currentCustomerId purchases
+    backToCustomerInteraction db currentCustomerId
+  else do
+    putStr "Você ainda não tem compras realizadas.\n"
+    backToCustomerInteraction db currentCustomerId
+
+  
