@@ -22,7 +22,8 @@ data DB = DB {
   currentIdCustomer :: Int,
   currentIdCandy :: Int,
   currentIdDrink :: Int,
-  currentIdPurchase :: Int
+  currentIdPurchase :: Int,
+  currentIdOwner :: Int
 } deriving (Show)
 
 listOfStringToListOfEmployees l = map read l :: [Employee]
@@ -61,6 +62,7 @@ connect = do
   currentIdCandyContent <- readFile' "candyId.txt"
   currentIdDrinkContent <- readFile' "drinkId.txt"
   currentIdPurchaseContent <- readFile' "purchaseId.txt"
+  currentIdOwnerContent <- readFile' "ownerId.txt"
 
   let employees = listOfStringToListOfEmployees $ splitForFile $ employeesContent
   let customers = listOfStringToListOfCustomers $ splitForFile $ customersContent
@@ -75,8 +77,9 @@ connect = do
   let currentIdCandy = stringToInt currentIdCandyContent
   let currentIdDrink = stringToInt currentIdDrinkContent
   let currentIdPurchase = stringToInt currentIdPurchaseContent
+  let currentIdOwner = stringToInt currentIdOwnerContent
 
-  return (DB employees customers candies purchases drinks candyMenu currentIdEmployee currentIdCustomer currentIdCandy currentIdDrink currentIdPurchase) 
+  return (DB employees customers candies purchases drinks candyMenu currentIdEmployee currentIdCustomer currentIdCandy currentIdDrink currentIdPurchase currentIdOwner) 
 
 deleteAll :: IO ()
 deleteAll = do

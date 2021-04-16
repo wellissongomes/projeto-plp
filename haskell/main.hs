@@ -77,7 +77,7 @@ start db = do
 
   if number == 1 then do
     clear
-    putStr ownerOptions
+    ownerInteraction db
   else if number == 2 then do
     clear
     cId <- input "Digite o seu ID: "
@@ -89,6 +89,57 @@ start db = do
     putStr employeeOptions
   else do
     start db
+
+
+ownerInteraction :: DB -> IO ()
+ownerInteraction db = do
+  let currentOwnerId = (DB.currentIdOwner db)
+
+  if currentOwnerId == 0 then do
+    putStr "Seja bem vindo ao Candy Land!!"
+
+    let newOwnerId = currentOwnerId + 1
+
+    DB.writeIdToFile "ownerId.txt" newOwnerId
+    let newDB = db {DB.currentIdOwner = newOwnerId}
+
+    ownerInteraction newDB
+  else do
+    putStr ownerOptions
+
+    option <- input "Número: "
+
+    let number = read option
+
+    if number == 1 then do
+      registerEmployee db
+    else if number == 10 then do
+      start db
+    else do
+      putStr ""
+
+
+registerEmployee :: DB -> IO ()
+registerEmployee db = do
+  let employees = DB.employees db
+
+  let employeeId = (DB.currentIdEmployee db) + 1
+
+  ssn <- input "CPF: "
+  name <- input "Nome: "
+  age <- input "Idade: "
+  role <- input "Cargo: "
+
+  let employee = (Employee employeeId ssn name (read age) role)
+
+  DB.addToFile "funcionario.txt" employee
+  DB.writeIdToFile "empId.txt" employeeId
+  let newDB = db {DB.employees = employees ++ [employee]}
+
+  print employee
+
+  ownerInteraction newDB
+
 
 customerInteraction :: DB -> Int -> IO()
 customerInteraction db customerId = do
