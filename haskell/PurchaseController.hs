@@ -1,8 +1,6 @@
 module PurchaseController (
   getCandyById,
   getDrinkById,
-  candyExists,
-  drinkExists,
   calculatePrice,
   getPurchasesByCustomer,
   customerHasPurchase
@@ -20,10 +18,6 @@ import TypeClasses
 getCandyById id candies = head [c | c <- candies, (Candy.id c) == id]
 
 getDrinkById id drinks = head [d | d <- drinks, (Drink.id d) == id]
-
-candyExists id candies = not $ null [c | c <- candies, (Candy.id c) == id]
-
-drinkExists id drinks = not $ null [d | d <- drinks, (Drink.id d) == id]
 
 _calculatePrice :: Item a => (Int, a) -> Float
 _calculatePrice item = (fromIntegral $ fst item) * (itemPrice $ snd item)

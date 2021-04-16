@@ -11,6 +11,9 @@ import Data.Char(digitToInt)
 
 import TypeClasses
 
+existsEntity :: Entity entities => [entities] -> Int -> Bool
+existsEntity entities id = not $ null [e | e <- entities, entityId e == id]
+
 existsPerson :: Person a => [a] -> String -> Bool
 existsPerson people ssn = not $ null [p | p <- people, personSSN p == ssn]
 

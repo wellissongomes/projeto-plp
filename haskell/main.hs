@@ -11,7 +11,6 @@ import DB
 import CandyMenu
 import EmployeeController
 import PurchaseController
-import CustomerController
 
 import Control.Concurrent
 
@@ -22,7 +21,7 @@ import Data.List.Split
 oneSecond :: Int
 oneSecond = 1000000
 
-waitTwoSecond = threadDelay $ 2 * oneSecond
+waitTwoSeconds = threadDelay $ 2 * oneSecond
 waitThreeSeconds = threadDelay $ 3 * oneSecond
 waitFiveSeconds = threadDelay $ 5 * oneSecond
 
@@ -34,7 +33,7 @@ start :: DB -> IO()
 start db = do
   clear 
   putStr slogan
-  waitTwoSecond
+  waitTwoSeconds
   clear
 
   putStr options
@@ -121,8 +120,9 @@ removeCandy db = do
 
   candyId <- input "ID: "
 
-  if not $ existsCandy (read candyId) candies then do
+  if not $ existsEntity candies (read candyId) then do
     putStr "Doce não cadastrado.\n"
+    waitTwoSeconds
     ownerInteraction db
   else do
     let newCandyList = deleteCandy (read candyId) candies
@@ -137,8 +137,9 @@ removeDrink db = do
   let drinks = (DB.drinks db)
 
   drinkId <- input "ID: "
-  if not $ drinkExists (read drinkId) drinks then do
+  if not $ existsEntity drinks (read drinkId) then do
     putStr "Bebida não cadastrada.\n"
+    waitTwoSeconds
     ownerInteraction db
   else do
     let newDrinkList = deleteDrink (read drinkId) drinks
@@ -161,6 +162,7 @@ registerEmployee db = do
 
   if existsPerson employees ssn then do
     putStr "Funcionário já cadastrado.\n"
+    waitTwoSeconds
     ownerInteraction db
   else do
     let employee = (Employee employeeId ssn name (read age) role)
@@ -197,9 +199,9 @@ customerInteraction :: DB -> Int -> IO()
 customerInteraction db customerId = do
   let customers = DB.customers db
 
-  if not $ existsCustomer customerId  customers then do
+  if not $ existsEntity customers customerId then do
     putStr "Usuário inexistente...\n"
-    waitTwoSecond
+    waitTwoSeconds
     clear
     start db
   else do
@@ -232,7 +234,7 @@ _chooseCandy db candyIds = do
 
   if (read candyId) `elem` candyIds then do
     _chooseCandy db candyIds
-  else if not $ candyExists (read candyId) (DB.candies db) then do
+  else if not $ existsEntity (DB.candies db) (read candyId) then do
     _chooseCandy db candyIds
   else do
     quantityCandy <- input "Digite a quantidade: "
@@ -268,7 +270,7 @@ _chooseDrink db drinkIds = do
 
   if (read drinkId) `elem` drinkIds then do
     _chooseDrink db drinkIds
-  else if not $ drinkExists (read drinkId) (DB.drinks db) then do
+  else if not $ existsEntity (DB.drinks db) (read drinkId) then do
     _chooseDrink db drinkIds
   else do
     quantityDrink <- input "Digite a quantidade: "
@@ -303,11 +305,13 @@ customerPurchase db currentCustomerId = do
   
   let employees = DB.employees db
 
-  if not $ existsEmployee (read employeeId) employees then do
+  if not $ existsEntity employees (read employeeId) then do
     putStr "Funcionário não cadastrado.\n"
+    waitTwoSeconds
     customerPurchase db currentCustomerId
   else if not $ hasPermission (read employeeId) employees then do
     putStr "Funcionário tem que ser um vendedor.\n"
+    waitTwoSeconds
     customerPurchase db currentCustomerId
   else do
     let candyIds = []
@@ -349,4 +353,5 @@ customerViewCandyMenu db currentCustomerId = do
     backToCustomerInteraction db currentCustomerId
   else do
     putStr "Você ainda não tem compras realizadas.\n"
+    waitTwoSeconds
     backToCustomerInteraction db currentCustomerId
