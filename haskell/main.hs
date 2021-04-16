@@ -88,6 +88,8 @@ ownerInteraction db = do
       removeCandy db
     else if number == 5 then do
       removeDrink db
+    else if number == 6 then do
+      displayEmployees db
     else if number == 10 then do
       start db
     else do
@@ -194,6 +196,20 @@ registerDrink db = do
   waitThreeSeconds
 
   ownerInteraction newDB
+
+displayEmployees :: DB -> IO()
+displayEmployees db = do
+  let employees = (DB.employees db)
+  
+  if not $ null employees then do
+    putStr $ showList' employees
+    waitThreeSeconds
+    ownerInteraction db
+  else do
+    putStr "Não há funcionários cadastrados no sistema. \n"
+    waitThreeSeconds
+    ownerInteraction db
+    
 
 customerInteraction :: DB -> Int -> IO()
 customerInteraction db customerId = do
