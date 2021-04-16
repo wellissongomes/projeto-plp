@@ -4,12 +4,11 @@ import Candy
 import Customer
 import Purchase
 import TypeClasses
-import CandyMenu
 import Drink
 import Order
 import Utils
 import DB
-import CandyMenuController
+import ProductController
 import EmployeeController
 import PurchaseController
 import CustomerController
@@ -28,42 +27,7 @@ waitThreeSeconds = threadDelay $ 3 * oneSecond
 waitFiveSeconds = threadDelay $ 5 * oneSecond
 
 main = do
-  let f1 = Employee 1 "10120379940" "Wellisson Gomes" 20 "vendedor"
-  let d1 = Candy 1 "Sorvete de chocolate" "Sorvete de chocolate e calda morango" 15.96
-  let d2 = Candy 2 "Sorvete de test" "Sorvete de test e calda morango" 15.26
-  let c1 = Customer 1 "10120379940" "Gomes Gomes" 20 "rua tal"
-  let refri = Drink 1 "Suco de graviola" "Feito por extraterrestres" 10.9
-  let cardapio = CandyMenu [d1, d1] [refri]
-  let pedido = Order [(5, refri), (5, refri), (5, refri)] [(1, d1)]
-  let compra = Purchase 1 1 1 5 pedido 5
-
-  -- content <- DB.readFile' "compra.txt"
-
-  -- print content
-
-  DB.addToFile "funcionario.txt" f1
-  DB.addToFile "cardapio.txt" cardapio
-  DB.addToFile "doce.txt" d1
-  DB.addToFile "doce.txt" d2
-  DB.addToFile "bebida.txt" refri
-  DB.addToFile "cliente.txt" c1
-
-  -- c <- DB.readFile' "empId.txt"
-  -- print c
-
-
-  -- print $ DB.purchases dados
-
-  
-  -- let purchases = listOfStringToListOfPurchases $ splitForFile content
   dados <- DB.connect
-  -- print dados
-
-  -- let newId = (DB.currentIdCustomer dados) + 1
-  -- let newDB = dados {DB.currentIdCustomer = newId}
-  -- print $ DB.currentIdCustomer newDB
-  -- DB.writeIdToFile "custId.txt" newId
-
   start dados
 
 start :: DB -> IO()
@@ -89,7 +53,6 @@ start db = do
     putStr employeeOptions
   else do
     start db
-
 
 ownerInteraction :: DB -> IO ()
 ownerInteraction db = do
@@ -118,12 +81,14 @@ ownerInteraction db = do
       registerCandy db
     else if number == 3 then do
       registerDrink db
+    else if number == 4 then do
+      removeCandy db
     else if number == 10 then do
       start db
     else do
       putStr ""
 
-registerCandy :: DB -> IO()
+registerCandy :: DB -> IO ()
 registerCandy db = do
   let candies = (DB.candies db)
   let candyId = (DB.currentIdCandy db) + 1
@@ -136,8 +101,8 @@ registerCandy db = do
 
   DB.addToFile "doce.txt" candy
   DB.writeIdToFile "candyId.txt" candyId
-  let newDB = db {DB.candies = candies ++ [candy]}
-
+  let newDB = db {DB.candies = addCandy candy candies, DB.currentIdCandy = candyId}
+  
   clear
   print "Doce cadastrado com sucesso!"
   print candy
@@ -145,7 +110,22 @@ registerCandy db = do
 
   ownerInteraction newDB
 
+removeCandy :: DB -> IO ()
+removeCandy db = do
+  let candies = (DB.candies db)
 
+  candyId <- input "ID: "
+
+  if not $ existsCandy (read candyId) candies then do
+    putStr "Doce não cadastrado.\n"
+    ownerInteraction db
+  else do
+    let newCandyList = deleteCandy (read candyId) candies
+
+    DB.writeToFile "doce.txt" newCandyList
+
+    let newDB = db {DB.candies = newCandyList}
+    ownerInteraction newDB
 
 registerEmployee :: DB -> IO ()
 registerEmployee db = do
@@ -162,7 +142,7 @@ registerEmployee db = do
 
   DB.addToFile "funcionario.txt" employee
   DB.writeIdToFile "empId.txt" employeeId
-  let newDB = db {DB.employees = employees ++ [employee]}
+  let newDB = db {DB.employees = employees ++ [employee], DB.currentIdEmployee = employeeId}
 
   print employee
 
@@ -170,8 +150,7 @@ registerEmployee db = do
 
 registerDrink :: DB -> IO()
 registerDrink db = do
-  let drinks = DB.drinks db
-
+  let drinks = (DB.drinks db)
   let drinkId = (DB.currentIdDrink db) + 1
 
   name <- input "Nome: "
@@ -182,8 +161,8 @@ registerDrink db = do
   let drink = (Drink drinkId name description (read price))
 
   DB.addToFile "bebida.txt" drink
-  DB.writeIdToFile "drinkId.txt" drink
-  let newDB = db {DB.drinks = drinks ++ [drink]}
+  DB.writeIdToFile "drinkId.txt" drinkId
+  let newDB = db {DB.drinks = addDrink drink drinks, DB.currentIdDrink = drinkId}
 
   clear
   print "Bebida cadastrada com sucesso!"
@@ -191,7 +170,6 @@ registerDrink db = do
   waitThreeSeconds
 
   ownerInteraction newDB
-
 
 customerInteraction :: DB -> Int -> IO()
 customerInteraction db customerId = do
@@ -210,7 +188,7 @@ customerInteraction db customerId = do
 
     if num == 2 then do
       clear
-      putStr $ showCandyMenu $ DB.candyMenu db
+      putStr $ showProducts (DB.candies db) (DB.drinks db)
       waitFiveSeconds
       clear
       customerInteraction db customerId
@@ -224,7 +202,6 @@ customerInteraction db customerId = do
       start db
     else do
       customerInteraction db customerId
-
 
 _chooseCandy :: DB -> [Int] -> IO (Int, Candy)
 _chooseCandy db candyIds = do
@@ -351,5 +328,3 @@ customerViewCandyMenu db currentCustomerId = do
   else do
     putStr "Você ainda não tem compras realizadas.\n"
     backToCustomerInteraction db currentCustomerId
-
-  
