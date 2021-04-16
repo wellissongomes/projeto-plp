@@ -8,7 +8,7 @@ import Drink
 import Order
 import Utils
 import DB
-import ProductController
+import CandyMenu
 import EmployeeController
 import PurchaseController
 import CustomerController
@@ -188,7 +188,7 @@ customerInteraction db customerId = do
 
     if num == 2 then do
       clear
-      putStr $ showProducts (DB.candies db) (DB.drinks db)
+      putStr $ showCandyMenu (DB.candies db) (DB.drinks db)
       waitFiveSeconds
       clear
       customerInteraction db customerId

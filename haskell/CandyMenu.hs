@@ -1,4 +1,4 @@
-module ProductController (
+module CandyMenu (
   addCandy,
   addDrink,
   deleteCandy,
@@ -29,11 +29,8 @@ existsCandy id candies = not $ null [c | c <- candies, (Candy.id c) == id]
 existsDrink :: Int -> [Drink] -> Bool
 existsDrink id drinks = not $ null [c | c <- drinks, (Drink.id c) == id]
 
--- showCandyMenu :: Show a => a -> String
--- showCandyMenu candyMenu = show candyMenu
-
-showProducts :: [Candy] -> [Drink] -> String
-showProducts candies drinks = "CARDAPIO: \n" ++
+showCandyMenu :: [Candy] -> [Drink] -> String
+showCandyMenu candies drinks = "CARDAPIO: \n" ++
                               "\nDoces" ++ "\n" ++
                               showList' candies ++
                               "\nBebidas" ++  "\n" ++
