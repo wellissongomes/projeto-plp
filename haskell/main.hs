@@ -87,6 +87,8 @@ ownerInteraction db = do
       registerDrink db
     else if number == 4 then do
       removeCandy db
+    else if number == 5 then do
+      removeDrink db
     else if number == 10 then do
       start db
     else do
@@ -128,6 +130,22 @@ removeCandy db = do
     DB.writeToFile "doce.txt" newCandyList
 
     let newDB = db {DB.candies = newCandyList}
+    ownerInteraction newDB
+
+removeDrink :: DB -> IO ()
+removeDrink db = do
+  let drinks = (DB.drinks db)
+
+  drinkId <- input "ID: "
+  if not $ drinkExists (read drinkId) drinks then do
+    putStr "Bebida não cadastrada.\n"
+    ownerInteraction db
+  else do
+    let newDrinkList = deleteDrink (read drinkId) drinks
+
+    DB.writeToFile "bebida.txt" newDrinkList
+
+    let newDB = db {DB.drinks = newDrinkList}
     ownerInteraction newDB
 
 registerEmployee :: DB -> IO ()
