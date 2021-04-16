@@ -116,6 +116,8 @@ ownerInteraction db = do
       registerEmployee db
     else if number == 2 then do
       registerCandy db
+    else if number == 3 then do
+      registerDrink db
     else if number == 10 then do
       start db
     else do
@@ -163,6 +165,30 @@ registerEmployee db = do
   let newDB = db {DB.employees = employees ++ [employee]}
 
   print employee
+
+  ownerInteraction newDB
+
+registerDrink :: DB -> IO()
+registerDrink db = do
+  let drinks = DB.drinks db
+
+  let drinkId = (DB.currentIdDrink db) + 1
+
+  name <- input "Nome: "
+  description <- input "Descrição: "
+  price <- input "Preço: "
+
+
+  let drink = (Drink drinkId name description (read price))
+
+  DB.addToFile "bebida.txt" drink
+  DB.writeIdToFile "drinkId.txt" drink
+  let newDB = db {DB.drinks = drinks ++ [drink]}
+
+  clear
+  print "Bebida cadastrada com sucesso!"
+  print drink
+  waitThreeSeconds
 
   ownerInteraction newDB
 
