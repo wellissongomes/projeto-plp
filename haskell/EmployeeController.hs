@@ -6,5 +6,5 @@ import Prelude hiding (id)
 
 import Employee
 
-hasPermission :: Int -> [Employee] -> Bool
-hasPermission id employees = not $ null [e | e <- employees, (Employee.id e) == id, (Employee.role e) == "vendedor"]
+hasPermission :: Int -> [Employee] -> String -> Bool
+hasPermission id employees role = not $ null [e | e <- employees, (Employee.id e) == id, (Employee.role e) == role]

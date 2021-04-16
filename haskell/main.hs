@@ -53,18 +53,22 @@ start db = do
 
 ownerInteraction :: DB -> IO ()
 ownerInteraction db = do
-  let currentOwnerId = (DB.currentIdOwner db)
-
   clear
-  if currentOwnerId == 0 then do
-    putStr "Seja bem vindo ao Candy Land!!"
+  ownerId <- input "ID do dono: "
+  
+  let employees = DB.employees db
 
-    let newOwnerId = currentOwnerId + 1
-
-    DB.writeIdToFile "ownerId.txt" newOwnerId
-    let newDB = db {DB.currentIdOwner = newOwnerId}
-
-    ownerInteraction newDB
+  if not $ existsEntity employees (read ownerId) then do
+    putStr "Dono não cadastrado.\n"
+    op <- input "\nGostaria de cadastrar um dono? [S - SIM ou qualquer letra para NÃO]: "
+    if head op `elem` "Ss" then do
+      registerEmployee db
+    else do
+      start db
+  else if not $ hasPermission (read ownerId) employees "dono" then do
+    putStr "O ID informado não pertence a um Dono.\n"
+    waitTwoSeconds
+    start db
   else do
     putStr ownerOptions
 
@@ -318,7 +322,7 @@ customerPurchase db currentCustomerId = do
     putStr "Funcionário não cadastrado.\n"
     waitTwoSeconds
     customerPurchase db currentCustomerId
-  else if not $ hasPermission (read employeeId) employees then do
+  else if not $ hasPermission (read employeeId) employees "vendedor" then do
     putStr "Funcionário tem que ser um vendedor.\n"
     waitTwoSeconds
     customerPurchase db currentCustomerId
@@ -385,9 +389,10 @@ employeeInteraction db employeeId = do
     if num == 1 then do
      registerCustomer db employeeId
     else if num == 2 then do
-      putStr ""
+      putStr "Branco"
     else if num == 3 then do
-      putStr ""
+      displayEntity (DB.customers db) "clientes"
+      employeeInteraction db employeeId
     else if num == 4 then do
      putStr ""
     else if num == 5 then do
