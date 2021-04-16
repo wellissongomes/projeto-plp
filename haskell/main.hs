@@ -32,7 +32,10 @@ main = do
 
 start :: DB -> IO()
 start db = do
+  putStr slogan
+  waitTwoSecond
   clear
+
   putStr options
 
   option <- input "Número: "
