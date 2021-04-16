@@ -12,18 +12,9 @@ import CandyMenu
 import EmployeeController
 import PurchaseController
 
-import Control.Concurrent
-
 import Prelude hiding (id)
 
 import Data.List.Split 
-
-oneSecond :: Int
-oneSecond = 1000000
-
-waitTwoSeconds = threadDelay $ 2 * oneSecond
-waitThreeSeconds = threadDelay $ 3 * oneSecond
-waitFiveSeconds = threadDelay $ 5 * oneSecond
 
 main = do
   dados <- DB.connect
@@ -89,7 +80,17 @@ ownerInteraction db = do
     else if number == 5 then do
       removeDrink db
     else if number == 6 then do
-      displayEmployees db
+      displayEntity (DB.employees db) "funcionários"
+      ownerInteraction db
+    else if number == 7 then do
+      displayEntity (DB.candies db) "doces"
+      ownerInteraction db
+    else if number == 8 then do
+      displayEntity (DB.drinks db) "bebidas"
+      ownerInteraction db
+    else if number == 9 then do
+      displayEntity (DB.purchases db) "vendas"
+      ownerInteraction db
     else if number == 10 then do
       start db
     else do
@@ -197,21 +198,7 @@ registerDrink db = do
 
   ownerInteraction newDB
 
-displayEmployees :: DB -> IO()
-displayEmployees db = do
-  let employees = (DB.employees db)
-  
-  if not $ null employees then do
-    putStr $ showList' employees
-    waitThreeSeconds
-    ownerInteraction db
-  else do
-    putStr "Não há funcionários cadastrados no sistema. \n"
-    waitThreeSeconds
-    ownerInteraction db
-    
-
-customerInteraction :: DB -> Int -> IO()
+customerInteraction :: DB -> Int -> IO ()
 customerInteraction db customerId = do
   let customers = DB.customers db
 
