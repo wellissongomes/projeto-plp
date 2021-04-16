@@ -18,6 +18,9 @@ data Customer = Customer {
   address :: Address
 }
 
+instance Entity Customer where
+  entityId customer = Customer.id customer
+
 instance Show Customer where
   show (Customer id ssn name age address) = "\n-----------------------\n" ++
                                               "ID: " ++ (show id) ++ "\n" ++

@@ -18,6 +18,9 @@ data Drink = Drink {
   price :: Price
 }
 
+instance Entity Drink where
+  entityId drink = Drink.id drink
+
 instance Item Drink where
   itemPrice drink = Drink.price drink
 

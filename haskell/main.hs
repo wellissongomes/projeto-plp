@@ -103,8 +103,7 @@ registerCandy db = do
 
   let candy = (Candy candyId name description (read price))
 
-  DB.addToFile "doce.txt" candy
-  DB.writeIdToFile "candyId.txt" candyId
+  DB.entityToFile candy "doce.txt" "candyId.txt"
   let newDB = db {DB.candies = addCandy candy candies, DB.currentIdCandy = candyId}
   
   clear
@@ -144,8 +143,7 @@ registerEmployee db = do
 
   let employee = (Employee employeeId ssn name (read age) role)
 
-  DB.addToFile "funcionario.txt" employee
-  DB.writeIdToFile "empId.txt" employeeId
+  DB.entityToFile employee "funcionario.txt" "empId.txt"
   let newDB = db {DB.employees = employees ++ [employee], DB.currentIdEmployee = employeeId}
 
   print employee
@@ -161,11 +159,9 @@ registerDrink db = do
   description <- input "Descrição: "
   price <- input "Preço: "
 
-
   let drink = (Drink drinkId name description (read price))
 
-  DB.addToFile "bebida.txt" drink
-  DB.writeIdToFile "drinkId.txt" drinkId
+  DB.entityToFile drink "bebida.txt" "drinkId.txt"
   let newDB = db {DB.drinks = addDrink drink drinks, DB.currentIdDrink = drinkId}
 
   clear

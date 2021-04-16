@@ -41,6 +41,12 @@ writeIdToFile path id = writeFile ("./db/" ++ path) (show id)
 
 readFile' path = SIO.readFile $ "./db/" ++ path
 
+entityToFile :: (Entity a, Stringfy a) => a -> String -> String -> IO ()
+entityToFile a entityFile idFile = do
+  addToFile entityFile a
+  writeIdToFile idFile (entityId a)
+  return ()
+
 connect :: IO DB
 connect = do
   employeesContent <- readFile' "funcionario.txt"

@@ -23,6 +23,9 @@ data Purchase = Purchase {
   order :: Order,
   price :: PurchasePrice
 }
+
+instance Entity Purchase where
+  entityId purchase = Purchase.id purchase
                                   
 instance Show Purchase where
   show (Purchase id employeeID customerID score order price) = "\n" ++

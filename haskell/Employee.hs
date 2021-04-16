@@ -18,6 +18,9 @@ data Employee = Employee {
   role :: Role
 } 
 
+instance Entity Employee where
+  entityId employee = Employee.id employee
+
 instance Show Employee where
   show (Employee id ssn name age role) = "\n-----------------------\n" ++
                                                 "ID: " ++ (show id) ++ "\n" ++

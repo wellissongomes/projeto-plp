@@ -18,6 +18,9 @@ data Candy = Candy {
   price :: Price
 }
 
+instance Entity Candy where
+  entityId candy = Candy.id candy
+
 instance Item Candy where
   itemPrice candy = Candy.price candy
 

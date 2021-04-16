@@ -8,3 +8,6 @@ class StringToType a where
 
 class Item a where
   itemPrice :: a -> Float
+
+class Entity a where
+  entityId :: a -> Int

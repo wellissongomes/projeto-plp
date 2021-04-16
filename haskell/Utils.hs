@@ -1,6 +1,6 @@
 module Utils where
 
-import Candy 
+import Candy
 import Drink
 
 import System.IO ( hFlush, stdout )
