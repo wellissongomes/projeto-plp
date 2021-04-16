@@ -159,14 +159,18 @@ registerEmployee db = do
   age <- input "Idade: "
   role <- input "Cargo: "
 
-  let employee = (Employee employeeId ssn name (read age) role)
+  if existsPerson employees ssn then do
+    putStr "Funcionário já cadastrado.\n"
+    ownerInteraction db
+  else do
+    let employee = (Employee employeeId ssn name (read age) role)
 
-  DB.entityToFile employee "funcionario.txt" "empId.txt"
-  let newDB = db {DB.employees = employees ++ [employee], DB.currentIdEmployee = employeeId}
+    DB.entityToFile employee "funcionario.txt" "empId.txt"
+    let newDB = db {DB.employees = employees ++ [employee], DB.currentIdEmployee = employeeId}
 
-  print employee
+    print employee
 
-  ownerInteraction newDB
+    ownerInteraction newDB
 
 registerDrink :: DB -> IO()
 registerDrink db = do
@@ -322,8 +326,7 @@ customerPurchase db currentCustomerId = do
 
     print purchase
 
-    DB.addToFile "compra.txt" purchase
-    DB.writeIdToFile "purchaseId.txt" purchaseId
+    DB.entityToFile purchase "compra.txt" "purchaseId.txt"
     let newDB = db {DB.purchases = (DB.purchases db) ++ [purchase], DB.currentIdPurchase = purchaseId}
 
     waitFiveSeconds
@@ -336,6 +339,7 @@ backToCustomerInteraction db currentCustomerId = do
   clear
   customerInteraction db currentCustomerId
 
+customerViewCandyMenu :: DB -> Int -> IO ()
 customerViewCandyMenu db currentCustomerId = do
   let purchases = (DB.purchases db)
   

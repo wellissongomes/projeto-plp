@@ -18,6 +18,9 @@ data Employee = Employee {
   role :: Role
 } 
 
+instance Person Employee where
+  personSSN employee = Employee.ssn employee
+
 instance Entity Employee where
   entityId employee = Employee.id employee
 

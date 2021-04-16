@@ -18,6 +18,9 @@ data Customer = Customer {
   address :: Address
 }
 
+instance Person Customer where
+  personSSN customer = Customer.ssn customer
+
 instance Entity Customer where
   entityId customer = Customer.id customer
 

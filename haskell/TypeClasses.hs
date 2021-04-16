@@ -11,3 +11,6 @@ class Item a where
 
 class Entity a where
   entityId :: a -> Int
+
+class Person a where
+  personSSN :: a -> String

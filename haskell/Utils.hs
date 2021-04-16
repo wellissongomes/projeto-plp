@@ -11,6 +11,9 @@ import Data.Char(digitToInt)
 
 import TypeClasses
 
+existsPerson :: Person a => [a] -> String -> Bool
+existsPerson people ssn = not $ null [p | p <- people, personSSN p == ssn]
+
 listOfAnythingToListOfToString :: (Stringfy a) => [a] -> [String]
 listOfAnythingToListOfToString [] = []
 listOfAnythingToListOfToString (x:xs) = toString x : listOfAnythingToListOfToString xs
