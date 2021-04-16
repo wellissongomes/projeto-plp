@@ -44,7 +44,10 @@ start db = do
     customerInteraction db (read cId)
   else if number == 3 then do
     clear
-    putStr employeeOptions
+    fId <- input "Digite o seu ID: "
+    clear
+
+    employeeInteraction db (read fId) 
   else do
     start db
 
@@ -111,8 +114,8 @@ registerCandy db = do
   let newDB = db {DB.candies = addCandy candy candies, DB.currentIdCandy = candyId}
   
   clear
-  print "Doce cadastrado com sucesso!"
-  print candy
+  putStr "Doce cadastrado com sucesso!"
+  putStr $ show candy
   waitThreeSeconds
 
   ownerInteraction newDB
@@ -172,8 +175,11 @@ registerEmployee db = do
 
     DB.entityToFile employee "funcionario.txt" "empId.txt"
     let newDB = db {DB.employees = employees ++ [employee], DB.currentIdEmployee = employeeId}
-
-    print employee
+    
+    clear
+    putStr "Funcionário cadastrado com sucesso!"
+    putStr $ show employee
+    waitThreeSeconds
 
     ownerInteraction newDB
 
@@ -192,8 +198,8 @@ registerDrink db = do
   let newDB = db {DB.drinks = addDrink drink drinks, DB.currentIdDrink = drinkId}
 
   clear
-  print "Bebida cadastrada com sucesso!"
-  print drink
+  putStr "Bebida cadastrada com sucesso!"
+  putStr $ show drink
   waitThreeSeconds
 
   ownerInteraction newDB
@@ -331,7 +337,7 @@ customerPurchase db currentCustomerId = do
     let price = calculatePrice order
     let purchase = Purchase purchaseId (read employeeId) currentCustomerId score order price
 
-    print purchase
+    putStr $ show purchase
 
     DB.entityToFile purchase "compra.txt" "purchaseId.txt"
     let newDB = db {DB.purchases = (DB.purchases db) ++ [purchase], DB.currentIdPurchase = purchaseId}
@@ -358,3 +364,62 @@ customerViewCandyMenu db currentCustomerId = do
     putStr "Você ainda não tem compras realizadas.\n"
     waitTwoSeconds
     backToCustomerInteraction db currentCustomerId
+
+
+employeeInteraction :: DB -> Int -> IO()
+employeeInteraction db employeeId = do
+  let employees = DB.employees db 
+
+  if not $ existsEntity employees employeeId then do
+    putStr "Funcionário inexistente...\n"
+    waitTwoSeconds
+    clear
+    start db
+  else do
+    clear
+    putStr employeeOptions
+
+    option <- input "Número: "
+    let num = read option
+
+    if num == 1 then do
+     registerCustomer db employeeId
+    else if num == 2 then do
+      putStr ""
+    else if num == 3 then do
+      putStr ""
+    else if num == 4 then do
+     putStr ""
+    else if num == 5 then do
+     start db
+    else do
+      employeeInteraction db employeeId
+
+
+registerCustomer :: DB -> Int -> IO ()
+registerCustomer db employeeId = do
+  let customers = DB.customers db
+
+  let customerId = (DB.currentIdCustomer db) + 1
+
+  ssn <- input "CPF: "
+  name <- input "Nome: "
+  age <- input "Idade: "
+  address <- input "Endereço: "
+
+  if existsPerson customers ssn then do
+    putStr "Cliente já cadastrado.\n"
+    waitTwoSeconds
+    employeeInteraction db employeeId
+  else do
+    let customer = (Customer customerId ssn name (read age) address)
+
+    DB.entityToFile customer "cliente.txt" "custId.txt"
+    let newDB = db {DB.customers = customers ++ [customer], DB.currentIdCustomer = customerId}
+
+    clear
+    putStr "Cliente cadastrado com sucesso!"
+    putStr $ show customer
+    waitThreeSeconds
+  
+    employeeInteraction newDB employeeId
