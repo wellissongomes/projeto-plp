@@ -95,6 +95,7 @@ ownerInteraction :: DB -> IO ()
 ownerInteraction db = do
   let currentOwnerId = (DB.currentIdOwner db)
 
+  clear
   if currentOwnerId == 0 then do
     putStr "Seja bem vindo ao Candy Land!!"
 
@@ -113,10 +114,35 @@ ownerInteraction db = do
 
     if number == 1 then do
       registerEmployee db
+    else if number == 2 then do
+      registerCandy db
     else if number == 10 then do
       start db
     else do
       putStr ""
+
+registerCandy :: DB -> IO()
+registerCandy db = do
+  let candies = (DB.candies db)
+  let candyId = (DB.currentIdCandy db) + 1
+
+  name <- input "Nome do doce: "
+  description <- input "Descrição: "
+  price <- input "Preço: "
+
+  let candy = (Candy candyId name description (read price))
+
+  DB.addToFile "doce.txt" candy
+  DB.writeIdToFile "candyId.txt" candyId
+  let newDB = db {DB.candies = candies ++ [candy]}
+
+  clear
+  print "Doce cadastrado com sucesso!"
+  print candy
+  waitThreeSeconds
+
+  ownerInteraction newDB
+
 
 
 registerEmployee :: DB -> IO ()
