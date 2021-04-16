@@ -32,6 +32,7 @@ main = do
 
 start :: DB -> IO()
 start db = do
+  clear 
   putStr slogan
   waitTwoSecond
   clear
