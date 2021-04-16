@@ -11,7 +11,10 @@ import Data.Char(digitToInt)
 
 import TypeClasses
 
-existsEntity :: Entity entities => [entities] -> Int -> Bool
+getEntityById :: Entity e => [e] -> Int -> e
+getEntityById entities id = head [e | e <- entities, entityId e == id]
+
+existsEntity :: Entity e => [e] -> Int -> Bool
 existsEntity entities id = not $ null [e | e <- entities, entityId e == id]
 
 existsPerson :: Person a => [a] -> String -> Bool

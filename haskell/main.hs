@@ -239,7 +239,7 @@ _chooseCandy db candyIds = do
   else do
     quantityCandy <- input "Digite a quantidade: "
 
-    let candy = getCandyById (read candyId) (DB.candies db)
+    let candy = getEntityById (DB.candies db) (read candyId)
 
     return (read quantityCandy, candy)
 
@@ -275,7 +275,7 @@ _chooseDrink db drinkIds = do
   else do
     quantityDrink <- input "Digite a quantidade: "
 
-    let candy = getDrinkById (read drinkId) (DB.drinks db)
+    let candy = getEntityById (DB.drinks db) (read drinkId)
 
     return (read quantityDrink, candy)
 
