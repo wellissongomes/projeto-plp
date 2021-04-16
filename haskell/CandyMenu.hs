@@ -5,7 +5,7 @@ module CandyMenu (
   deleteDrink,
   existsCandy,
   existsDrink,
-  showProducts
+  showCandyMenu
 ) where
 import Candy
 import Drink
