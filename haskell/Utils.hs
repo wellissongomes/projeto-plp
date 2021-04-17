@@ -1,6 +1,6 @@
 module Utils where
 
-import Candy 
+import Candy
 import Drink
 
 import System.IO ( hFlush, stdout )
@@ -8,8 +8,34 @@ import System.Process
 
 import Data.List.Split
 import Data.Char(digitToInt)
+import Control.Concurrent
 
 import TypeClasses
+
+oneSecond :: Int
+oneSecond = 1000000
+
+waitTwoSeconds = threadDelay $ 2 * oneSecond
+waitThreeSeconds = threadDelay $ 3 * oneSecond
+waitFiveSeconds = threadDelay $ 5 * oneSecond
+
+displayEntity :: Show a => [a] -> String -> IO ()
+displayEntity entities msg = do
+  if not $ null entities then do
+    putStr $ showList' entities
+    waitThreeSeconds
+  else do
+    putStr $ "Não há " ++ msg ++ " presentes no sistema.\n"
+    waitThreeSeconds
+
+getEntityById :: Entity e => [e] -> Int -> e
+getEntityById entities id = head [e | e <- entities, entityId e == id]
+
+existsEntity :: Entity e => [e] -> Int -> Bool
+existsEntity entities id = not $ null [e | e <- entities, entityId e == id]
+
+existsPerson :: Person a => [a] -> String -> Bool
+existsPerson people ssn = not $ null [p | p <- people, personSSN p == ssn]
 
 listOfAnythingToListOfToString :: (Stringfy a) => [a] -> [String]
 listOfAnythingToListOfToString [] = []

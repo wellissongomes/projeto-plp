@@ -1,32 +1,29 @@
-module CandyMenu where
-
+module CandyMenu (
+  addCandy,
+  addDrink,
+  deleteCandy,
+  deleteDrink,
+  showCandyMenu
+) where
 import Candy
 import Drink
-
-import TypeClasses
 import Utils
 
-import Data.List.Split
+addCandy :: Candy -> [Candy] -> [Candy]
+addCandy candy candies = candies ++ [candy]
 
-data CandyMenu = CandyMenu {
-  candies :: [Candy],
-  drinks :: [Drink]
-}
+addDrink :: Drink -> [Drink] -> [Drink]
+addDrink drink drinks = drinks ++ [drink]
 
-instance Show CandyMenu where
-  show (CandyMenu candies drinks) = "CARDAPIO: \n" ++
-                                  "\nDoces" ++ "\n" ++
-                                  showList' candies ++
-                                  "\nBebidas" ++  "\n" ++
-                                  showList' drinks
+deleteCandy :: Int -> [Candy] -> [Candy]
+deleteCandy id candies = [c | c <- candies, (Candy.id c) /= id]
 
-instance Stringfy CandyMenu where
-  toString (CandyMenu candies drinks) = show (listOfAnythingToListOfToString candies) ++ ";" ++
-                                        show (listOfAnythingToListOfToString drinks)
+deleteDrink :: Int -> [Drink] -> [Drink]
+deleteDrink id drinks = [d | d <- drinks, (Drink.id d) /= id]
 
-instance Read CandyMenu where
-  readsPrec _ str = do
-  let l = splitOn ";" str
-  let candies = stringToListOfCandies (l !! 0)
-  let drinks = stringToListOfDrinks (l !! 1)
-  [(CandyMenu candies drinks, "")]
+showCandyMenu :: [Candy] -> [Drink] -> String
+showCandyMenu candies drinks = "CARDAPIO: \n" ++
+                              "\nDoces" ++ "\n" ++
+                              showList' candies ++
+                              "\nBebidas" ++  "\n" ++
+                              showList' drinks

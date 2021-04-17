@@ -7,7 +7,6 @@ import Candy
 import Customer
 import Purchase
 import Drink
-import CandyMenu
 import TypeClasses
 import Utils
 
@@ -17,12 +16,12 @@ data DB = DB {
   candies :: [Candy],
   purchases :: [Purchase],
   drinks :: [Drink],
-  candyMenu :: CandyMenu,
   currentIdEmployee :: Int,
   currentIdCustomer :: Int,
   currentIdCandy :: Int,
   currentIdDrink :: Int,
-  currentIdPurchase :: Int
+  currentIdPurchase :: Int,
+  currentIdOwner :: Int
 } deriving (Show)
 
 listOfStringToListOfEmployees l = map read l :: [Employee]
@@ -30,7 +29,6 @@ listOfStringToListOfCustomers l = map read l :: [Customer]
 listOfStringToListOfCandies l = map read l :: [Candy]
 listOfStringToListOfPurchases l = map read l :: [Purchase]
 listOfStringToListOfDrinks l = map read l :: [Drink]
-stringToCandyMenu str = read str :: CandyMenu
 stringToInt str = read str :: Int
 
 addToFile :: Stringfy a => FilePath -> a -> IO ()
@@ -43,9 +41,11 @@ writeIdToFile path id = writeFile ("./db/" ++ path) (show id)
 
 readFile' path = SIO.readFile $ "./db/" ++ path
 
-getCandyMenu candyMenuContent
-  | null candyMenuContent = CandyMenu [] []
-  | otherwise = stringToCandyMenu $ (splitForFile candyMenuContent) !! 0
+entityToFile :: (Entity a, Stringfy a) => a -> String -> String -> IO ()
+entityToFile a entityFile idFile = do
+  addToFile entityFile a
+  writeIdToFile idFile (entityId a)
+  return ()
 
 connect :: IO DB
 connect = do
@@ -54,13 +54,13 @@ connect = do
   candiesContent <- readFile' "doce.txt"
   purchasesContent <- readFile' "compra.txt"
   drinksContent <- readFile' "bebida.txt"
-  candyMenuContent <- readFile' "cardapio.txt"
 
   currentIdEmployeeContent <- readFile' "empId.txt"
   currentIdCustomerContent <- readFile' "custId.txt"
   currentIdCandyContent <- readFile' "candyId.txt"
   currentIdDrinkContent <- readFile' "drinkId.txt"
   currentIdPurchaseContent <- readFile' "purchaseId.txt"
+  currentIdOwnerContent <- readFile' "ownerId.txt"
 
   let employees = listOfStringToListOfEmployees $ splitForFile $ employeesContent
   let customers = listOfStringToListOfCustomers $ splitForFile $ customersContent
@@ -68,15 +68,14 @@ connect = do
   let purchases = listOfStringToListOfPurchases $ splitForFile $ purchasesContent
   let drinks = listOfStringToListOfDrinks $ splitForFile $ drinksContent
 
-  let candyMenu = getCandyMenu candyMenuContent
-
   let currentIdEmployee = stringToInt currentIdEmployeeContent
   let currentIdCustomer = stringToInt currentIdCustomerContent
   let currentIdCandy = stringToInt currentIdCandyContent
   let currentIdDrink = stringToInt currentIdDrinkContent
   let currentIdPurchase = stringToInt currentIdPurchaseContent
+  let currentIdOwner = stringToInt currentIdOwnerContent
 
-  return (DB employees customers candies purchases drinks candyMenu currentIdEmployee currentIdCustomer currentIdCandy currentIdDrink currentIdPurchase) 
+  return (DB employees customers candies purchases drinks currentIdEmployee currentIdCustomer currentIdCandy currentIdDrink currentIdPurchase currentIdOwner) 
 
 deleteAll :: IO ()
 deleteAll = do
@@ -87,4 +86,3 @@ deleteAll = do
   writeFile (path ++ "doce.txt") ""
   writeFile (path ++ "compra.txt") ""
   writeFile (path ++ "bebida.txt") ""
-  writeFile (path ++ "cardapio.txt") ""
