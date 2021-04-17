@@ -132,8 +132,10 @@ removeCandy db ownerId = do
     waitTwoSeconds
     ownerInteraction db ownerId
   else do
+    print $ getEntityById candies (read candyId) 
     let newCandyList = deleteCandy (read candyId) candies
-
+    putStr "Doce removido com sucesso.\n"
+    waitThreeSeconds
     DB.writeToFile "doce.txt" newCandyList
 
     let newDB = db {DB.candies = newCandyList}
@@ -149,8 +151,10 @@ removeDrink db ownerId = do
     waitTwoSeconds
     ownerInteraction db ownerId
   else do
+    print $ getEntityById drinks (read drinkId) 
     let newDrinkList = deleteDrink (read drinkId) drinks
-
+    putStr "Bebida removida com sucesso.\n"
+    waitThreeSeconds
     DB.writeToFile "bebida.txt" newDrinkList
 
     let newDB = db {DB.drinks = newDrinkList}
@@ -402,11 +406,14 @@ finishPurchase db customerId employeeId = do
       waitTwoSeconds
       finishPurchase db customerId (-1)
     else do
+      clear
       if null $ DB.candies db then do
-        putStr "Não há doces disponíveis."
+        putStr "Não há doces disponíveis.\n"
+        waitTwoSeconds
         backToCustomerOrEmployeeInteraction db customerId employeeId
       else if null $ DB.drinks db then do
-        putStr "Não há bebidas disponíveis."
+        putStr "Não há bebidas disponíveis.\n"
+        waitTwoSeconds
         backToCustomerOrEmployeeInteraction db customerId employeeId
       else do
         let candyIds = []
