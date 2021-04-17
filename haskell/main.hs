@@ -394,7 +394,9 @@ employeeInteraction db employeeId = do
       displayEntity (DB.customers db) "clientes"
       employeeInteraction db employeeId
     else if num == 4 then do
-     putStr ""
+     putStr $ getPurchasesByEmployee employeeId (DB.purchases db)
+     waitThreeSeconds
+     employeeInteraction db employeeId
     else if num == 5 then do
      start db
     else do

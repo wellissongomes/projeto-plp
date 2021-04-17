@@ -1,7 +1,8 @@
 module PurchaseController (
   calculatePrice,
   getPurchasesByCustomer,
-  customerHasPurchase
+  customerHasPurchase,
+  getPurchasesByEmployee
 ) where
 
 import Candy
@@ -27,3 +28,6 @@ customerHasPurchase id purchases = not $ null $ getPurchasesByCustomer id purcha
 
 getPurchasesByCustomer :: Int -> [Purchase] -> String
 getPurchasesByCustomer id purchases = showList' [p | p <- purchases, (Purchase.customerID p) == id]
+
+getPurchasesByEmployee :: Int -> [Purchase] -> String
+getPurchasesByEmployee id purchases = showList' [p | p <- purchases, (Purchase.employeeID p) == id]
