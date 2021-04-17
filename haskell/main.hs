@@ -161,7 +161,7 @@ getCredentials :: [Employee] -> IO [String]
 getCredentials employees = do
   ssn <- input "CPF: "
   if existsPerson employees ssn then do
-    putStr "Funcionário já cadastrado.\n"
+    putStr "CPF já cadastrado.\n"
     waitTwoSeconds
     getCredentials employees
   else do
@@ -453,6 +453,11 @@ employeeInteraction db employeeId = do
     waitTwoSeconds
     clear
     start db
+  else if not $ hasPermission employeeId employees "vendedor" then do
+    putStr "O ID informado não pertence a um vendedor.\n"
+    waitTwoSeconds
+    clear
+    start db
   else do
     clear
     putStr employeeOptions
@@ -485,15 +490,14 @@ registerCustomer db employeeId = do
   let customerId = (DB.currentIdCustomer db) + 1
 
   ssn <- input "CPF: "
-  name <- input "Nome: "
-  age <- input "Idade: "
-  address <- input "Endereço: "
-
   if existsPerson customers ssn then do
-    putStr "Cliente já cadastrado.\n"
-    waitTwoSeconds
-    employeeInteraction db employeeId
+    putStr "CPF já cadastrado.\n"
+    registerCustomer db employeeId
   else do
+    name <- input "Nome: "
+    age <- input "Idade: "
+    address <- input "Endereço: "
+
     let customer = (Customer customerId ssn name (read age) address)
 
     DB.entityToFile customer "cliente.txt" "custId.txt"
