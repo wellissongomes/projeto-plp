@@ -24,9 +24,6 @@ start :: DB -> IO()
 start db = do
   clear 
   putStr slogan
-  waitTwoSeconds
-  clear
-
   putStr options
 
   option <- input "Número: "
@@ -35,76 +32,76 @@ start db = do
 
   if number == 1 then do
     clear
-    ownerInteraction db
+    oId <- input "Digite o seu ID: "
+    ownerInteraction db (read oId)
   else if number == 2 then do
-    clear
-    cId <- input "Digite o seu ID: "
-
-    clear
-    customerInteraction db (read cId)
-  else if number == 3 then do
     clear
     fId <- input "Digite o seu ID: "
     clear
-
     employeeInteraction db (read fId) 
-  else do
+  else if number == 3 then do
+    clear
+    cId <- input "Digite o seu ID: "
+    clear
+    customerInteraction db (read cId)
+  else if number == 4 then
+    putStr ""
+  else
     start db
 
-ownerInteraction :: DB -> IO ()
-ownerInteraction db = do
+ownerInteraction :: DB -> Int -> IO ()
+ownerInteraction db ownerId = do
   clear
-  ownerId <- input "ID do dono: "
-  
   let employees = DB.employees db
-
-  if not $ existsEntity employees (read ownerId) then do
+  if not $ existsOwner employees then do
     putStr "Dono não cadastrado.\n"
     op <- input "\nGostaria de cadastrar um dono? [S - SIM ou qualquer letra para NÃO]: "
     if head op `elem` "Ss" then do
-      registerEmployee db
+      registerOwner db
     else do
       start db
-  else if not $ hasPermission (read ownerId) employees "dono" then do
-    putStr "O ID informado não pertence a um Dono.\n"
-    waitTwoSeconds
-    start db
   else do
-    putStr ownerOptions
-
-    option <- input "Número: "
-
-    let number = read option
-
-    if number == 1 then do
-      registerEmployee db
-    else if number == 2 then do
-      registerCandy db
-    else if number == 3 then do
-      registerDrink db
-    else if number == 4 then do
-      removeCandy db
-    else if number == 5 then do
-      removeDrink db
-    else if number == 6 then do
-      displayEntity (DB.employees db) "funcionários"
-      ownerInteraction db
-    else if number == 7 then do
-      displayEntity (DB.candies db) "doces"
-      ownerInteraction db
-    else if number == 8 then do
-      displayEntity (DB.drinks db) "bebidas"
-      ownerInteraction db
-    else if number == 9 then do
-      displayEntity (DB.purchases db) "vendas"
-      ownerInteraction db
-    else if number == 10 then do
+    if not $ hasPermission ownerId employees "dono" then do
+      putStr "O ID informado não pertence a um Dono.\n"
+      waitThreeSeconds
       start db
     else do
-      putStr ""
+      clear
+      putStr ownerOptions
 
-registerCandy :: DB -> IO ()
-registerCandy db = do
+      option <- input "Número: "
+
+      let number = read option
+
+      if number == 1 then do
+        registerEmployee db ownerId
+      else if number == 2 then do
+        registerCandy db ownerId
+      else if number == 3 then do
+        registerDrink db ownerId
+      else if number == 4 then do
+        removeCandy db ownerId
+      else if number == 5 then do
+        removeDrink db ownerId
+      else if number == 6 then do
+        displayEntity (DB.employees db) "funcionários"
+        ownerInteraction db ownerId
+      else if number == 7 then do
+        displayEntity (DB.candies db) "doces"
+        ownerInteraction db ownerId
+      else if number == 8 then do
+        displayEntity (DB.drinks db) "bebidas"
+        ownerInteraction db ownerId
+      else if number == 9 then do
+        displayEntity (DB.purchases db) "vendas"
+        ownerInteraction db ownerId
+      else if number == 10 then do
+        start db
+      else do
+        putStr ""
+
+registerCandy :: DB -> Int -> IO ()
+registerCandy db  ownerId = do
   let candies = (DB.candies db)
   let candyId = (DB.currentIdCandy db) + 1
 
@@ -122,10 +119,10 @@ registerCandy db = do
   putStr $ show candy
   waitThreeSeconds
 
-  ownerInteraction newDB
+  ownerInteraction newDB ownerId
 
-removeCandy :: DB -> IO ()
-removeCandy db = do
+removeCandy :: DB -> Int -> IO ()
+removeCandy db ownerId = do
   let candies = (DB.candies db)
 
   candyId <- input "ID: "
@@ -133,47 +130,58 @@ removeCandy db = do
   if not $ existsEntity candies (read candyId) then do
     putStr "Doce não cadastrado.\n"
     waitTwoSeconds
-    ownerInteraction db
+    ownerInteraction db ownerId
   else do
     let newCandyList = deleteCandy (read candyId) candies
 
     DB.writeToFile "doce.txt" newCandyList
 
     let newDB = db {DB.candies = newCandyList}
-    ownerInteraction newDB
+    ownerInteraction newDB ownerId
 
-removeDrink :: DB -> IO ()
-removeDrink db = do
+removeDrink :: DB -> Int -> IO ()
+removeDrink db ownerId = do
   let drinks = (DB.drinks db)
 
   drinkId <- input "ID: "
   if not $ existsEntity drinks (read drinkId) then do
     putStr "Bebida não cadastrada.\n"
     waitTwoSeconds
-    ownerInteraction db
+    ownerInteraction db ownerId
   else do
     let newDrinkList = deleteDrink (read drinkId) drinks
 
     DB.writeToFile "bebida.txt" newDrinkList
 
     let newDB = db {DB.drinks = newDrinkList}
-    ownerInteraction newDB
+    ownerInteraction newDB ownerId
 
-registerEmployee :: DB -> IO ()
-registerEmployee db = do
+
+getCredentials :: [Employee] -> IO [String]
+getCredentials employees = do
+  ssn <- input "CPF: "
+  if existsPerson employees ssn then do
+    putStr "Funcionário já cadastrado.\n"
+    waitTwoSeconds
+    getCredentials employees
+  else do
+    name <- input "Nome: "
+    age <- input "Idade: "
+    return [ssn,name,age]
+
+registerOwner :: DB -> IO ()
+registerOwner db = do
   let employees = DB.employees db
 
   let employeeId = (DB.currentIdEmployee db) + 1
 
-  ssn <- input "CPF: "
-  name <- input "Nome: "
-  age <- input "Idade: "
-  role <- input "Cargo: "
+  [ssn, name, age] <- getCredentials employees
+  let role = "dono"
 
   if existsPerson employees ssn then do
-    putStr "Funcionário já cadastrado.\n"
+    putStr "CPF já cadastrado.\n"
     waitTwoSeconds
-    ownerInteraction db
+    start db
   else do
     let employee = (Employee employeeId ssn name (read age) role)
 
@@ -181,14 +189,49 @@ registerEmployee db = do
     let newDB = db {DB.employees = employees ++ [employee], DB.currentIdEmployee = employeeId}
     
     clear
-    putStr "Funcionário cadastrado com sucesso!"
+    putStr "Dono cadastrado com sucesso!"
     putStr $ show employee
     waitThreeSeconds
 
-    ownerInteraction newDB
+    start newDB
 
-registerDrink :: DB -> IO()
-registerDrink db = do
+
+
+getRole :: IO String
+getRole = do
+   putStr "\n(1) Confeitero\n(2) Vendedor\n\n"
+   role <- input "Cargo: "
+   if role == "1" then 
+     return "confeitero"
+   else if role == "2" then
+     return "vendedor"
+   else
+     getRole
+     
+
+registerEmployee :: DB -> Int -> IO ()
+registerEmployee db ownerId = do
+  let employees = DB.employees db
+
+  let employeeId = (DB.currentIdEmployee db) + 1
+
+  [ssn, name, age] <- getCredentials employees
+  
+  role <- getRole 
+  let employee = (Employee employeeId ssn name (read age) role)
+
+  DB.entityToFile employee "funcionario.txt" "empId.txt"
+  let newDB = db {DB.employees = employees ++ [employee], DB.currentIdEmployee = employeeId}
+  
+  clear
+  putStr "Funcionário cadastrado com sucesso!"
+  putStr $ show employee
+  waitThreeSeconds
+
+  ownerInteraction newDB ownerId
+
+registerDrink :: DB -> Int -> IO()
+registerDrink db ownerId = do
   let drinks = (DB.drinks db)
   let drinkId = (DB.currentIdDrink db) + 1
 
@@ -206,7 +249,7 @@ registerDrink db = do
   putStr $ show drink
   waitThreeSeconds
 
-  ownerInteraction newDB
+  ownerInteraction newDB ownerId
 
 customerInteraction :: DB -> Int -> IO ()
 customerInteraction db customerId = do
@@ -218,6 +261,7 @@ customerInteraction db customerId = do
     clear
     start db
   else do
+    clear
     putStr customerOptions
 
     option <- input "Número: "
@@ -231,7 +275,7 @@ customerInteraction db customerId = do
       customerInteraction db customerId
     else if num == 3 then do
       clear
-      customerPurchase db customerId
+      finishPurchase db customerId (-1)
     else if num == 4 then do
       clear
       customerViewCandyMenu db customerId
@@ -312,43 +356,68 @@ _makeOrderDrink drinks db = do
     else do
       return drinks
 
-customerPurchase :: DB -> Int -> IO ()
-customerPurchase db currentCustomerId = do 
-  employeeId <- input "ID do funcionário: "
-  
-  let employees = DB.employees db
 
-  if not $ existsEntity employees (read employeeId) then do
-    putStr "Funcionário não cadastrado.\n"
-    waitTwoSeconds
-    customerPurchase db currentCustomerId
-  else if not $ hasPermission (read employeeId) employees "vendedor" then do
-    putStr "Funcionário tem que ser um vendedor.\n"
-    waitTwoSeconds
-    customerPurchase db currentCustomerId
+getIds :: Int -> Int -> IO [Int]
+getIds customerId employeeId =
+  if customerId == -1 then do
+    currentCustomerId <- input "ID do cliente: "
+    return [read currentCustomerId, employeeId]
   else do
-    let candyIds = []
-    candyTuple <- _chooseCandy db candyIds
-    candies <- _makeOrderCandy [candyTuple] db
+    currentEmployeeId <- input "ID do funcionário: "
+    return [customerId, read currentEmployeeId]
 
-    let drinkIds = []
-    drinkTuple <- _chooseDrink db drinkIds
-    drinks <- _makeOrderDrink [drinkTuple] db
+backToCustomerOrEmployeeInteraction :: DB -> Int -> Int -> IO()
+backToCustomerOrEmployeeInteraction db customerId employeeId =
+  if customerId == (-1) then do
+    employeeInteraction db employeeId
+  else
+    customerInteraction db customerId
 
-    let purchaseId = (DB.currentIdPurchase db) + 1
-    let score = 5 
-    let order = Order drinks candies
-    let price = calculatePrice order
-    let purchase = Purchase purchaseId (read employeeId) currentCustomerId score order price
 
-    putStr $ show purchase
+finishPurchase :: DB -> Int -> Int -> IO ()
+finishPurchase db customerId employeeId = do
 
-    DB.entityToFile purchase "compra.txt" "purchaseId.txt"
-    let newDB = db {DB.purchases = (DB.purchases db) ++ [purchase], DB.currentIdPurchase = purchaseId}
+  [currentIdCustomer, currentIdEmployee] <-  getIds customerId employeeId
 
-    waitFiveSeconds
-    clear
-    customerInteraction newDB currentCustomerId
+  let employees = DB.employees db
+  let customers = DB.customers db
+
+  if not $ existsEntity customers currentIdCustomer then do
+    putStr "Cliente não cadastrado.\n"
+    waitTwoSeconds
+    finishPurchase db (-1) employeeId
+  else do 
+    if not $ existsEntity employees currentIdEmployee then do
+      putStr "Funcionário não cadastrado.\n"
+      waitTwoSeconds
+      finishPurchase db customerId (-1)
+    else if not $ hasPermission currentIdEmployee employees "vendedor" then do
+      putStr "Funcionário tem que ser um vendedor.\n"
+      waitTwoSeconds
+      finishPurchase db customerId (-1)
+    else do
+      let candyIds = []
+      candyTuple <- _chooseCandy db candyIds
+      candies <- _makeOrderCandy [candyTuple] db
+
+      let drinkIds = []
+      drinkTuple <- _chooseDrink db drinkIds
+      drinks <- _makeOrderDrink [drinkTuple] db
+
+      let purchaseId = (DB.currentIdPurchase db) + 1
+      let score = 5 
+      let order = Order drinks candies
+      let price = calculatePrice order
+      let purchase = Purchase purchaseId currentIdEmployee currentIdCustomer score order price
+
+      putStr $ show purchase
+
+      DB.entityToFile purchase "compra.txt" "purchaseId.txt"
+      let newDB = db {DB.purchases = (DB.purchases db) ++ [purchase], DB.currentIdPurchase = purchaseId}
+
+      waitFiveSeconds
+      clear
+      backToCustomerOrEmployeeInteraction newDB customerId employeeId
 
 backToCustomerInteraction :: DB -> Int -> IO ()
 backToCustomerInteraction db currentCustomerId = do
@@ -366,7 +435,6 @@ customerViewCandyMenu db currentCustomerId = do
     backToCustomerInteraction db currentCustomerId
   else do
     putStr "Você ainda não tem compras realizadas.\n"
-    waitTwoSeconds
     backToCustomerInteraction db currentCustomerId
 
 
@@ -389,7 +457,8 @@ employeeInteraction db employeeId = do
     if num == 1 then do
      registerCustomer db employeeId
     else if num == 2 then do
-      putStr "Branco"
+      clear
+      finishPurchase db (-1) employeeId
     else if num == 3 then do
       displayEntity (DB.customers db) "clientes"
       employeeInteraction db employeeId
