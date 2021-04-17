@@ -98,7 +98,7 @@ ownerInteraction db ownerId = do
       else if number == 10 then do
         start db
       else do
-        putStr ""
+        ownerInteraction db ownerId
 
 registerCandy :: DB -> Int -> IO ()
 registerCandy db  ownerId = do
@@ -312,7 +312,7 @@ _makeOrderCandy candies db = do
   if currAmountCandies >= totalCandies then do
     return candies
   else do
-    op <- input "Deseja outro doce? [S/Qualquer tecla (letra)]: "
+    op <- input "Deseja outro doce? [S - SIM ou qualquer letra para NÃO]: "
 
     if head op `elem` "Ss" then do
       candyTuple <- _chooseCandy db candyIds
@@ -348,7 +348,7 @@ _makeOrderDrink drinks db = do
   if currAmountDrinks >= totalDrinks then do
     return drinks
   else do
-    op <- input "Deseja outra bebida? [S/Qualquer tecla (letra)]: "
+    op <- input "Deseja outra bebida? [S - SIM ou qualquer letra para NÃO]: "
 
     if head op `elem` "Ss" then do
       drinkTuple <- _chooseDrink db drinkIds
@@ -384,13 +384,19 @@ finishPurchase db customerId employeeId = do
 
   if not $ existsEntity customers currentIdCustomer then do
     putStr "Cliente não cadastrado.\n"
-    waitTwoSeconds
-    finishPurchase db (-1) employeeId
+    op <- input "Deseja volta para seu menu? [S - SIM ou qualquer letra para NÃO]: "
+    if head op `elem` "Ss" then 
+      backToCustomerOrEmployeeInteraction db customerId employeeId
+    else do
+      finishPurchase db (-1) employeeId
   else do 
     if not $ existsEntity employees currentIdEmployee then do
       putStr "Funcionário não cadastrado.\n"
-      waitTwoSeconds
-      finishPurchase db customerId (-1)
+      op <- input "Deseja volta para seu menu? [S - SIM ou qualquer letra para NÃO]: "
+      if head op `elem` "Ss" then 
+        backToCustomerOrEmployeeInteraction db customerId employeeId
+      else do
+        finishPurchase db customerId (-1)
     else if not $ hasPermission currentIdEmployee employees "vendedor" then do
       putStr "Funcionário tem que ser um vendedor.\n"
       waitTwoSeconds
@@ -463,11 +469,11 @@ employeeInteraction db employeeId = do
       displayEntity (DB.customers db) "clientes"
       employeeInteraction db employeeId
     else if num == 4 then do
-     putStr $ getPurchasesByEmployee employeeId (DB.purchases db)
-     waitThreeSeconds
-     employeeInteraction db employeeId
+      putStr $ getPurchasesByEmployee employeeId (DB.purchases db)
+      waitThreeSeconds
+      employeeInteraction db employeeId
     else if num == 5 then do
-     start db
+      start db
     else do
       employeeInteraction db employeeId
 
