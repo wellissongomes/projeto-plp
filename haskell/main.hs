@@ -402,28 +402,35 @@ finishPurchase db customerId employeeId = do
       waitTwoSeconds
       finishPurchase db customerId (-1)
     else do
-      let candyIds = []
-      candyTuple <- _chooseCandy db candyIds
-      candies <- _makeOrderCandy [candyTuple] db
+      if null $ DB.candies db then do
+        putStr "Não há doces disponíveis."
+        backToCustomerOrEmployeeInteraction db customerId employeeId
+      else if null $ DB.drinks db then do
+        putStr "Não há bebidas disponíveis."
+        backToCustomerOrEmployeeInteraction db customerId employeeId
+      else do
+        let candyIds = []
+        candyTuple <- _chooseCandy db candyIds
+        candies <- _makeOrderCandy [candyTuple] db
 
-      let drinkIds = []
-      drinkTuple <- _chooseDrink db drinkIds
-      drinks <- _makeOrderDrink [drinkTuple] db
+        let drinkIds = []
+        drinkTuple <- _chooseDrink db drinkIds
+        drinks <- _makeOrderDrink [drinkTuple] db
 
-      let purchaseId = (DB.currentIdPurchase db) + 1
-      let score = 5 
-      let order = Order drinks candies
-      let price = calculatePrice order
-      let purchase = Purchase purchaseId currentIdEmployee currentIdCustomer score order price
+        let purchaseId = (DB.currentIdPurchase db) + 1
+        let score = 5 
+        let order = Order drinks candies
+        let price = calculatePrice order
+        let purchase = Purchase purchaseId currentIdEmployee currentIdCustomer score order price
 
-      putStr $ show purchase
+        putStr $ show purchase
 
-      DB.entityToFile purchase "compra.txt" "purchaseId.txt"
-      let newDB = db {DB.purchases = (DB.purchases db) ++ [purchase], DB.currentIdPurchase = purchaseId}
+        DB.entityToFile purchase "compra.txt" "purchaseId.txt"
+        let newDB = db {DB.purchases = (DB.purchases db) ++ [purchase], DB.currentIdPurchase = purchaseId}
 
-      waitFiveSeconds
-      clear
-      backToCustomerOrEmployeeInteraction newDB customerId employeeId
+        waitFiveSeconds
+        clear
+        backToCustomerOrEmployeeInteraction newDB customerId employeeId
 
 backToCustomerInteraction :: DB -> Int -> IO ()
 backToCustomerInteraction db currentCustomerId = do
