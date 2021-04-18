@@ -260,7 +260,7 @@ customerInteraction db customerId = do
   let customers = DB.customers db
 
   if not $ existsEntity customers customerId then do
-    putStr "Usuário inexistente...\n"
+    putStr "Não há um cliente com esse id.\n"
     waitTwoSeconds
     clear
     start db
@@ -283,10 +283,53 @@ customerInteraction db customerId = do
     else if num == 4 then do
       clear
       customerViewCandyMenu db customerId
+    else if num == 5 then do
+      clear
+      purchaseReview db customerId
     else if num == 6 then do
       start db
     else do
       customerInteraction db customerId
+
+purchaseReview :: DB -> Int -> IO ()
+purchaseReview db customerId = do
+  let purchases = DB.purchases db
+
+  if not $ customerHasPurchase customerId purchases then do
+    putStr "tem n"
+  else do
+    purchaseId <- input "Digite o id da compra: "
+    if not $ existsEntity purchases (read purchaseId) then do
+      putStr "Você não possui uma compra com esse id...\n"
+      waitTwoSeconds
+      clear
+      purchaseReview db customerId
+    else do
+      let newPurchases = removePurchase (read purchaseId) purchases
+      let currentPurchase = getEntityById purchases (read purchaseId)
+
+      if Purchase.hasBeenReviewed currentPurchase then do
+        putStr "Você já avaliou essa compra.\n"
+        waitTwoSeconds
+        customerInteraction db customerId
+      else do
+        sOption <- input "Digite a avalição (VALOR INTEIRO ENTRE 0 E 5): "
+        let score = read sOption :: Int
+        let invalidScore = (score < 0) || (score > 5)
+        if invalidScore then do
+          putStr "Avaliação inválida.\n"
+          waitTwoSeconds
+          customerInteraction db customerId
+        else do
+          let newPurchase = currentPurchase {Purchase.score = score, Purchase.hasBeenReviewed = True}
+          let newPurchaseList = newPurchases ++ [newPurchase]
+          
+          DB.writeToFile "compra.txt" newPurchaseList
+          let newDB = db {DB.purchases = newPurchaseList}
+
+          print newPurchase
+          waitFiveSeconds
+          customerInteraction newDB customerId
 
 _chooseCandy :: DB -> [Int] -> IO (Int, Candy)
 _chooseCandy db candyIds = do
@@ -442,7 +485,8 @@ finishPurchase db customerId employeeId = do
             let score = 5 
             let order = Order drinks candies
             let price = calculatePrice order
-            let purchase = Purchase purchaseId currentIdEmployee currentIdCustomer score order price
+            let hasBeenReviewed = False
+            let purchase = Purchase purchaseId currentIdEmployee currentIdCustomer score order price hasBeenReviewed
 
             putStr $ show purchase
 

@@ -56,7 +56,7 @@ customerOptions = "\n-----------------------------\n" ++
                   "(2) Exibir cardápio\n" ++
                   "(3) Realizar compra\n" ++
                   "(4) Listar suas compras\n" ++
-                  "(5) Avaliar suas compras\n" ++
+                  "(5) Avaliar uma compra\n" ++
                   "(6) VOLTAR\n" ++
                   "\n-----------------------\n"
 

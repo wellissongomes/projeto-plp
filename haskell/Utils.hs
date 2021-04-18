@@ -15,6 +15,7 @@ import TypeClasses
 oneSecond :: Int
 oneSecond = 1000000
 
+waitOneSecond = threadDelay oneSecond
 waitTwoSeconds = threadDelay $ 2 * oneSecond
 waitThreeSeconds = threadDelay $ 3 * oneSecond
 waitFiveSeconds = threadDelay $ 5 * oneSecond
@@ -41,7 +42,7 @@ existsEntityWithMsg entities msg function = do
     waitTwoSeconds
     function
   else
-    putStr ""
+    return ()
 
 existsPerson :: Person a => [a] -> String -> Bool
 existsPerson people ssn = not $ null [p | p <- people, personSSN p == ssn]

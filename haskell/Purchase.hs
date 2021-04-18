@@ -14,6 +14,7 @@ type EmployeeID = Int
 type CustomerID = Int
 type Score = Int
 type PurchasePrice = Float
+type HasBeenReviewed = Bool
 
 data Purchase = Purchase {
   id :: PurchaseID,
@@ -21,14 +22,15 @@ data Purchase = Purchase {
   customerID :: CustomerID,
   score :: Score,
   order :: Order,
-  price :: PurchasePrice
+  price :: PurchasePrice,
+  hasBeenReviewed :: HasBeenReviewed
 }
 
 instance Entity Purchase where
   entityId purchase = Purchase.id purchase
                                   
 instance Show Purchase where
-  show (Purchase id employeeID customerID score order price) = "\n" ++
+  show (Purchase id employeeID customerID score order price _) = "\n" ++
                                                     "ID da compra: " ++ show id ++ "\n" ++
                                                     "ID do funcionario: " ++ show employeeID ++ "\n" ++
                                                     "ID do cliente: " ++ show customerID ++ "\n" ++
@@ -37,12 +39,13 @@ instance Show Purchase where
                                                     "\nPedido: \n" ++ show order
           
 instance Stringfy Purchase where
-  toString (Purchase id employeeID customerID score order price) = show id ++ ";" ++
+  toString (Purchase id employeeID customerID score order price hasBeenReviewed) = show id ++ ";" ++
                                                        show employeeID ++ ";" ++
                                                        show customerID ++ ";" ++
                                                        show score ++ ";" ++
                                                        toString order ++ ";" ++
-                                                       show price
+                                                       show price ++ ";" ++
+                                                       show hasBeenReviewed
 
 instance Read Purchase where
   readsPrec _ str = do
@@ -60,4 +63,5 @@ instance Read Purchase where
 
   let order = Order drinks candies
   let price = read (l !! 6) :: PurchasePrice
-  [(Purchase id employeeID customerID score order price, "")]
+  let hasBeenReviewed = read (l !! 7) :: HasBeenReviewed
+  [(Purchase id employeeID customerID score order price hasBeenReviewed, "")]

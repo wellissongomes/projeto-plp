@@ -2,7 +2,8 @@ module PurchaseController (
   calculatePrice,
   getPurchasesByCustomer,
   customerHasPurchase,
-  getPurchasesByEmployee
+  getPurchasesByEmployee,
+  removePurchase
 ) where
 
 import Candy
@@ -31,3 +32,6 @@ getPurchasesByCustomer id purchases = showList' [p | p <- purchases, (Purchase.c
 
 getPurchasesByEmployee :: Int -> [Purchase] -> String
 getPurchasesByEmployee id purchases = showList' [p | p <- purchases, (Purchase.employeeID p) == id]
+
+removePurchase :: Int -> [Purchase] -> [Purchase]
+removePurchase id purchases = [p | p <- purchases, (Purchase.id p) /= id]
