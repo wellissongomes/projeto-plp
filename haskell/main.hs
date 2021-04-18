@@ -525,8 +525,8 @@ employeeInteraction db employeeId = do
     waitTwoSeconds
     clear
     start db
-  else if not $ hasPermission employeeId employees "vendedor" then do
-    putStr "O ID informado não pertence a um vendedor.\n"
+  else if not $ (hasPermission employeeId employees "vendedor") || (hasPermission employeeId employees "confeiteiro") then do
+    putStr "O ID informado não pertence a um vendedor ou confeiteiro.\n"
     waitTwoSeconds
     clear
     start db
