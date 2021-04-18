@@ -132,8 +132,10 @@ removeCandy db ownerId = do
     waitTwoSeconds
     ownerInteraction db ownerId
   else do
+    print $ getEntityById candies (read candyId) 
     let newCandyList = deleteCandy (read candyId) candies
-
+    putStr "Doce removido com sucesso.\n"
+    waitThreeSeconds
     DB.writeToFile "doce.txt" newCandyList
 
     let newDB = db {DB.candies = newCandyList}
@@ -149,8 +151,10 @@ removeDrink db ownerId = do
     waitTwoSeconds
     ownerInteraction db ownerId
   else do
+    print $ getEntityById drinks (read drinkId) 
     let newDrinkList = deleteDrink (read drinkId) drinks
-
+    putStr "Bebida removida com sucesso.\n"
+    waitThreeSeconds
     DB.writeToFile "bebida.txt" newDrinkList
 
     let newDB = db {DB.drinks = newDrinkList}
@@ -292,6 +296,8 @@ _chooseCandy db candyIds = do
   if (read candyId) `elem` candyIds then do
     _chooseCandy db candyIds
   else if not $ existsEntity (DB.candies db) (read candyId) then do
+    putStr "O id do doce informado não existe.\n"
+    waitTwoSeconds
     _chooseCandy db candyIds
   else do
     quantityCandy <- input "Digite a quantidade: "
@@ -328,6 +334,8 @@ _chooseDrink db drinkIds = do
   if (read drinkId) `elem` drinkIds then do
     _chooseDrink db drinkIds
   else if not $ existsEntity (DB.drinks db) (read drinkId) then do
+    putStr "O id da bebida informada não existe.\n"
+    waitTwoSeconds
     _chooseDrink db drinkIds
   else do
     quantityDrink <- input "Digite a quantidade: "
@@ -402,28 +410,48 @@ finishPurchase db customerId employeeId = do
       waitTwoSeconds
       finishPurchase db customerId (-1)
     else do
-      let candyIds = []
-      candyTuple <- _chooseCandy db candyIds
-      candies <- _makeOrderCandy [candyTuple] db
-
-      let drinkIds = []
-      drinkTuple <- _chooseDrink db drinkIds
-      drinks <- _makeOrderDrink [drinkTuple] db
-
-      let purchaseId = (DB.currentIdPurchase db) + 1
-      let score = 5 
-      let order = Order drinks candies
-      let price = calculatePrice order
-      let purchase = Purchase purchaseId currentIdEmployee currentIdCustomer score order price
-
-      putStr $ show purchase
-
-      DB.entityToFile purchase "compra.txt" "purchaseId.txt"
-      let newDB = db {DB.purchases = (DB.purchases db) ++ [purchase], DB.currentIdPurchase = purchaseId}
-
-      waitFiveSeconds
       clear
-      backToCustomerOrEmployeeInteraction newDB customerId employeeId
+      if null $ DB.candies db then do
+        putStr "Não há doces disponíveis.\n"
+        waitTwoSeconds
+        backToCustomerOrEmployeeInteraction db customerId employeeId
+      else if null $ DB.drinks db then do
+        putStr "Não há bebidas disponíveis.\n"
+        waitTwoSeconds
+        backToCustomerOrEmployeeInteraction db customerId employeeId
+      else do
+        let candyIds = []
+        candyTuple <- _chooseCandy db candyIds
+        candies <- _makeOrderCandy [candyTuple] db
+
+        if fst (candyTuple) == 0 then do
+          putStr "A quantidade do doce não pode ser igual a 0.\n"
+          waitTwoSeconds
+          backToCustomerOrEmployeeInteraction db customerId employeeId 
+        else do
+          let drinkIds = []
+          drinkTuple <- _chooseDrink db drinkIds
+          drinks <- _makeOrderDrink [drinkTuple] db
+        
+          if fst (drinkTuple) == 0 then do
+            putStr "A quantidade da bebida não pode ser igual a 0.\n"
+            waitTwoSeconds
+            backToCustomerOrEmployeeInteraction db customerId employeeId 
+          else do 
+            let purchaseId = (DB.currentIdPurchase db) + 1
+            let score = 5 
+            let order = Order drinks candies
+            let price = calculatePrice order
+            let purchase = Purchase purchaseId currentIdEmployee currentIdCustomer score order price
+
+            putStr $ show purchase
+
+            DB.entityToFile purchase "compra.txt" "purchaseId.txt"
+            let newDB = db {DB.purchases = (DB.purchases db) ++ [purchase], DB.currentIdPurchase = purchaseId}
+
+            waitFiveSeconds
+            clear
+            backToCustomerOrEmployeeInteraction newDB customerId employeeId
 
 backToCustomerInteraction :: DB -> Int -> IO ()
 backToCustomerInteraction db currentCustomerId = do
