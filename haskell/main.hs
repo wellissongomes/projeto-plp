@@ -11,6 +11,7 @@ import DB
 import CandyMenu
 import EmployeeController
 import PurchaseController
+import System.Exit
 
 import Prelude hiding (id)
 
@@ -44,8 +45,8 @@ start db = do
     cId <- input "Digite o seu ID: "
     clear
     customerInteraction db (read cId)
-  else if number == 4 then
-    putStr ""
+  else if number == 4 then do
+    die "\nAdeus!\n"
   else
     start db
 
@@ -124,9 +125,8 @@ registerCandy db  ownerId = do
 removeCandy :: DB -> Int -> IO ()
 removeCandy db ownerId = do
   let candies = (DB.candies db)
-
+  existsEntityWithMsg candies "Não há doces presentes no sistema." (ownerInteraction db ownerId)
   candyId <- input "ID: "
-
   if not $ existsEntity candies (read candyId) then do
     putStr "Doce não cadastrado.\n"
     waitTwoSeconds
@@ -144,7 +144,7 @@ removeCandy db ownerId = do
 removeDrink :: DB -> Int -> IO ()
 removeDrink db ownerId = do
   let drinks = (DB.drinks db)
-
+  existsEntityWithMsg drinks "Não há bebidas presentes no sistema." (ownerInteraction db ownerId)
   drinkId <- input "ID: "
   if not $ existsEntity drinks (read drinkId) then do
     putStr "Bebida não cadastrada.\n"

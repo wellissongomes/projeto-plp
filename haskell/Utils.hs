@@ -34,6 +34,15 @@ getEntityById entities id = head [e | e <- entities, entityId e == id]
 existsEntity :: Entity e => [e] -> Int -> Bool
 existsEntity entities id = not $ null [e | e <- entities, entityId e == id]
 
+existsEntityWithMsg :: Entity e => [e] -> String -> IO() -> IO ()
+existsEntityWithMsg entities msg function = do
+  if null entities then do
+    putStr $ msg ++ "\n"
+    waitTwoSeconds
+    function
+  else
+    putStr ""
+
 existsPerson :: Person a => [a] -> String -> Bool
 existsPerson people ssn = not $ null [p | p <- people, personSSN p == ssn]
 
