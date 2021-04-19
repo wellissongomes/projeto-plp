@@ -307,7 +307,10 @@ purchaseReview db customerId = do
   let purchases = DB.purchases db
 
   if not $ customerHasPurchase customerId purchases then do
-    putStr "Você ainda não realizou nenhuma compra."
+    putStr "Você ainda não realizou nenhuma compra.\n"
+    waitTwoSeconds
+    clear
+    customerInteraction db customerId
   else do
     purchaseId <- input "Digite o id da compra: "
     if not $ existsEntity purchases (read purchaseId) then do
