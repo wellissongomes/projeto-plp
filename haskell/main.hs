@@ -19,18 +19,6 @@ import Data.List.Split
 
 main = do
   dados <- DB.connect
-  -- let c = Candy 1 "num sei o doce" "isso memo" 10 3
-  -- let d = Drink 1 "num sei a bebibda" "novament" 20 5
-  -- let candyTuple = (1, c)
-  -- let drinkTuple = (1, d)
-  -- let order = Order [drinkTuple] [candyTuple]
-  -- let purchase = Purchase 1 1 1 3 order 20 False
-
-  -- print purchase
-
-  -- content <- DB.readFile' "compra.txt"
-  -- let ps = listOfStringToListOfPurchases $ splitForFile content
-  -- print ps
   start dados
 
 start :: DB -> IO()
