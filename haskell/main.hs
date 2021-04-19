@@ -341,16 +341,12 @@ purchaseReview db customerId = do
           let drinks = Order.drinks order
           let drinksId = [Drink.id drink | (_, drink) <- drinks]
           let drinksTupleWithNewScore = map (\(id, drink) -> (id, drink {Drink.scoreDrink = ((Drink.scoreDrink drink) + score) `div` 2 })) drinks
-          let allDrinks = DB.drinks db
-          let currentDrinks = [d | d <- allDrinks, not $ (Drink.id d) `elem` drinksId]
-          let newDrinks = currentDrinks ++ [d | (_, d) <- drinksTupleWithNewScore]
+          newDrinks <- getNewItems (DB.drinks db) drinksId drinksTupleWithNewScore
 
           let candies = Order.candies order
           let candiesId = [Candy.id candy | (_, candy) <- candies]
           let candiesTupleWithNewScore = map (\(id, candy) -> (id, candy {Candy.scoreCandy = ((Candy.scoreCandy candy) + score) `div` 2 })) candies
-          let allCandies = DB.candies db
-          let currentCandies = [d | d <- allCandies, not $ (Candy.id d) `elem` candiesId]
-          let newCandies = currentCandies ++ [c | (_, c) <- candiesTupleWithNewScore]
+          newCandies <- getNewItems (DB.candies db) candiesId candiesTupleWithNewScore
 
           let newOrder = Order drinksTupleWithNewScore candiesTupleWithNewScore
           
