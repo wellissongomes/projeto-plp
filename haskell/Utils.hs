@@ -20,7 +20,7 @@ waitTwoSeconds = threadDelay $ 2 * oneSecond
 waitThreeSeconds = threadDelay $ 3 * oneSecond
 waitFiveSeconds = threadDelay $ 5 * oneSecond
 
-getNewItems :: (Item e, Entity e) => [e] -> [Int] -> [(Int, e)] -> IO([e])
+getNewItems :: (Item e, Entity e) => [e] -> [Int] -> [(Int, e)] -> IO [e]
 getNewItems allItems itemsId itemTupleWithNewScore = do
   let currentItems = [i | i <- allItems, not $ (entityId i) `elem` itemsId]
   let newItems = currentItems ++ [i | (_, i) <- itemTupleWithNewScore]
