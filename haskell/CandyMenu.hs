@@ -3,7 +3,8 @@ module CandyMenu (
   addDrink,
   deleteCandy,
   deleteDrink,
-  showCandyMenu
+  showCandyMenu,
+  showCandyMenuFiltered
 ) where
 import Candy
 import Drink
@@ -27,3 +28,13 @@ showCandyMenu candies drinks = "CARDAPIO: \n" ++
                               showList' candies ++
                               "\nBebidas" ++  "\n" ++
                               showList' drinks
+                              
+showCandyMenuFiltered :: [Candy] -> [Drink] -> String
+showCandyMenuFiltered candies drinks = "CARDAPIO: \n" ++
+                              "\nDoces" ++ "\n" ++
+                              showList' (_candiesFiltered candies) ++
+                              "\nBebidas" ++  "\n" ++
+                              showList' (_drinksFiltered drinks)
+
+_drinksFiltered drinks = [d | d <- drinks, (Drink.scoreDrink d) >= 4]
+_candiesFiltered candies = [c | c <- candies, (Candy.scoreCandy c) >= 4]

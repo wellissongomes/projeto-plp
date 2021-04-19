@@ -1,4 +1,4 @@
-3;5;9;4;["1,1,Suco de graviola,Feito por extraterrestres,10.9"];["1,1,Sorvete de chocolate,Sorvete de chocolate e calda morango,15.96"];26.86;True
-4;5;9;4;["4,1,Suco de graviola,Feito por extraterrestres,10.9"];["2,1,Sorvete de chocolate,Sorvete de chocolate e calda morango,15.96"];75.52;True
-5;5;9;2;["6,1,Suco de graviola,Feito por extraterrestres,10.9"];["2,1,Sorvete de chocolate,Sorvete de chocolate e calda morango,15.96"];97.31999;True
-6;5;9;3;["10,1,Suco de graviola,Feito por extraterrestres,10.9"];["20,1,Sorvete de chocolate,Sorvete de chocolate e calda morango,15.96"];428.2;True
+9;5;9;4;["20,7,ahsfuhasufhasf,jfaijsfiajsf,300.0,5"];["20,4,ahfushfuashf,aasufhasfuha,300.0,5"];12000.0;True
+8;5;9;1;["100,6,wfauhfwu,wajfaowfk,10.0,3"];["1,3,wfa,afwaf,20.0,3"];1020.0;True
+7;5;9;1;["10,6,wfauhfwu,wajfaowfk,10.0,3"];["10,3,wfa,afwaf,20.0,3"];300.0;True
+10;5;9;1;["1,7,ahsfuhasufhasf,jfaijsfiajsf,300.0,2"];["1,4,ahfushfuashf,aasufhasfuha,300.0,2"];600.0;True

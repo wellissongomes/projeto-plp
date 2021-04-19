@@ -19,6 +19,18 @@ import Data.List.Split
 
 main = do
   dados <- DB.connect
+  -- let c = Candy 1 "num sei o doce" "isso memo" 10 3
+  -- let d = Drink 1 "num sei a bebibda" "novament" 20 5
+  -- let candyTuple = (1, c)
+  -- let drinkTuple = (1, d)
+  -- let order = Order [drinkTuple] [candyTuple]
+  -- let purchase = Purchase 1 1 1 3 order 20 False
+
+  -- print purchase
+
+  -- content <- DB.readFile' "compra.txt"
+  -- let ps = listOfStringToListOfPurchases $ splitForFile content
+  -- print ps
   start dados
 
 start :: DB -> IO()
@@ -110,7 +122,8 @@ registerCandy db  ownerId = do
   description <- input "Descrição: "
   price <- input "Preço: "
 
-  let candy = (Candy candyId name description (read price))
+  let defaultScoreCandy = 5
+  let candy = (Candy candyId name description (read price) defaultScoreCandy)
 
   DB.entityToFile candy "doce.txt" "candyId.txt"
   let newDB = db {DB.candies = addCandy candy candies, DB.currentIdCandy = candyId}
@@ -243,7 +256,8 @@ registerDrink db ownerId = do
   description <- input "Descrição: "
   price <- input "Preço: "
 
-  let drink = (Drink drinkId name description (read price))
+  let defaultScoreDrink = 5
+  let drink = (Drink drinkId name description (read price) defaultScoreDrink)
 
   DB.entityToFile drink "bebida.txt" "drinkId.txt"
   let newDB = db {DB.drinks = addDrink drink drinks, DB.currentIdDrink = drinkId}
@@ -252,8 +266,11 @@ registerDrink db ownerId = do
   putStr "Bebida cadastrada com sucesso!"
   putStr $ show drink
   waitThreeSeconds
+  clear
 
   ownerInteraction newDB ownerId
+
+
 
 customerInteraction :: DB -> Int -> IO ()
 customerInteraction db customerId = do
@@ -271,7 +288,13 @@ customerInteraction db customerId = do
     option <- input "Número: "
     let num = read option
 
-    if num == 2 then do
+    if num == 1 then do
+      clear
+      putStr $ showCandyMenuFiltered (DB.candies db) (DB.drinks db)
+      waitFiveSeconds
+      clear
+      customerInteraction db customerId
+    else if num == 2 then do
       clear
       putStr $ showCandyMenu (DB.candies db) (DB.drinks db)
       waitFiveSeconds
@@ -296,7 +319,7 @@ purchaseReview db customerId = do
   let purchases = DB.purchases db
 
   if not $ customerHasPurchase customerId purchases then do
-    putStr "tem n"
+    putStr "Você ainda não realizou nenhuma compra."
   else do
     purchaseId <- input "Digite o id da compra: "
     if not $ existsEntity purchases (read purchaseId) then do
@@ -321,11 +344,33 @@ purchaseReview db customerId = do
           waitTwoSeconds
           customerInteraction db customerId
         else do
-          let newPurchase = currentPurchase {Purchase.score = score, Purchase.hasBeenReviewed = True}
-          let newPurchaseList = newPurchases ++ [newPurchase]
+
+          let order = Purchase.order currentPurchase
+
+          let drinks = Order.drinks order
+          let drinksId = [Drink.id drink | (_, drink) <- drinks]
+          let drinksTupleWithNewScore = map (\(id, drink) -> (id, drink {Drink.scoreDrink = ((Drink.scoreDrink drink) + score) `div` 2 })) drinks
+          let allDrinks = DB.drinks db
+          let currentDrinks = [d | d <- allDrinks, not $ (Drink.id d) `elem` drinksId]
+          let newDrinks = currentDrinks ++ [d | (_, d) <- drinksTupleWithNewScore]
+
+          let candies = Order.candies order
+          let candiesId = [Candy.id candy | (_, candy) <- candies]
+          let candiesTupleWithNewScore = map (\(id, candy) -> (id, candy {Candy.scoreCandy = ((Candy.scoreCandy candy) + score) `div` 2 })) candies
+          let allCandies = DB.candies db
+          let currentCandies = [d | d <- allCandies, not $ (Candy.id d) `elem` candiesId]
+          let newCandies = currentCandies ++ [c | (_, c) <- candiesTupleWithNewScore]
+
+          let newOrder = Order drinksTupleWithNewScore candiesTupleWithNewScore
           
+          let newPurchase = currentPurchase {Purchase.score = score, Purchase.hasBeenReviewed = True, Purchase.order = newOrder}
+          let newPurchaseList = newPurchases ++ [newPurchase]
+
+          DB.writeToFile "doce.txt" newCandies
+          DB.writeToFile "bebida.txt" newDrinks
+
           DB.writeToFile "compra.txt" newPurchaseList
-          let newDB = db {DB.purchases = newPurchaseList}
+          let newDB = db {DB.purchases = newPurchaseList, DB.candies = newCandies, DB.drinks = newDrinks}
 
           print newPurchase
           waitFiveSeconds
