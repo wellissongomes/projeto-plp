@@ -10,6 +10,8 @@ import Drink
 import TypeClasses
 import Utils
 
+type Interaction = (DB -> Int -> IO ())
+
 data DB = DB {
   employees :: [Employee],
   customers :: [Customer],
