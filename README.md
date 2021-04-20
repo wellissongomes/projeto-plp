@@ -23,45 +23,7 @@
 
 ## 🧐 Especificação <a name = "sobre"></a>
 
-**Dono** da loja vai poder:
-
-- Cadastrar um subordinado, cujas funções predefinidas são confeiteiro ou vendedor
-
-- Cada subordinado possui um cpf, nome, profissão e suas funções que serão descritas na seção de funcionários.
-
-- Definir o cardápio dinamicamente, com diversos doces que contém:
-
-- Os doces irão ter id, nome, preço e uma descrição(e.g., calda de chocolate, morango, etc)
-
-- Editar as propriedades do doce
-- Listar todas as vendas já feitas
-- Visualizar lista de doces
-- Visualizar lista da funcionarios
-
-O **funcionário** é encarregado de:
-
-- Cadastrar um cliente
-
-- Ele tem um cpf, nome.
-
-- Cadastrar a vendas
-
-- Finalizar uma venda para um determinado cliente.
-
-- Visualizar a lista de Clientes.
-- Visualizar a lista de vendas feitas pelo funcionário.
-
-O **cliente** é permitido:
-
-- Visualizar produtos personalizados ou não, bem avaliados anteriormente, considerar produtos bem avaliados a partir de 4 estrelas.
-- Visualizar o cardápio com os produtos e ingredientes disponíveis.
-- Personalizar pedido de acordo com os ingredientes do cardápio, o preço vai variar de acordo com os ingredientes escolhidos.
-
-- Pode escolher criar um produto criado aleatoriamente pelo sistema.
-
-- Fazer uma compra
-- Visualizar as compras feitas pelo mesmo.
-- Avaliar as compras feitas de 0 a 5 estrelas, default é 5, se não reclamou é porque gostou.
+Link para especificação: [clique aqui](https://docs.google.com/document/d/1zugSOO88tgwODpv47lG-QtNbAmdvYsfXbKjgD0GCsP8)
 
 ## 🏁 Iniciando <a name = "inicio"></a>
 
