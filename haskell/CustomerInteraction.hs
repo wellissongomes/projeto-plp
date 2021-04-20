@@ -6,7 +6,7 @@ import PurchaseController
 
 backToCustomerInteraction :: DB -> Interaction -> Int -> IO ()
 backToCustomerInteraction db customerInteraction currentCustomerId = do
-  waitThreeSeconds
+  continue
   clear
   customerInteraction db currentCustomerId
 

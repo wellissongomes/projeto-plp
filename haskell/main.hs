@@ -81,15 +81,19 @@ ownerInteraction db ownerId = do
         removeDrink db ownerInteraction ownerId
       else if number == 6 then do
         displayEntity (DB.employees db) "funcionários"
+        continue
         ownerInteraction db ownerId
       else if number == 7 then do
         displayEntity (DB.candies db) "doces"
+        continue
         ownerInteraction db ownerId
       else if number == 8 then do
         displayEntity (DB.drinks db) "bebidas"
+        continue
         ownerInteraction db ownerId
       else if number == 9 then do
         displayEntity (DB.purchases db) "vendas"
+        continue
         ownerInteraction db ownerId
       else if number == 10 then do
         start db
@@ -115,13 +119,13 @@ customerInteraction db customerId = do
     if num == 1 then do
       clear
       putStr $ showCandyMenuFiltered (DB.candies db) (DB.drinks db)
-      waitFiveSeconds
+      continue
       clear
       customerInteraction db customerId
     else if num == 2 then do
       clear
       putStr $ showCandyMenu (DB.candies db) (DB.drinks db)
-      waitFiveSeconds
+      continue
       clear
       customerInteraction db customerId
     else if num == 3 then do
@@ -166,10 +170,11 @@ employeeInteraction db employeeId = do
       finishPurchase db employeeInteraction customerInteraction (-1) employeeId
     else if num == 3 then do
       displayEntity (DB.customers db) "clientes"
+      continue
       employeeInteraction db employeeId
     else if num == 4 then do
       putStr $ getPurchasesByEmployee employeeId (DB.purchases db)
-      waitThreeSeconds
+      continue
       employeeInteraction db employeeId
     else if num == 5 then do
       start db
