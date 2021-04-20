@@ -65,33 +65,35 @@ O **cliente** é permitido:
 
 ## 🏁 Iniciando <a name = "inicio"></a>
 
-Essas serão as instruções de como reproduzir uma cópia do seu projeto para desenvolvê-lo ou testá-lo.
+Instruções de como reproduzir uma cópia do projeto para desenvolvê-lo ou testá-lo.
 
 ### Pré-requisitos
 
-O que você precisa antes de instalar o seu projeto e instruções de como os instalar.
+Clone o projeto
 
 ```
-dê exemplos
+git clone https://github.com/wellissongomes/projeto-plp.git
 ```
 
-### Instalando
+#### Para Haskell
 
-Um passo a passo com exemplos de como deixar tudo pronto para o desenvolvimento.
-
-Explique cada passo
+Entre na pasta clonada e logo após entre na pasta [haskell/](./haskell)
 
 ```
-Dê um exemplo
+cd projeto-plp/haskell
 ```
 
-e repita
+Instale as dependências do projeto
 
 ```
-até que esteja finalizado
+chmod +x dependencies.sh && ./dependencies.sh
 ```
 
-Finalize com algum exemplo para verificar se a finalização ocorreu bem.
+Por fim, execute o programa
+
+```
+chmod +x run.sh && ./run.sh
+```
 
 ## ⛏️ Tecnologias Usadas <a name = "tecnologias-usadas"></a>
 
