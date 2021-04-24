@@ -2,6 +2,7 @@ module PurchaseController (
   calculatePrice,
   getPurchasesByCustomer,
   customerHasPurchase,
+  employeeHasPurchase,
   getPurchasesByEmployee,
   removePurchase
 ) where
@@ -29,6 +30,9 @@ customerHasPurchase id purchases = not $ null $ getPurchasesByCustomer id purcha
 
 getPurchasesByCustomer :: Int -> [Purchase] -> String
 getPurchasesByCustomer id purchases = showList' [p | p <- purchases, (Purchase.customerID p) == id]
+
+employeeHasPurchase :: Int -> [Purchase] -> Bool 
+employeeHasPurchase id purchases = not $ null $ getPurchasesByEmployee id purchases
 
 getPurchasesByEmployee :: Int -> [Purchase] -> String
 getPurchasesByEmployee id purchases = showList' [p | p <- purchases, (Purchase.employeeID p) == id]
