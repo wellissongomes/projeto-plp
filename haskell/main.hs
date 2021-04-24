@@ -173,9 +173,15 @@ employeeInteraction db employeeId = do
       continue
       employeeInteraction db employeeId
     else if num == 4 then do
-      putStr $ getPurchasesByEmployee employeeId (DB.purchases db)
-      continue
-      employeeInteraction db employeeId
+      let hasPurchase = employeeHasPurchase employeeId (DB.purchases  db)
+      if hasPurchase then do
+        putStr $ getPurchasesByEmployee employeeId (DB.purchases db)
+        continue
+        employeeInteraction db employeeId
+      else do
+        putStr "O funcionário em questão ainda não cadastrou vendas.\n"
+        waitThreeSeconds 
+        employeeInteraction db employeeId
     else if num == 5 then do
       start db
     else do

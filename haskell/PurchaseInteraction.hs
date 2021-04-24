@@ -204,8 +204,8 @@ finishPurchase db employeeInteraction customerInteraction customerId employeeId 
         candyTuple <- _chooseCandy db candyIds
         candies <- _makeOrderCandy [candyTuple] db
 
-        if fst (candyTuple) == 0 then do
-          putStr "A quantidade do doce não pode ser igual a 0.\n"
+        if fst (candyTuple) <= 0 then do
+          putStr "A quantidade de doces não pode ser menor ou igual a 0.\n"
           waitTwoSeconds
           backToCustomerOrEmployeeInteraction db employeeInteraction customerInteraction customerId employeeId 
         else do
@@ -213,8 +213,8 @@ finishPurchase db employeeInteraction customerInteraction customerId employeeId 
           drinkTuple <- _chooseDrink db drinkIds
           drinks <- _makeOrderDrink [drinkTuple] db
         
-          if fst (drinkTuple) == 0 then do
-            putStr "A quantidade da bebida não pode ser igual a 0.\n"
+          if fst (drinkTuple) <= 0 then do
+            putStr "A quantidade de bebidas não pode ser menor ou igual a 0.\n"
             waitTwoSeconds
             backToCustomerOrEmployeeInteraction db employeeInteraction customerInteraction customerId employeeId 
           else do 
