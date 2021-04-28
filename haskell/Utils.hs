@@ -20,14 +20,22 @@ waitTwoSeconds = threadDelay $ 2 * oneSecond
 waitThreeSeconds = threadDelay $ 3 * oneSecond
 waitFiveSeconds = threadDelay $ 5 * oneSecond
 
+continue = do
+  _ <- input "\nDigite algo para continuar: "
+  return ()
+
+getNewItems :: (Item e, Entity e) => [e] -> [Int] -> [(Int, e)] -> IO [e]
+getNewItems allItems itemsId itemTupleWithNewScore = do
+  let currentItems = [i | i <- allItems, not $ (entityId i) `elem` itemsId]
+  let newItems = currentItems ++ [i | (_, i) <- itemTupleWithNewScore]
+  return newItems
+
 displayEntity :: Show a => [a] -> String -> IO ()
 displayEntity entities msg = do
   if not $ null entities then do
     putStr $ showList' entities
-    waitThreeSeconds
   else do
     putStr $ "Não há " ++ msg ++ " presentes no sistema.\n"
-    waitThreeSeconds
 
 getEntityById :: Entity e => [e] -> Int -> e
 getEntityById entities id = head [e | e <- entities, entityId e == id]

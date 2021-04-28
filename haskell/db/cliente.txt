@@ -1,2 +1,0 @@
-8,10,louans,10,tal
-9,1,awf,2,awofk
