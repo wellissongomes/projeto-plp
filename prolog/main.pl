@@ -7,7 +7,8 @@ main :-
   start.
 
 start :- 
-  db:nextId(ID),
+  clear,
+  nextId(ID),
   utils:inputNumber('ID employee: ', YID),
   utils:inputNumber('ID customer: ', CID),
   utils:inputNumber('Score: ', Scoree),
