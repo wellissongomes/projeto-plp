@@ -1,4 +1,4 @@
-:- module(utils, [inputNumber/1, input/1, clear/0]).
+:- module(utils, [inputNumber/2, input/2, clear/0]).
 
 inputNumber(Text, N) :- input(Text, Output), atom_number(Output, N).
 
