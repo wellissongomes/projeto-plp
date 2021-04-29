@@ -18,6 +18,6 @@ start :-
   db:writePurchase,
 
   forall(db:purchase(PurchId, EmpId, CustId, Score, Price, _),
-         show:showPurchase(PurchId, EmpId, CustId, Score, Price)).
+         show:showPurchase(PurchId, EmpId, CustId, Score, Price)),
   
   halt.
