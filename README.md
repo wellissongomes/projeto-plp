@@ -45,7 +45,28 @@ Entre na pasta clonada e logo após entre na pasta [haskell/](./haskell)
 cd projeto-plp/haskell
 ```
 
-Instale as dependências do projeto
+Instale as dependências do projeto, para executar o script é necessario instalar o `cabal`,
+recomendo instalar a [Plataforma Haskell](https://www.haskell.org/platform/) .
+
+```
+chmod +x dependencies.sh && ./dependencies.sh
+```
+
+Por fim, execute o programa
+
+```
+chmod +x run.sh && ./run.sh
+```
+
+#### Para Prolog
+
+Entre na pasta clonada e logo após entre na pasta [prolog/](./prolog)
+
+```
+cd projeto-plp/prolog
+```
+
+Instale as dependências do projeto, que é instalar o [SWI-Prolog](https://www.swi-prolog.org/) executando o comando a baixo.
 
 ```
 chmod +x dependencies.sh && ./dependencies.sh
