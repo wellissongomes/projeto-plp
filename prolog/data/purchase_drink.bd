@@ -1,0 +1,5 @@
+:- dynamic purchase_drink/3.
+
+purchase_drink(3, 1, 1).
+purchase_drink(4, 1, 100).
+

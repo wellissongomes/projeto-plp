@@ -1,0 +1,4 @@
+:- dynamic drink/5.
+
+drink(1, "agua", "agua sem gas", 1.5, 5).
+

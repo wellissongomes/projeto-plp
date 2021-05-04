@@ -1,0 +1,11 @@
+:- dynamic customer/5.
+
+customer(10, "124124", "wellisson gomes", 20, "rua tal").
+customer(3, "124124", "wellzin", 20, "rua tal do puteiro").
+customer(4, "124124124", "wellzindanova", 24, "rua x").
+customer(5, "12412412", "wellzin", 20, "rs").
+customer(6, "234234", "wellisson", 2, "rua x").
+customer(7, "35235", "wellissongomesss", 23, "r").
+customer(9, "214124", "1", 1, "1").
+customer(11, "214124", "dela", 20, "rs").
+

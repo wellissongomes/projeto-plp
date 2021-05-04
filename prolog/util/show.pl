@@ -2,23 +2,23 @@
 
 :- use_module('./persistence/db.pl').
 
-
 showItem(ItemId, Name, Description, Price, ScoreItem, Quantity) :-
-  writeln('---------------'),
-  writeln(ItemId),
-  writeln(Name),
-  writeln(Description),
-  writeln(Price),
-  writeln(ScoreItem),
-  writeln(Quantity).
+  format('Quantidade: ~d~n~n', [Quantity]),
+  writeln('-----------------------'),
+  format('ID: ~d~n', [ItemId]),
+  format('Nome: ~w~n', [Name]),
+  format('Descrição: ~w~n', [Description]),
+  format('Avaliação (0 - 5): ~d~n', [ScoreItem]),
+  format('Preço: R$~2f~n', [Price]),
+  writeln('-----------------------').
 
 showPurchase(PurchId, EmpId, CustId, Score, Price) :- 
-  writeln('\n---------------'),
   format('ID da compra: ~d~n', [PurchId]),
-  format('ID do func: ~d~n', [EmpId]),
+  format('ID do funcionário: ~d~n', [EmpId]),
   format('ID do cliente: ~d~n', [CustId]),
-  format('Avaliação: ~d~n', [Score]),
-  format('Preço: R$~2f~n', [Price]),
+  format('Avaliação (0 - 5): ~d~n', [Score]),
+  format('Valor total a pagar: R$~2f~n', [Price]),
+  writeln('\nPedido:'),
   writeln('\n\nDOCES\n'),
   forall((db:purchase_candy(PurchId, CandyId, Quantity),
          db:candy(CandyId, Name, Description, CandyPrice, ScoreCandy)),
@@ -28,5 +28,23 @@ showPurchase(PurchId, EmpId, CustId, Score, Price) :-
  
   forall((db:purchase_drink(PurchId, DrinkID, Quantity),
          db:drink(DrinkID, Name, Description, DrinkPrice, ScoreDrink)),
-         showItem(DrinkID, Name, Description, DrinkPrice, ScoreDrink, Quantity)),
-  writeln('---------------').
+         showItem(DrinkID, Name, Description, DrinkPrice, ScoreDrink, Quantity)).
+
+showPerson(Ssn, Name, Age) :-
+  format('CPF: ~w~n', [Ssn]),
+  format('Nome: ~w~n', [Name]),
+  format('Idade: ~d~n', [Age]).
+
+showEmployee(EmployeeID, Ssn, Name, Age, Role) :-
+  writeln('-----------------------'),
+  format('ID: ~d~n', [EmployeeID]),
+  showPerson(Ssn, Name, Age),
+  format('Função: ~w~n', [Role]),
+  writeln('-----------------------').
+
+showCustomer(CustomerID, Ssn, Name, Age, Address) :-
+  writeln('-----------------------'),
+  format('ID: ~d~n', [CustomerID]),
+  showPerson(Ssn, Name, Age),
+  format('Endereço: ~w~n', [Address]),
+  writeln('-----------------------').

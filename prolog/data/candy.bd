@@ -1,0 +1,4 @@
+:- dynamic candy/5.
+
+candy(1, "chocolate", "chocolate branco", 100.5, 5).
+

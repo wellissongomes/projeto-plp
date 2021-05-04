@@ -36,7 +36,7 @@ readEmployee :- consult('./data/employee.bd').
 startEmployee :- exists_file('./data/employee.bd') -> readEmployee ; initEmployee.
 writeEmployee :- tell('./data/employee.bd'), listing(employee), told.
 
-% CustomerID, Ssn, Name, Age, Role
+% CustomerID, Ssn, Name, Age, Address
 initCustomer :- dynamic customer/5.
 readCustomer :- consult('./data/customer.bd').
 startCustomer :- exists_file('./data/customer.bd') -> readCustomer ; initCustomer.
