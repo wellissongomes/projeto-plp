@@ -1,5 +1,4 @@
 :- dynamic employee/5.
 
-employee(1, "124124", "Carlos", 25, "confeitero").
-employee(2, "214124", "214214", 20, "vendedor").
+employee(17, "21412421", "xd", 25, "confeitero").
 
