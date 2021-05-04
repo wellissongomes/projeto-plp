@@ -18,14 +18,14 @@ readDrink :- consult('./data/drink.bd').
 startDrink :- exists_file('./data/drink.bd') -> readDrink ; initDrink.
 writeDrink :- tell('./data/drink.bd'), listing(drink), told.
 
-% PurchaseID, CandyID
-initPurchaseCandy :- dynamic purchase_candy/2.
+% PurchaseID, CandyID, Quantity
+initPurchaseCandy :- dynamic purchase_candy/3.
 readPurchaseCandy :- consult('./data/purchase_candy.bd').
 startPurchaseCandy :- exists_file('./data/purchase_candy.bd') -> readPurchaseCandy ; initPurchaseCandy.
 writePurchaseCandy :- tell('./data/purchase_candy.bd'), listing(purchase_candy), told.
 
-% PurchaseID, DrinkID
-initPurchaseDrink :- dynamic purchase_drink/2.
+% PurchaseID, DrinkID, Quantity
+initPurchaseDrink :- dynamic purchase_drink/3.
 readPurchaseDrink :- consult('./data/purchase_drink.bd').
 startPurchaseDrink :- exists_file('./data/purchase_drink.bd') -> readPurchaseDrink ; initPurchaseDrink.
 writePurchaseDrink :- tell('./data/purchase_drink.bd'), listing(purchase_drink), told.

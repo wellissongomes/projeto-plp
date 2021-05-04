@@ -3,13 +3,14 @@
 :- use_module('./persistence/db.pl').
 
 
-showItem(ItemId, Name, Description, Price, ScoreItem) :-
+showItem(ItemId, Name, Description, Price, ScoreItem, Quantity) :-
   writeln('---------------'),
   writeln(ItemId),
   writeln(Name),
   writeln(Description),
   writeln(Price),
-  writeln(ScoreItem).
+  writeln(ScoreItem),
+  writeln(Quantity).
 
 showPurchase(PurchId, EmpId, CustId, Score, Price) :- 
   writeln('\n---------------'),
@@ -19,13 +20,13 @@ showPurchase(PurchId, EmpId, CustId, Score, Price) :-
   format('Avaliação: ~d~n', [Score]),
   format('Preço: R$~2f~n', [Price]),
   writeln('\n\nDOCES\n'),
-  forall((db:purchase_candy(PurchId, CandyId),
+  forall((db:purchase_candy(PurchId, CandyId, Quantity),
          db:candy(CandyId, Name, Description, CandyPrice, ScoreCandy)),
-         showItem(CandyId, Name, Description, CandyPrice, ScoreCandy)),
+         showItem(CandyId, Name, Description, CandyPrice, ScoreCandy, Quantity)),
  
   writeln('\n\nBEBIDAS\n'),
  
-  forall((db:purchase_drink(PurchId, DrinkID),
+  forall((db:purchase_drink(PurchId, DrinkID, Quantity),
          db:drink(DrinkID, Name, Description, DrinkPrice, ScoreDrink)),
-         showItem(DrinkID, Name, Description, DrinkPrice, ScoreDrink)),
+         showItem(DrinkID, Name, Description, DrinkPrice, ScoreDrink, Quantity)),
   writeln('---------------').
