@@ -1,5 +1,5 @@
 :- dynamic purchase/6.
 
 purchase(3, 1, 1, 5, 102.0, false).
-purchase(4, 1, 2, 5, 754.5, false).
+purchase(4, 1, 2, 3, 754.5, false).
 

@@ -1,10 +1,12 @@
-:- module(personController, [makeCustomer/0, makeEmployee/0]).
+:- module(personController, [registerCustomer/0, registerEmployee/0, showEmployees/0, showCustomers/0]).
 
-:- use_module('./persistence/db.pl').
+:- use_module('../persistence/db.pl').
+:- use_module('./util/utils.pl').
+:- use_module('../util/show.pl').
 
-makeCustomer :- 
+registerCustomer :- 
   db:nextId(ID),
-  makePerson(Ssn, Name, Age),
+  registerPerson(Ssn, Name, Age),
   utils:input("Digite seu endereço: ", Address),
   db:assertz(customer(ID, Ssn, Name, Age, Address)),
   db:writeCustomer,
@@ -13,9 +15,9 @@ makeCustomer :-
   show:showCustomer(ID, Ssn, Name, Age, Address),
   utils:wait.
 
-makeEmployee :- 
+registerEmployee :- 
   db:nextId(ID),
-  makePerson(Ssn, Name, Age),
+  registerPerson(Ssn, Name, Age),
   writeln("\n(1) Confeitero"),
   writeln("(2) Vendedor"),
   utils:inputNumber("\nCargo: ", Number),
@@ -27,7 +29,17 @@ makeEmployee :-
   show:showEmployee(ID, Ssn, Name, Age, Role),
   utils:wait.
 
-makePerson(Ssn, Name, Age) :-
+registerPerson(Ssn, Name, Age) :-
   utils:input("CPF: ", Ssn),
   utils:input("Nome: ", Name),
   utils:inputNumber("Idade: ", Age).
+
+showEmployees :-
+  forall(db:employee(EmployeeID, Ssn, Name, Age, Role),
+         show:showEmployee(EmployeeID, Ssn, Name, Age, Role)),
+  wait.
+
+showCustomers :-
+  forall(db:customer(CustomerID, Ssn, Name, Age, Role),
+         show:showCustomer(CustomerID, Ssn, Name, Age, Role)),
+  wait.
