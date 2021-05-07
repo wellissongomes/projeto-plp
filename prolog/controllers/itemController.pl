@@ -1,5 +1,5 @@
 :- module(itemController, [registerCandy/0, registerDrink/0, showCandies/0, showDrinks/0, removeCandy/1,
-                           removeDrink/1]).
+                           removeDrink/1, showCandyMenuWellRated/0, showCandyMenu/0]).
 
 :- use_module('../persistence/db.pl').
 :- use_module('./util/utils.pl').
@@ -53,9 +53,36 @@ removeCandy(CandyID) :-
   wait.
 
 removeDrink(DrinkID) :-
-  db:drink(DrinkID, Name, Description, DrinkPrice, DrinkScore),
+  (db:drink(DrinkID, Name, Description, DrinkPrice, DrinkScore) ->
   retract(db:drink(DrinkID, Name, Description, DrinkPrice, DrinkScore)),
   db:writeDrink,
   show:showItem(DrinkID, Name, Description, DrinkPrice, DrinkScore),
-  writeln("\nBebida removida com sucesso."),
+  writeln("\nBebida removida com sucesso.") ;
+  writeln("Bebida inexistente.")),
+  wait.
+
+showCandyMenuWellRated :-
+  writeln('\n\nDOCES\n'),
+
+  forall((db:candy(CandyID, Name, Description, Price, ScoreCandy),
+          ScoreCandy >= 4),
+          show:showItem(CandyID, Name, Description, Price, ScoreCandy)),
+    
+  writeln('\n\nBEBIDAS\n'),
+
+  forall((db:drink(DrinkID, Name, Description, Price, ScoreDrink),
+          ScoreDrink >= 4),
+          show:showItem(DrinkID, Name, Description, Price, ScoreDrink)),
+  wait.
+
+showCandyMenu :-
+  writeln('\n\nDOCES\n'),
+
+  forall((db:candy(CandyID, Name, Description, Price, ScoreCandy)),
+          show:showItem(CandyID, Name, Description, Price, ScoreCandy)),
+    
+  writeln('\n\nBEBIDAS\n'),
+
+  forall((db:drink(DrinkID, Name, Description, Price, ScoreDrink)),
+          show:showItem(DrinkID, Name, Description, Price, ScoreDrink)),
   wait.

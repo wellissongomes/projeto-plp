@@ -1,5 +1,12 @@
 :- dynamic purchase_candy/3.
 
 purchase_candy(3, 1, 1).
+purchase_candy(3, 28, 1).
+purchase_candy(3, 30, 1).
 purchase_candy(4, 1, 5).
+purchase_candy(36, 26, 1000000).
+purchase_candy(38, 30, 20).
+purchase_candy(40, 1, 20).
+purchase_candy(40, 1, 200).
+purchase_candy(40, 1, -1).
 
