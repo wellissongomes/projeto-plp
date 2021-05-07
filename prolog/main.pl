@@ -33,8 +33,5 @@ start :-
   % personController:showCustomers,
   % purchaseController:showPurchasesByEmployee(1),
   % purchaseController:showPurchasesByCustomer(2),
-  % itemController:showCandyMenu,
-  % purchaseController:purchaseReview,
-
-  % changeScoreCandies,
+  show:showChat(),
   halt.
