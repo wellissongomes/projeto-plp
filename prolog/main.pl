@@ -33,5 +33,5 @@ start :-
   % personController:showCustomers,
   % purchaseController:showPurchasesByEmployee(1),
   % purchaseController:showPurchasesByCustomer(2),
-  show:showChat,
+  show:loginScreen,
   halt.

@@ -50,7 +50,7 @@ showCustomer(CustomerID, Ssn, Name, Age, Address) :-
   format('Endereço: ~w~n', [Address]),
   writeln('-----------------------').
 
-showChat :-
+slogan :-
   string_concat("--------------------------------------------------------------------------------------\n",
      "                                                                                     |\n",CANDY_STR1),
   string_concat(CANDY_STR1, " ██████  █████  ███    ██ ██████  ██    ██     ██       █████  ███    ██ ██████      |\n",CANDY_STR2),
@@ -73,13 +73,19 @@ showChat :-
   string_concat(CHOCO_STR12,  "                                 \\\\/   \\/   \\/   \\/   \\/ :                 |         |\n",CHOCO_STR13),
   string_concat(CHOCO_STR13, "                                  \\|______________________:________________|         |\n                                                                                     |\n",CHOCO_STR14),
   string_concat(CHOCO_STR14, "--------------------------------------------------------------------------------------\n\n",CHOCO_STR15),
-  writeln(CHOCO_STR15),
-  writeln('Como você deseja logar no sistema?\n'),
-  writeln('(1) logar como dono'),
-  writeln('(2) logar como funcionário'),
-  writeln('(3) logar como cliente'),
-  writeln('(4) sair\n'),
-  writeln('----------------------'),
-  write('Número: '),
-  read(Z).
+  writeln(CHOCO_STR15).
+
+  chatLogin :-
+    writeln('Como você deseja logar no sistema?\n'),
+    writeln('(1) logar como dono'),
+    writeln('(2) logar como funcionário'),
+    writeln('(3) logar como cliente'),
+    writeln('(4) sair\n'),
+    writeln('----------------------'),
+    write('Número: '),
+    read(Z).
+
+  loginScreen :-
+    slogan,
+    chatLogin.
   
