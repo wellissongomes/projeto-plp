@@ -15,7 +15,7 @@ start :-
   % assertz(db:drink(1, "agua", "agua sem gas", 1.50, 5)),
   % db:writeCandy,
   % db:writeDrink,
-  purchaseController:registerPurchase,
+  % purchaseController:registerPurchase,
   % clear,
   % purchaseController:showPurchase(36),
   % utils:wait,
@@ -33,5 +33,5 @@ start :-
   % personController:showCustomers,
   % purchaseController:showPurchasesByEmployee(1),
   % purchaseController:showPurchasesByCustomer(2),
-  show:showChat(),
+  show:showChat,
   halt.

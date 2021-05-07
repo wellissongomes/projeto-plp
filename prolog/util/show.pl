@@ -50,7 +50,7 @@ showCustomer(CustomerID, Ssn, Name, Age, Address) :-
   format('Endereço: ~w~n', [Address]),
   writeln('-----------------------').
 
-showChat() :-
+showChat :-
   string_concat("--------------------------------------------------------------------------------------\n",
      "                                                                                     |\n",CANDY_STR1),
   string_concat(CANDY_STR1, " ██████  █████  ███    ██ ██████  ██    ██     ██       █████  ███    ██ ██████      |\n",CANDY_STR2),
