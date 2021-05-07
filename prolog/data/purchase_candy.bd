@@ -1,0 +1,5 @@
+:- dynamic purchase_candy/3.
+
+purchase_candy(3, 1, 1).
+purchase_candy(4, 1, 5).
+
