@@ -33,5 +33,6 @@ start :-
   % personController:showCustomers,
   % purchaseController:showPurchasesByEmployee(1),
   % purchaseController:showPurchasesByCustomer(2),
-  purchaseController:showPurchasesWellRated,
+  % purchaseController:showPurchasesWellRated,
+  show:showChat(),
   halt.
