@@ -50,42 +50,5 @@ showCustomer(CustomerID, Ssn, Name, Age, Address) :-
   format('Endereço: ~w~n', [Address]),
   writeln('-----------------------').
 
-slogan :-
-  string_concat("--------------------------------------------------------------------------------------\n",
-     "                                                                                     |\n",CANDY_STR1),
-  string_concat(CANDY_STR1, " ██████  █████  ███    ██ ██████  ██    ██     ██       █████  ███    ██ ██████      |\n",CANDY_STR2),
-  string_concat(CANDY_STR2, "██      ██   ██ ████   ██ ██   ██  ██  ██      ██      ██   ██ ████   ██ ██   ██     |\n",CANDY_STR3),
-  string_concat(CANDY_STR3, "██      ███████ ██ ██  ██ ██   ██   ████       ██      ███████ ██ ██  ██ ██   ██     |\n",CANDY_STR4),
-  string_concat(CANDY_STR4, "██      ██   ██ ██  ██ ██ ██   ██    ██        ██      ██   ██ ██  ██ ██ ██   ██     |\n",CANDY_STR5),
-  string_concat(CANDY_STR5, " ██████ ██   ██ ██   ████ ██████     ██        ███████ ██   ██ ██   ████ ██████      |\n                                                                                     |\n",CANDY_STR6),
-  string_concat(CANDY_STR6, "   ___     .----.     ___",CHOCO_STR1),
-  string_concat(CHOCO_STR1, "       ___  ___  ___  ___  ___.---------------.             |\n",CHOCO_STR2),
-  string_concat(CHOCO_STR2, "   \\  -.  /      \\  .-  /",CHOCO_STR3),
-  string_concat(CHOCO_STR3, "     .'\\__\\'\\__\\'\\__\\'\\__\\'\\__,`   .  ____ ___ \\            |\n",CHOCO_STR4),
-  string_concat(CHOCO_STR4, "   > -=.\\/        \\/.=- <",CHOCO_STR5),
-  string_concat(CHOCO_STR5, "     |\\/ __\\/ __\\/ __\\/ __\\/ _:\\   |`.  \\  \\___ \\           |\n",CHOCO_STR6),
-  string_concat(CHOCO_STR6, "   > -='/\\        /\\'=- <",CHOCO_STR7),
-  string_concat(CHOCO_STR7, "     \\'\\__\\'\\__\\'\\__\\'\\__\\'\\_`. \\__|--`. \\  \\___ \\          |\n",CHOCO_STR8),
-  string_concat(CHOCO_STR8, "  /__.-'  \\      /  '-.__\\",CHOCO_STR9),
-  string_concat(CHOCO_STR9, "     \\\\/ __\\/ __\\/ __\\/ __\\/ __:                 \\         |\n",CHOCO_STR10),
-  string_concat(CHOCO_STR10, "           '-..-'",CHOCO_STR11),
-  string_concat(CHOCO_STR11, "               \\\\'\\__\\'\\__\\'\\__\\ \\__\\'\\_:-----------------'         |\n",CHOCO_STR12),
-  string_concat(CHOCO_STR12,  "                                 \\\\/   \\/   \\/   \\/   \\/ :                 |         |\n",CHOCO_STR13),
-  string_concat(CHOCO_STR13, "                                  \\|______________________:________________|         |\n                                                                                     |\n",CHOCO_STR14),
-  string_concat(CHOCO_STR14, "--------------------------------------------------------------------------------------\n\n",CHOCO_STR15),
-  writeln(CHOCO_STR15).
 
-  chatLogin :-
-    writeln('Como você deseja logar no sistema?\n'),
-    writeln('(1) logar como dono'),
-    writeln('(2) logar como funcionário'),
-    writeln('(3) logar como cliente'),
-    writeln('(4) sair\n'),
-    writeln('----------------------'),
-    write('Número: '),
-    read(Z).
-
-  loginScreen :-
-    slogan,
-    chatLogin.
   

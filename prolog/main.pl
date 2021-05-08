@@ -1,4 +1,5 @@
 :- use_module('./util/utils.pl').
+:- use_module('./util/chat.pl').
 :- use_module('./util/show.pl').
 :- use_module('./persistence/db.pl').
 :- use_module('./controllers/purchaseController.pl').
@@ -33,5 +34,5 @@ start :-
   % personController:showCustomers,
   % purchaseController:showPurchasesByEmployee(1),
   % purchaseController:showPurchasesByCustomer(2),
-  show:loginScreen,
+  chat:loginScreen,
   halt.
