@@ -37,6 +37,7 @@ calculatePriceDrink(PurchaseID, TotalPrice) :-
 
 chooseCandies(PurchaseID) :- 
   utils:inputNumber("Digite o id do doce: ", CandyID),
+  utils:inputNumber("Digite a quantidade: ", Quantity),
   assertz(db:purchase_candy(PurchaseID, CandyID, Quantity)),
   db:writePurchaseCandy,
   utils:input("Deseja escolher mais doce? [S/N]: ", I),
@@ -56,8 +57,8 @@ registerPurchase :-
   utils:inputNumber('ID customer: ', CustomerID),
   chooseCandies(ID),
   chooseDrinks(ID),
-  calculatePriceCandy(PurchaseID, TotalPriceCandy),
-  calculatePriceDrink(PurchaseID, TotalPriceDrink),
+  calculatePriceCandy(ID, TotalPriceCandy),
+  calculatePriceDrink(ID, TotalPriceDrink),
 
   PurchasePrice is TotalPriceCandy + TotalPriceDrink,
   assertz(db:purchase(ID, EmployeeID, CustomerID, 5, PurchasePrice, false)),
