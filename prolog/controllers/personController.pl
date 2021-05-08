@@ -4,6 +4,18 @@
 :- use_module('./util/utils.pl').
 :- use_module('../util/show.pl').
 
+existsCustomer(CustomerID) :-
+  db:customer(CustomerID, _, _, _, _).
+
+existsEmployee(EmployeeID) :-
+  db:employee(EmployeeID, _, _, _, _).
+
+existsOwner :-
+  db:employee(_, _, _, _, "dono").
+
+existsOwnerByID(OwnerID) :-
+  db:employee(OwnerID, _, _, _, "dono").
+
 registerCustomer :- 
   db:nextId(ID),
   registerPerson(Ssn, Name, Age),
@@ -28,6 +40,20 @@ registerEmployee :-
   writeln("Funcionário cadastrado com sucesso!\n"),
   show:showEmployee(ID, Ssn, Name, Age, Role),
   utils:wait.
+
+registerOwner :-
+  writeln("Não existe dono!"),
+  utils:input("\nDeseja cadastrar um dono? [s/n]: ", Op),
+  Op =:= "s",
+  db:nextId(ID),
+  registerPerson(Ssn, Name, Age),
+  db:assertz(employee(ID, Ssn, Name, Age, "dono")),
+  clear,
+  db:writeEmployee,
+  writeln("Dono cadastrado com sucesso!\n"),
+  show:showEmployee(ID, Ssn, Name, Age, "dono"),
+  utils:wait;
+  !.
 
 registerPerson(Ssn, Name, Age) :-
   utils:input("CPF: ", Ssn),

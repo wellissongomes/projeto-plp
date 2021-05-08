@@ -12,37 +12,38 @@ main :-
 
 start :- 
   clear,
-  % assertz(db:candy(1, "chocolate", "chocolate branco", 100.50, 5)),
-  % assertz(db:drink(1, "agua", "agua sem gas", 1.50, 5)),
-  % db:writeCandy,
-  % db:writeDrink,
-  % purchaseController:registerPurchase,
-  % clear,
-  % purchaseController:showPurchase(36),
-  % utils:wait,
-  % showPurchases,
-  % personController:registerCustomer,
-  % personController:registerEmployee,
-  % itemController:registerCandy,
-  % itemController:registerDrink,
-  % itemController:showCandies,
-  % itemController:showDrinks,
-  % show:showItem(1, "chocolate", "chocolate branco", 100.5, 5),
-  % itemController:removeCandy(25),
-  % itemController:removeDrink(35),
-  % personController:showEmployees,
-  % personController:showCustomers,
-  % purchaseController:showPurchasesByEmployee(1),
-  % purchaseController:showPurchasesByCustomer(2),
   chat:loginScreen,
   utils:inputNumber("Opção: ", Op),
-  (Op =:= 1 -> ownerInteraction;
-   Op =:= 2 -> employeeInteraction;
-   Op =:= 3 -> customerInteraction;
-   start),
-  halt.
+  (Op =:= 1 -> (personController:existsOwner,
+                callOwnerInteraction;
+                personController:registerOwner,
+                start);
+   Op =:= 2 -> (utils:inputNumber("Digite o id do funcionário: ", EmployeeID),
+                personController:existsEmployee(EmployeeID),
+                employeeInteraction(EmployeeID);
+                writeln("Funcionário inexistente."),
+                wait,
+                start);
+   Op =:= 3 -> (utils:inputNumber("Digite o id do cliente: ", CustomerID),
+                personController:existsCustomer(CustomerID),
+                customerInteraction(CustomerID);
+                writeln("Cliente inexistente."),
+                wait,
+                start);
+   Op =:= 4 -> writeln("\nVolte sempre!"), halt;
+   start).
 
-ownerInteraction :-
+callOwnerInteraction :-
+  utils:inputNumber("Digite o id do dono: ", OwnerID),
+  personController:existsOwnerByID(OwnerID),
+  ownerInteraction(OwnerID);
+  writeln("Não existe dono com o ID informado."),
+  wait,
+  start.
+
+ownerInteraction(OwnerID) :-
+  clear,
+  chat:slogan,
   chat:ownerOptions,
   utils:inputNumber("Opção: ", Op),
   (Op =:= 1 -> personController:registerEmployee;
@@ -57,23 +58,30 @@ ownerInteraction :-
    Op =:= 10 -> start;
    ownerInteraction).
 
-customerInteraction :-
+customerInteraction(CustomerID) :-
+  clear,
+  chat:slogan,
   chat:customerOptions,
   utils:inputNumber("Opção: ", Op),
-  (Op =:= 1 -> itemController:showCandyMenuWellRated, customerInteraction;
-   Op =:= 2 -> itemController:showCandyMenu, customerInteraction;
-   Op =:= 3 -> purchaseController:registerPurchase, customerInteraction;
-   Op =:= 4 -> utils:inputNumber("Digite o id do cliente: ", CustomerID), purchaseController:showPurchasesByCustomer(CustomerID), customerInteraction;
-   Op =:= 5 -> utils:inputNumber("Digite o id da compra: ", PurchaseID), purchaseController:makePurchaseReview(PurchaseID), customerInteraction;
+  (Op =:= 1 -> itemController:showCandyMenuWellRated;
+   Op =:= 2 -> itemController:showCandyMenu;
+   Op =:= 3 -> purchaseController:registerPurchase;
+   Op =:= 4 -> purchaseController:showPurchasesByCustomer(CustomerID);
+   Op =:= 5 -> utils:inputNumber("Digite o id da compra: ", PurchaseID), purchaseController:makePurchaseReview(PurchaseID);
    Op =:= 6 -> start;
-   customerInteraction).
+   customerInteraction(CustomerID)),
+   customerInteraction(CustomerID).
 
-employeeInteraction :-
+employeeInteraction(EmployeeID) :-
+  clear,
+  chat:slogan,
+  personController:existsEmployee(EmployeeID),
   chat:employeeOptions,
   utils:inputNumber("Opção: ", Op),
   (Op =:= 1 -> personController:registerCustomer;
    Op =:= 2 -> purchaseController:registerPurchase;
    Op =:= 3 -> personController:showCustomers;
-   Op =:= 4 -> utils:inputNumber("Digite o id do funcionário: ", EmployeeID), purchaseController:showPurchasesByEmployee(EmployeeID);
+   Op =:= 4 -> purchaseController:showPurchasesByEmployee(EmployeeID);
    Op =:= 5 -> start;
-   employeeInteraction).
+   employeeInteraction(EmployeeID)),
+   employeeInteraction(EmployeeID).
