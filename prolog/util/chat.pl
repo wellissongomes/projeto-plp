@@ -31,9 +31,7 @@ chatLogin :-
   writeln('(2) logar como funcionário'),
   writeln('(3) logar como cliente'),
   writeln('(4) sair\n'),
-  writeln('----------------------'),
-  write('Número: '),
-  read(Z).
+  writeln('----------------------').
 
 loginScreen :-
   slogan,
@@ -54,9 +52,7 @@ ownerOptions :-
   writeln('(8) Listar bebidas'),
   writeln('(9) Listar vendas'),
   writeln('(10) VOLTAR'),
-  writeln('--------------------------'),
-  write('Número: '),
-  read(Z).
+  writeln('--------------------------').
 
 customerOptions :-
   writeln('----------------------------------'),
@@ -69,9 +65,7 @@ customerOptions :-
   writeln('(4) Listar suas compras'),
   writeln('(5) Avaliar uma compra'),
   writeln('(6) VOLTAR'),
-  writeln('----------------------------------'),
-  write('Número: '),
-  read(Z).
+  writeln('----------------------------------').
 
 employeeOptions :-
   writeln('---------------------------------'),
@@ -83,6 +77,4 @@ employeeOptions :-
   writeln('(3) Listar clientes'),
   writeln('(4) Listar suas vendas'),
   writeln('(5) VOLTAR'),
-  writeln('---------------------------------'),
-  write('Número: '),
-  read(Z).
+  writeln('---------------------------------').
