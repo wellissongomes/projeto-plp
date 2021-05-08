@@ -35,4 +35,45 @@ start :-
   % purchaseController:showPurchasesByEmployee(1),
   % purchaseController:showPurchasesByCustomer(2),
   chat:loginScreen,
+  utils:inputNumber("Opção: ", Op),
+  (Op =:= 1 -> ownerInteraction;
+   Op =:= 2 -> employeeInteraction;
+   Op =:= 3 -> customerInteraction;
+   start),
   halt.
+
+ownerInteraction :-
+  chat:ownerOptions,
+  utils:inputNumber("Opção: ", Op),
+  (Op =:= 1 -> personController:registerEmployee;
+   Op =:= 2 -> itemController:registerCandy;
+   Op =:= 3 -> itemController:registerDrink;
+   Op =:= 4 -> utils:inputNumber("Digite o id do doce: ", CandyID), itemController:removeCandy(CandyID);
+   Op =:= 5 -> utils:inputNumber("Digite o id da bebida: ", DrinkID), itemController:removeDrink(DrinkID);
+   Op =:= 6 -> personController:showEmployees;
+   Op =:= 7 -> itemController:showCandies;
+   Op =:= 8 -> itemController:showDrinks;
+   Op =:= 9 -> purchaseController:showPurchases;
+   Op =:= 10 -> start;
+   ownerInteraction).
+
+customerInteraction :-
+  chat:customerOptions,
+  utils:inputNumber("Opção: ", Op),
+  (Op =:= 1 -> itemController:showCandyMenuWellRated;
+   Op =:= 2 -> itemController:showCandyMenu;
+   Op =:= 3 -> purchaseController:registerPurchase;
+   Op =:= 4 -> utils:inputNumber("Digite o id do cliente: ", CustomerID), purchaseController:showPurchasesByCustomer(CustomerID);
+   Op =:= 5 -> utils:inputNumber("Digite o id da compra: ", PurchaseID), purchaseController:makePurchaseReview(PurchaseID);
+   Op =:= 6 -> start;
+   customerInteraction).
+
+employeeInteraction :-
+  chat:employeeOptions,
+  utils:inputNumber("Opção: ", Op),
+  (Op =:= 1 -> personController:registerCustomer;
+   Op =:= 2 -> purchaseController:registerPurchase;
+   Op =:= 3 -> personController:showCustomers;
+   Op =:= 4 -> utils:inputNumber("Digite o id do funcionário: ", EmployeeID), purchaseController:showPurchasesByEmployee(EmployeeID);
+   Op =:= 5 -> start;
+   employeeInteraction).
