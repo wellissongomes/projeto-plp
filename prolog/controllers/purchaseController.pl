@@ -62,6 +62,7 @@ registerPurchase :-
 
   PurchasePrice is TotalPriceCandy + TotalPriceDrink,
   assertz(db:purchase(ID, EmployeeID, CustomerID, 5, PurchasePrice, false)),
+  showPurchase(ID),
   db:writePurchase.
 
 makePurchaseReview(PurchaseID) :-
@@ -74,7 +75,8 @@ makePurchaseReview(PurchaseID) :-
     assertz(db:purchase(PurchaseID, EmployeeID, CustId, NewScore, Price, true)),
     db:writePurchase,
     changeScoreCandies(PurchaseID, NewScore),
-    changeScoreDrinks(PurchaseID, NewScore) ;
+    changeScoreDrinks(PurchaseID, NewScore),
+    showPurchase(PurchaseID) ;
     writeln("\nEssa compra já foi avaliada"))).
 
 hasPurchase(PurchaseID) :- 

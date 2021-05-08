@@ -60,11 +60,11 @@ ownerInteraction :-
 customerInteraction :-
   chat:customerOptions,
   utils:inputNumber("Opção: ", Op),
-  (Op =:= 1 -> itemController:showCandyMenuWellRated;
-   Op =:= 2 -> itemController:showCandyMenu;
-   Op =:= 3 -> purchaseController:registerPurchase;
-   Op =:= 4 -> utils:inputNumber("Digite o id do cliente: ", CustomerID), purchaseController:showPurchasesByCustomer(CustomerID);
-   Op =:= 5 -> utils:inputNumber("Digite o id da compra: ", PurchaseID), purchaseController:makePurchaseReview(PurchaseID);
+  (Op =:= 1 -> itemController:showCandyMenuWellRated, customerInteraction;
+   Op =:= 2 -> itemController:showCandyMenu, customerInteraction;
+   Op =:= 3 -> purchaseController:registerPurchase, customerInteraction;
+   Op =:= 4 -> utils:inputNumber("Digite o id do cliente: ", CustomerID), purchaseController:showPurchasesByCustomer(CustomerID), customerInteraction;
+   Op =:= 5 -> utils:inputNumber("Digite o id da compra: ", PurchaseID), purchaseController:makePurchaseReview(PurchaseID), customerInteraction;
    Op =:= 6 -> start;
    customerInteraction).
 
