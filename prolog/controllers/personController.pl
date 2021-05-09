@@ -16,10 +16,16 @@ existsOwner :-
 existsOwnerByID(OwnerID) :-
   db:employee(OwnerID, _, _, _, "dono").
 
+
+
+
+
 registerCustomer :- 
   db:nextId(ID),
-  registerPerson(Ssn, Name, Age),
-  utils:input("Digite seu endereço: ", Address),
+  utils:input("CPF: ", Ssn),
+  (db:employee(_, Ssn, Name, Age, _), \+db:customer(_, Ssn, _, _, _),format('Olá, ~w~n', [Name]);
+  (db:customer(_, Ssn, _, _, _), writeln("Já existe um cliente cadastrado com o CPF informado."),wait, registerCustomer);
+  registerPerson(Name, Age),utils:input("Digite seu endereço: ", Address)),
   db:assertz(customer(ID, Ssn, Name, Age, Address)),
   db:writeCustomer,
   clear,
@@ -55,17 +61,20 @@ registerOwner :-
   utils:wait;
   !.
 
-registerPerson(Ssn, Name, Age) :-
-  utils:input("CPF: ", Ssn),
+registerPerson(Name, Age) :-
   utils:input("Nome: ", Name),
   utils:inputNumber("Idade: ", Age).
 
 showEmployees :-
+  clear,
+  writeln("Funcionários\n"),
   forall(db:employee(EmployeeID, Ssn, Name, Age, Role),
          show:showEmployee(EmployeeID, Ssn, Name, Age, Role)),
   wait.
 
 showCustomers :-
+  clear,
+  writeln("Clientes\n"),
   forall(db:customer(CustomerID, Ssn, Name, Age, Role),
          show:showCustomer(CustomerID, Ssn, Name, Age, Role)),
   wait.

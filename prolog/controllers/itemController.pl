@@ -34,12 +34,16 @@ registerDrink :-
   wait.
 
 showCandies :-
+  clear,
+  writeln("Doces\n"),
   forall(db:candy(CandyID, Name, Description, CandyPrice, CandyScore), 
          show:showItem(CandyID, Name, Description, CandyPrice, CandyScore)),
   wait.
   
 
 showDrinks :-
+  clear,
+  writeln("Bebidas\n"),
   forall(db:drink(DrinkID, Name, Description, DrinkPrice, DrinkScore), 
          show:showItem(DrinkID, Name, Description, DrinkPrice, DrinkScore)),
   wait.
@@ -62,6 +66,8 @@ removeDrink(DrinkID) :-
   wait.
 
 showCandyMenuWellRated :-
+  clear,
+  writeln('Produtos bem avaliados'),
   writeln('\n\nDOCES\n'),
 
   forall((db:candy(CandyID, Name, Description, Price, ScoreCandy),
@@ -76,6 +82,8 @@ showCandyMenuWellRated :-
   wait.
 
 showCandyMenu :-
+  clear,
+  writeln("Cardápio"),
   writeln('\n\nDOCES\n'),
 
   forall((db:candy(CandyID, Name, Description, Price, ScoreCandy)),

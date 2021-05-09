@@ -31,17 +31,19 @@ start :-
                 wait,
                 start);
    Op =:= 4 -> writeln("\nVolte sempre!"), halt;
-   start).
+   start), 
+   start;
+   start.
 
 callOwnerInteraction :-
   utils:inputNumber("Digite o id do dono: ", OwnerID),
   personController:existsOwnerByID(OwnerID),
-  ownerInteraction(OwnerID);
+  ownerInteraction;
   writeln("Não existe dono com o ID informado."),
   wait,
   start.
 
-ownerInteraction(OwnerID) :-
+ownerInteraction :-
   clear,
   chat:slogan,
   chat:ownerOptions,
@@ -56,7 +58,9 @@ ownerInteraction(OwnerID) :-
    Op =:= 8 -> itemController:showDrinks;
    Op =:= 9 -> purchaseController:showPurchases;
    Op =:= 10 -> start;
-   ownerInteraction).
+   ownerInteraction),
+   ownerInteraction;
+   ownerInteraction.
 
 customerInteraction(CustomerID) :-
   clear,
@@ -70,6 +74,7 @@ customerInteraction(CustomerID) :-
    Op =:= 5 -> utils:inputNumber("Digite o id da compra: ", PurchaseID), purchaseController:makePurchaseReview(PurchaseID);
    Op =:= 6 -> start;
    customerInteraction(CustomerID)),
+   customerInteraction(CustomerID);
    customerInteraction(CustomerID).
 
 employeeInteraction(EmployeeID) :-
@@ -84,4 +89,5 @@ employeeInteraction(EmployeeID) :-
    Op =:= 4 -> purchaseController:showPurchasesByEmployee(EmployeeID);
    Op =:= 5 -> start;
    employeeInteraction(EmployeeID)),
+   employeeInteraction(EmployeeID);
    employeeInteraction(EmployeeID).

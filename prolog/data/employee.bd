@@ -3,4 +3,5 @@
 employee(17, "21412421", "xd", 25, "confeitero").
 employee(21, "2", "kkjj", 22, "vendedor").
 employee(23, "22", "22", 22, "vendedor").
+employee(41, "1", "a", 1, "dono").
 

@@ -4,21 +4,29 @@
 :- use_module('../util/show.pl').
 
 showPurchases :-
+  clear,
+  writeln("Compras\n"),
   forall(db:purchase(PurchId, EmpId, CustId, Score, Price, _),
          show:showPurchase(PurchId, EmpId, CustId, Score, Price)),
   wait.
 
 showPurchasesByEmployee(EmployeeID) :-
+  clear,
+  writeln("Vendas\n"),
   forall(db:purchase(PurchId, EmployeeID, CustId, Score, Price, _),
          show:showPurchase(PurchId, EmployeeID, CustId, Score, Price)),
   wait.
 
 showPurchasesByCustomer(CustomerID) :-
+  clear,
+  writeln("Compras\n"),
   forall(db:purchase(PurchId, EmpId, CustomerID, Score, Price, _),
          show:showPurchase(PurchId, EmpId, CustomerID, Score, Price)),
   wait.
 
 showPurchase(ID) :- 
+  clear,
+  writeln("Compra\n"),
   db:purchase(ID, EmpId, CustId, Score, Price, _),
   show:showPurchase(ID, EmpId, CustId, Score, Price),
   wait.
