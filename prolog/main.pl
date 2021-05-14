@@ -69,7 +69,7 @@ customerInteraction(CustomerID) :-
   utils:inputNumber("Opção: ", Op),
   (Op =:= 1 -> itemController:showCandyMenuWellRated;
    Op =:= 2 -> itemController:showCandyMenu;
-   Op =:= 3 -> purchaseController:registerPurchase;
+   Op =:= 3 -> purchaseController:registerPurchaseByCustomer(CustomerID);
    Op =:= 4 -> purchaseController:showPurchasesByCustomer(CustomerID);
    Op =:= 5 -> utils:inputNumber("Digite o id da compra: ", PurchaseID), purchaseController:makePurchaseReview(PurchaseID);
    Op =:= 6 -> start;
@@ -84,7 +84,7 @@ employeeInteraction(EmployeeID) :-
   chat:employeeOptions,
   utils:inputNumber("Opção: ", Op),
   (Op =:= 1 -> personController:registerCustomer;
-   Op =:= 2 -> purchaseController:registerPurchase;
+   Op =:= 2 -> purchaseController:registerPurchaseByEmployee(EmployeeID);
    Op =:= 3 -> personController:showCustomers;
    Op =:= 4 -> purchaseController:showPurchasesByEmployee(EmployeeID);
    Op =:= 5 -> start;

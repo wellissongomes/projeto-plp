@@ -1,4 +1,4 @@
-:- module(purchaseController, [showPurchases/0, registerPurchase/0, purchaseReview/0]).
+:- module(purchaseController, [showPurchases/0, purchaseReview/0, registerPurchaseByCustomer/1, registerPurchaseByEmployee/1]).
 
 :- use_module('./persistence/db.pl').
 :- use_module('../util/show.pl').
@@ -45,24 +45,38 @@ calculatePriceDrink(PurchaseID, TotalPrice) :-
 
 chooseCandies(PurchaseID) :- 
   utils:inputNumber("Digite o id do doce: ", CandyID),
+  ((db:purchase_candy(PurchaseID, CandyID, _),
   utils:inputNumber("Digite a quantidade: ", Quantity),
   assertz(db:purchase_candy(PurchaseID, CandyID, Quantity)),
-  db:writePurchaseCandy,
+  db:writePurchaseCandy);
+  writeln("\nEsse doce já foi adicionado à compra"),
+  chooseCandies(PurchaseID)),
+  findall(PurchaseCandyID, db:purchase_candy(PurchaseID, PurchaseCandyID, _), PurchaseCandiesID),
+  findall(DBCandyID, db:candy(DBCandyID, _, _, _, _), CandiesID),
+  length(CandiesID, LenCandies),
+  length(PurchaseCandiesID, LenCurrentCandies),
+  (LenCurrentCandies >= LenCandies, !);
   utils:input("Deseja escolher mais doce? [S/N]: ", I),
   (I =:= "S" -> chooseCandies(PurchaseID) ; !).
 
 chooseDrinks(PurchaseID) :- 
   utils:inputNumber("Digite o id da bebida: ", DrinkID),
+  ((db:purchase_drink(PurchaseID, DrinkID, _),
   utils:inputNumber("Digite a quantidade: ", Quantity),
   assertz(db:purchase_drink(PurchaseID, DrinkID, Quantity)),
-  db:writePurchaseDrink,
+  db:writePurchaseDrink);
+  writeln("\nEssa bebida já foi adicionada à compra"),
+  chooseDrinks(PurchaseID)),
+  findall(PurchaseDrinkID, db:purchase_drink(PurchaseID, PurchaseDrinkID, _), PurchaseDrinksID),
+  findall(DBDrinkID, db:drink(DBDrinkID, _, _, _, _), DrinksID),
+  length(DrinksID, LenDrinks),
+  length(PurchaseDrinksID, LenCurrentDrinks),
+  (LenCurrentDrinks >= LenDrinks, !);
   utils:input("Deseja escolher mais bebida? [S/N]: ", I),
   (I =:= "S" -> chooseDrinks(PurchaseID) ; !).
 
-registerPurchase :- 
+registerPurchase(EmployeeID, CustomerID) :- 
   nextId(ID),
-  utils:inputNumber('ID employee: ', EmployeeID),
-  utils:inputNumber('ID customer: ', CustomerID),
   chooseCandies(ID),
   chooseDrinks(ID),
   calculatePriceCandy(ID, TotalPriceCandy),
@@ -72,6 +86,14 @@ registerPurchase :-
   assertz(db:purchase(ID, EmployeeID, CustomerID, 5, PurchasePrice, false)),
   showPurchase(ID),
   db:writePurchase.
+
+registerPurchaseByCustomer(CustomerID) :- 
+  utils:inputNumber('ID employee: ', EmployeeID),
+  registerPurchase(EmployeeID, CustomerID).
+
+registerPurchaseByEmployee(EmployeeID) :- 
+  utils:inputNumber('ID customer: ', CustomerID),
+  registerPurchase(EmployeeID, CustomerID).
 
 makePurchaseReview(PurchaseID) :-
   db:purchase(PurchaseID, EmployeeID, CustId, Score, Price, HasBeenReviwed),
