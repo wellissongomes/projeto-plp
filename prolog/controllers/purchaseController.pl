@@ -45,35 +45,35 @@ calculatePriceDrink(PurchaseID, TotalPrice) :-
 
 chooseCandies(PurchaseID) :- 
   utils:inputNumber("Digite o id do doce: ", CandyID),
-  ((db:purchase_candy(PurchaseID, CandyID, _),
-  utils:inputNumber("Digite a quantidade: ", Quantity),
-  assertz(db:purchase_candy(PurchaseID, CandyID, Quantity)),
-  db:writePurchaseCandy);
+  (\+db:purchase_candy(PurchaseID, CandyID, _) -> utils:inputNumber("Digite a quantidade: ", Quantity);
   writeln("\nEsse doce já foi adicionado à compra"),
   chooseCandies(PurchaseID)),
+  ((Quantity >= 1) -> assertz(db:purchase_candy(PurchaseID, CandyID, Quantity)),
+  db:writePurchaseCandy;
+  writeln("\nA quantidade de doces não pode ser menor ou igual a 0.")),
   findall(PurchaseCandyID, db:purchase_candy(PurchaseID, PurchaseCandyID, _), PurchaseCandiesID),
   findall(DBCandyID, db:candy(DBCandyID, _, _, _, _), CandiesID),
   length(CandiesID, LenCandies),
   length(PurchaseCandiesID, LenCurrentCandies),
-  (LenCurrentCandies >= LenCandies, !);
-  utils:input("Deseja escolher mais doce? [S/N]: ", I),
-  (I =:= "S" -> chooseCandies(PurchaseID) ; !).
+  (LenCurrentCandies >= LenCandies, writeln("\nVocê já adicionou todos os doces disponíveis."), !);
+  utils:input("Deseja escolher outro doce? [S - SIM ou qualquer letra para NÃO]: ", I),
+  ((upcase_atom(I,'S')) -> chooseCandies(PurchaseID) ; !).
 
 chooseDrinks(PurchaseID) :- 
   utils:inputNumber("Digite o id da bebida: ", DrinkID),
-  ((db:purchase_drink(PurchaseID, DrinkID, _),
-  utils:inputNumber("Digite a quantidade: ", Quantity),
-  assertz(db:purchase_drink(PurchaseID, DrinkID, Quantity)),
-  db:writePurchaseDrink);
-  writeln("\nEssa bebida já foi adicionada à compra"),
+  (\+db:purchase_drink(PurchaseID, DrinkID, _) -> utils:inputNumber("Digite a quantidade: ", Quantity);
+  writeln("\nEssa bebida já foi adicionado à compra"),
   chooseDrinks(PurchaseID)),
+  ((Quantity >= 1) -> assertz(db:purchase_drink(PurchaseID, DrinkID, Quantity)),
+  db:writePurchaseDrink;
+  writeln("\nA quantidade de bebidas não pode ser menor ou igual a 0.")),
   findall(PurchaseDrinkID, db:purchase_drink(PurchaseID, PurchaseDrinkID, _), PurchaseDrinksID),
   findall(DBDrinkID, db:drink(DBDrinkID, _, _, _, _), DrinksID),
   length(DrinksID, LenDrinks),
   length(PurchaseDrinksID, LenCurrentDrinks),
-  (LenCurrentDrinks >= LenDrinks, !);
-  utils:input("Deseja escolher mais bebida? [S/N]: ", I),
-  (I =:= "S" -> chooseDrinks(PurchaseID) ; !).
+  (LenCurrentDrinks >= LenDrinks, writeln("\nVocê já adicionou todos as bebidas disponíveis."), !);
+  utils:input("Deseja escolher outra bebida? [S - SIM ou qualquer letra para NÃO]: ", I),
+  ((upcase_atom(I,'S')) -> chooseDrinks(PurchaseID) ; !).
 
 registerPurchase(EmployeeID, CustomerID) :- 
   nextId(ID),
@@ -88,11 +88,11 @@ registerPurchase(EmployeeID, CustomerID) :-
   db:writePurchase.
 
 registerPurchaseByCustomer(CustomerID) :- 
-  utils:inputNumber('ID employee: ', EmployeeID),
+  utils:inputNumber('ID do Empregado: ', EmployeeID),
   registerPurchase(EmployeeID, CustomerID).
 
 registerPurchaseByEmployee(EmployeeID) :- 
-  utils:inputNumber('ID customer: ', CustomerID),
+  utils:inputNumber('ID do Cliente: ', CustomerID),
   registerPurchase(EmployeeID, CustomerID).
 
 makePurchaseReview(PurchaseID) :-
