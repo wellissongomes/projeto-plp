@@ -45,19 +45,53 @@ calculatePriceDrink(PurchaseID, TotalPrice) :-
 
 chooseCandies(PurchaseID) :- 
   utils:inputNumber("Digite o id do doce: ", CandyID),
-  utils:inputNumber("Digite a quantidade: ", Quantity),
-  assertz(db:purchase_candy(PurchaseID, CandyID, Quantity)),
-  db:writePurchaseCandy,
-  utils:input("Deseja escolher mais doce? [S/N]: ", I),
-  (I =:= "S" -> chooseCandies(PurchaseID) ; !).
+
+  (db:purchase_candy(PurchaseID, CandyID, _) -> (writeln("\nVocê já selecionou esse doce.\n"), chooseCandies(PurchaseID)) ;
+
+   (\+db:candy(CandyID, _, _, _, _) -> (writeln("\nNão há um doce com esse id.\n"), chooseCandies(PurchaseID)) ;
+    (utils:inputNumber("Digite a quantidade: ", Quantity),
+
+    (Quantity =< 0 -> (writeln("\nA quantidade não pode ser menor ou igual a 0.\n"), chooseCandies(PurchaseID)) ; 
+     assertz(db:purchase_candy(PurchaseID, CandyID, Quantity)),
+     db:writePurchaseCandy,
+
+     findall(PurchaseCandyID, db:purchase_candy(PurchaseID, PurchaseCandyID, _), PurchaseCandiesID),
+     findall(DBCandyID, db:candy(DBCandyID, _, _, _, _), CandiesID),
+     length(PurchaseCandiesID, CurrentCandiesID),
+     length(CandiesID, TotalCandiesID),
+
+     (TotalCandiesID =:= CurrentCandiesID -> (writeln("\nVocê já adicionou todos os doces disponíveis.\n"), !) ; 
+     utils:input("Deseja escolher mais doce? [S/N]: ", I),
+     (I =:= "S" -> chooseCandies(PurchaseID) ; !)
+     )
+    ))
+   )
+  ).
 
 chooseDrinks(PurchaseID) :- 
   utils:inputNumber("Digite o id da bebida: ", DrinkID),
-  utils:inputNumber("Digite a quantidade: ", Quantity),
-  assertz(db:purchase_drink(PurchaseID, DrinkID, Quantity)),
-  db:writePurchaseDrink,
-  utils:input("Deseja escolher mais bebida? [S/N]: ", I),
-  (I =:= "S" -> chooseDrinks(PurchaseID) ; !).
+
+  (db:purchase_drink(PurchaseID, DrinkID, _) -> (writeln("\nVocê já selecionou essa bebida.\n"), chooseDrinks(PurchaseID)) ;
+
+   (\+db:drink(DrinkID, _, _, _, _) -> (writeln("\nNão há uma bebida com esse id.\n"), chooseDrinks(PurchaseID)) ;
+    (utils:inputNumber("Digite a quantidade: ", Quantity),
+
+    (Quantity =< 0 -> (writeln("\nA quantidade não pode ser menor ou igual a 0.\n"), chooseDrinks(PurchaseID)) ; 
+     assertz(db:purchase_drink(PurchaseID, DrinkID, Quantity)),
+     db:writePurchaseDrink,
+
+     findall(PurchaseDrinkID, db:purchase_drink(PurchaseID, PurchaseDrinkID, _), PurchaseDrinksID),
+     findall(DBDrinkID, db:drink(DBDrinkID, _, _, _, _), DrinksID),
+     length(PurchaseDrinksID, CurrentDrinksID),
+     length(DrinksID, TotalDrinksID),
+
+     (TotalDrinksID =:= CurrentDrinksID -> (writeln("\nVocê já adicionou todas as bebidas disponíveis.\n"), !) ; 
+     utils:input("Deseja escolher mais bebida? [S/N]: ", I),
+     (I =:= "S" -> chooseDrinks(PurchaseID) ; !)
+     )
+    ))
+   )
+  ).
 
 registerPurchase :- 
   nextId(ID),
