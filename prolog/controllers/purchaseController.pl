@@ -61,8 +61,8 @@ chooseCandies(PurchaseID) :-
      length(CandiesID, TotalCandiesID),
 
      (TotalCandiesID =:= CurrentCandiesID -> (writeln("\nVocê já adicionou todos os doces disponíveis.\n"), !) ; 
-     utils:input("Deseja escolher mais doce? [S/N]: ", I),
-     (I =:= "S" -> chooseCandies(PurchaseID) ; !)
+     utils:input("Deseja escolher mais doce? [S - SIM ou qualquer letra para NÃO]: ", I),
+     (upcase_atom(I,'S') -> chooseCandies(PurchaseID) ; !)
      )
     ))
    )
@@ -86,8 +86,8 @@ chooseDrinks(PurchaseID) :-
      length(DrinksID, TotalDrinksID),
 
      (TotalDrinksID =:= CurrentDrinksID -> (writeln("\nVocê já adicionou todas as bebidas disponíveis.\n"), !) ; 
-     utils:input("Deseja escolher mais bebida? [S/N]: ", I),
-     (I =:= "S" -> chooseDrinks(PurchaseID) ; !)
+     utils:input("Deseja escolher mais bebida? [S - SIM ou qualquer letra para NÃO]: ", I),
+     (upcase_atom(I,'S') -> chooseDrinks(PurchaseID) ; !)
      )
     ))
    )
