@@ -20,14 +20,14 @@ start :-
                 start);
    Op =:= 2 -> (utils:inputNumber("Digite o id do funcionário: ", EmployeeID),
                 personController:existsEmployee(EmployeeID),
-                employeeInteraction(EmployeeID);
-                writeln("Funcionário inexistente."),
+                callEmployeeInteraction(EmployeeID);
+                writeln("Não existe funcionário com o ID informado."),
                 wait,
                 start);
    Op =:= 3 -> (utils:inputNumber("Digite o id do cliente: ", CustomerID),
                 personController:existsCustomer(CustomerID),
                 customerInteraction(CustomerID);
-                writeln("Cliente inexistente."),
+                writeln("Não existe cliente com o ID informado."),
                 wait,
                 start);
    Op =:= 4 -> writeln("\nVolte sempre!"), halt;
@@ -40,6 +40,13 @@ callOwnerInteraction :-
   personController:existsOwnerByID(OwnerID),
   ownerInteraction;
   writeln("Não existe dono com o ID informado."),
+  wait,
+  start.
+
+callEmployeeInteraction(EmployeeID) :-
+  personController:existsSellerByID(EmployeeID),
+  employeeInteraction(EmployeeID);
+  writeln("O ID informado não pertence a um vendedor."),
   wait,
   start.
 
