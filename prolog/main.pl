@@ -30,7 +30,7 @@ start :-
                 writeln("Não existe cliente com o ID informado."),
                 wait,
                 start);
-   Op =:= 4 -> writeln("\n\e[1mVolte sempre!\e[0m"), halt;
+   Op =:= 4 -> writeln("\n\e[1mVolte sempre!\n\n\e[0m"), halt;
    start), 
    start;
    start.
@@ -61,7 +61,7 @@ ownerInteraction :-
    Op =:= 3 -> itemController:registerDrink;
    Op =:= 4 -> utils:inputNumber("Digite o id do doce: ", CandyID), itemController:removeCandy(CandyID);
    Op =:= 5 -> utils:inputNumber("Digite o id da bebida: ", DrinkID), itemController:removeDrink(DrinkID);
-   Op =:= 6 -> personController:showEmployees;
+   Op =:= 6 -> personController:showEmployees, wait;
    Op =:= 7 -> itemController:showCandies, wait;
    Op =:= 8 -> itemController:showDrinks, wait;
    Op =:= 9 -> purchaseController:showPurchases, wait;
@@ -78,7 +78,7 @@ customerInteraction(CustomerID) :-
   (Op =:= 1 -> itemController:showCandyMenuWellRated;
    Op =:= 2 -> itemController:showCandyMenu;
    Op =:= 3 -> purchaseController:registerPurchaseByCustomer(CustomerID);
-   Op =:= 4 -> purchaseController:showPurchasesByCustomer(CustomerID);
+   Op =:= 4 -> purchaseController:showPurchasesByCustomer(CustomerID),wait;
    Op =:= 5 -> utils:inputNumber("Digite o id da compra: ", PurchaseID), purchaseController:makePurchaseReview(PurchaseID);
    Op =:= 6 -> start;
    customerInteraction(CustomerID)),
@@ -93,8 +93,8 @@ employeeInteraction(EmployeeID) :-
   utils:inputNumber("Opção: ", Op),
   (Op =:= 1 -> personController:registerCustomer;
    Op =:= 2 -> purchaseController:registerPurchaseByEmployee(EmployeeID);
-   Op =:= 3 -> personController:showCustomers;
-   Op =:= 4 -> purchaseController:showPurchasesByEmployee(EmployeeID);
+   Op =:= 3 -> personController:showCustomers, wait;
+   Op =:= 4 -> purchaseController:showPurchasesByEmployee(EmployeeID), wait;
    Op =:= 5 -> start;
    employeeInteraction(EmployeeID)),
    employeeInteraction(EmployeeID);

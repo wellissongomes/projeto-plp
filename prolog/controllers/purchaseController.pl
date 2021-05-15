@@ -15,20 +15,16 @@ showPurchasesByEmployee(EmployeeID) :-
   db:purchase(_,EmployeeID, _, _, _, _),
   writeln("\e[1mVendas\e[0m\n"),
   forall(db:purchase(PurchId, EmployeeID, CustId, Score, Price, _),
-         show:showPurchase(PurchId, EmployeeID, CustId, Score, Price)),
-  wait;
-  writeln("Não há vendas feitas pelo funcionário logado."),
-  wait.
+         show:showPurchase(PurchId, EmployeeID, CustId, Score, Price));
+  writeln("Não há vendas feitas pelo funcionário logado.").
 
 showPurchasesByCustomer(CustomerID) :-
   clear,
   db:purchase(_,_, CustomerID, _, _, _),
   writeln("\e[1mCompras\e[0m\n"),
   forall(db:purchase(PurchId, EmpId, CustomerID, Score, Price, _),
-         show:showPurchase(PurchId, EmpId, CustomerID, Score, Price)),
-  wait;
-  writeln("Não há compras feitas pelo cliente logado."),
-  wait.
+         show:showPurchase(PurchId, EmpId, CustomerID, Score, Price));
+  writeln("Não há compras feitas pelo cliente logado.").
 
 showPurchase(ID) :- 
   clear,

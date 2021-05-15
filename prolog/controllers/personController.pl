@@ -72,17 +72,13 @@ showEmployees :-
   existsEmployee(Employee),
   writeln("\e[1mFuncionários\e[0m\n"),
   forall(db:employee(EmployeeID, Ssn, Name, Age, Role),
-         show:showEmployee(EmployeeID, Ssn, Name, Age, Role)),
-  wait;
-  writeln("Não há funcionários presentes no sistema."),
-  wait.
+         show:showEmployee(EmployeeID, Ssn, Name, Age, Role));
+  writeln("Não há funcionários presentes no sistema.").
 
 showCustomers :-
   clear,
   existsCustomer(Customer),
   writeln("\e[1mClientes\e[0m\n"),
   forall(db:customer(CustomerID, Ssn, Name, Age, Role),
-         show:showCustomer(CustomerID, Ssn, Name, Age, Role)),
-  wait;
-  writeln("Não há clientes presentes no sistema."),
-  wait.
+         show:showCustomer(CustomerID, Ssn, Name, Age, Role));
+  writeln("Não há clientes presentes no sistema.").
