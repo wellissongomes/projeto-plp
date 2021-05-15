@@ -1,4 +1,4 @@
-:- module(purchaseController, [showPurchases/0, registerPurchase/0, purchaseReview/0]).
+:- module(purchaseController, [showPurchases/0, purchaseReview/0, registerPurchaseByCustomer/1, registerPurchaseByEmployee/1]).
 
 :- use_module('./persistence/db.pl').
 :- use_module('../util/show.pl').
@@ -93,10 +93,8 @@ chooseDrinks(PurchaseID) :-
    )
   ).
 
-registerPurchase :- 
+registerPurchase(EmployeeID, CustomerID) :- 
   nextId(ID),
-  utils:inputNumber('ID employee: ', EmployeeID),
-  utils:inputNumber('ID customer: ', CustomerID),
   chooseCandies(ID),
   chooseDrinks(ID),
   calculatePriceCandy(ID, TotalPriceCandy),
@@ -106,6 +104,14 @@ registerPurchase :-
   assertz(db:purchase(ID, EmployeeID, CustomerID, 5, PurchasePrice, false)),
   showPurchase(ID),
   db:writePurchase.
+
+registerPurchaseByCustomer(CustomerID) :- 
+  utils:inputNumber('ID do Empregado: ', EmployeeID),
+  registerPurchase(EmployeeID, CustomerID).
+
+registerPurchaseByEmployee(EmployeeID) :- 
+  utils:inputNumber('ID do Cliente: ', CustomerID),
+  registerPurchase(EmployeeID, CustomerID).
 
 makePurchaseReview(PurchaseID) :-
   db:purchase(PurchaseID, EmployeeID, CustId, Score, Price, HasBeenReviwed),
