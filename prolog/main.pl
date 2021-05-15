@@ -30,7 +30,7 @@ start :-
                 writeln("Não existe cliente com o ID informado."),
                 wait,
                 start);
-   Op =:= 4 -> writeln("\nVolte sempre!"), halt;
+   Op =:= 4 -> writeln("\n\e[1mVolte sempre!\e[0m"), halt;
    start), 
    start;
    start.
@@ -55,15 +55,16 @@ ownerInteraction :-
   chat:slogan,
   chat:ownerOptions,
   utils:inputNumber("Opção: ", Op),
+  clear,
   (Op =:= 1 -> personController:registerEmployee;
    Op =:= 2 -> itemController:registerCandy;
    Op =:= 3 -> itemController:registerDrink;
    Op =:= 4 -> utils:inputNumber("Digite o id do doce: ", CandyID), itemController:removeCandy(CandyID);
    Op =:= 5 -> utils:inputNumber("Digite o id da bebida: ", DrinkID), itemController:removeDrink(DrinkID);
    Op =:= 6 -> personController:showEmployees;
-   Op =:= 7 -> itemController:showCandies;
-   Op =:= 8 -> itemController:showDrinks;
-   Op =:= 9 -> purchaseController:showPurchases;
+   Op =:= 7 -> itemController:showCandies, wait;
+   Op =:= 8 -> itemController:showDrinks, wait;
+   Op =:= 9 -> purchaseController:showPurchases, wait;
    Op =:= 10 -> start;
    ownerInteraction),
    ownerInteraction;

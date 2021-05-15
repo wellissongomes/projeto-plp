@@ -69,15 +69,20 @@ registerPerson(Name, Age) :-
   utils:inputNumber("Idade: ", Age).
 
 showEmployees :-
-  clear,
-  writeln("Funcionários\n"),
+  existsEmployee(Employee),
+  writeln("\e[1mFuncionários\e[0m\n"),
   forall(db:employee(EmployeeID, Ssn, Name, Age, Role),
          show:showEmployee(EmployeeID, Ssn, Name, Age, Role)),
+  wait;
+  writeln("Não há funcionários presentes no sistema."),
   wait.
 
 showCustomers :-
   clear,
-  writeln("Clientes\n"),
+  existsCustomer(Customer),
+  writeln("\e[1mClientes\e[0m\n"),
   forall(db:customer(CustomerID, Ssn, Name, Age, Role),
          show:showCustomer(CustomerID, Ssn, Name, Age, Role)),
+  wait;
+  writeln("Não há clientes presentes no sistema."),
   wait.

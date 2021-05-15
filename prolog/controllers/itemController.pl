@@ -34,19 +34,19 @@ registerDrink :-
   wait.
 
 showCandies :-
-  clear,
-  writeln("Doces\n"),
+  db:candy(DBCandiesID, _, _, _, _),
+  writeln("\n\e[1mDoces\e[0m\n"),
   forall(db:candy(CandyID, Name, Description, CandyPrice, CandyScore), 
-         show:showItem(CandyID, Name, Description, CandyPrice, CandyScore)),
-  wait.
+         show:showItem(CandyID, Name, Description, CandyPrice, CandyScore));
+  writeln("\nNão há doces presentes no sistema.").
   
 
 showDrinks :-
-  clear,
-  writeln("Bebidas\n"),
+  db:drink(DBDrinkID, _, _, _, _),
+  writeln("\n\e[1mBebidas\e[0m\n"),
   forall(db:drink(DrinkID, Name, Description, DrinkPrice, DrinkScore), 
-         show:showItem(DrinkID, Name, Description, DrinkPrice, DrinkScore)),
-  wait.
+         show:showItem(DrinkID, Name, Description, DrinkPrice, DrinkScore));
+  writeln("\nNão há bebidas presentes no sistema.").
   
 removeCandy(CandyID) :-
   db:candy(CandyID, Name, Description, CandyPrice, CandyScore),
@@ -67,30 +67,25 @@ removeDrink(DrinkID) :-
 
 showCandyMenuWellRated :-
   clear,
-  writeln('Produtos bem avaliados'),
-  writeln('\n\nDOCES\n'),
-
+  writeln('\e[1mProdutos bem avaliados\e[0m'),
+  writeln('\n\n\e[1mDOCES\e[0m\n'),
+  ((db:candy(_, _, _, _, ScoreCandyT), ScoreCandyT >= 4),
   forall((db:candy(CandyID, Name, Description, Price, ScoreCandy),
           ScoreCandy >= 4),
-          show:showItem(CandyID, Name, Description, Price, ScoreCandy)),
-    
-  writeln('\n\nBEBIDAS\n'),
-
+          show:showItem(CandyID, Name, Description, Price, ScoreCandy));
+  writeln("\nNão há doces bem avaliados no sistema.")),
+  
+  writeln('\n\n\e[1mBEBIDAS\e[0m\n'),
+  ((db:drink(_, _, _, _, ScoreDrinkT), ScoreDrinkT >= 4),
   forall((db:drink(DrinkID, Name, Description, Price, ScoreDrink),
           ScoreDrink >= 4),
-          show:showItem(DrinkID, Name, Description, Price, ScoreDrink)),
+          show:showItem(DrinkID, Name, Description, Price, ScoreDrink));
+  writeln("\nNão há bebidas bem avaliadas no sistema.")),
   wait.
 
 showCandyMenu :-
   clear,
-  writeln("Cardápio"),
-  writeln('\n\nDOCES\n'),
-
-  forall((db:candy(CandyID, Name, Description, Price, ScoreCandy)),
-          show:showItem(CandyID, Name, Description, Price, ScoreCandy)),
-    
-  writeln('\n\nBEBIDAS\n'),
-
-  forall((db:drink(DrinkID, Name, Description, Price, ScoreDrink)),
-          show:showItem(DrinkID, Name, Description, Price, ScoreDrink)),
+  writeln("\e[1mCardápio\e[0m\n"),
+  showCandies,
+  showDrinks,
   wait.
