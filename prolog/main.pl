@@ -50,6 +50,8 @@ callEmployeeInteraction(EmployeeID) :-
   wait,
   start.
 
+
+
 ownerInteraction :-
   clear,
   chat:slogan,
@@ -59,8 +61,8 @@ ownerInteraction :-
   (Op =:= 1 -> personController:registerEmployee;
    Op =:= 2 -> itemController:registerCandy;
    Op =:= 3 -> itemController:registerDrink;
-   Op =:= 4 -> utils:inputNumber("Digite o id do doce: ", CandyID), itemController:removeCandy(CandyID);
-   Op =:= 5 -> utils:inputNumber("Digite o id da bebida: ", DrinkID), itemController:removeDrink(DrinkID);
+   Op =:= 4 -> itemController:callRemoveCandy;
+   Op =:= 5 -> itemController:callRemoveDrink;
    Op =:= 6 -> personController:showEmployees, wait;
    Op =:= 7 -> itemController:showCandies, wait;
    Op =:= 8 -> itemController:showDrinks, wait;
@@ -69,6 +71,7 @@ ownerInteraction :-
    ownerInteraction),
    ownerInteraction;
    ownerInteraction.
+
 
 customerInteraction(CustomerID) :-
   clear,
@@ -79,7 +82,7 @@ customerInteraction(CustomerID) :-
    Op =:= 2 -> itemController:showCandyMenu;
    Op =:= 3 -> purchaseController:registerPurchaseByCustomer(CustomerID);
    Op =:= 4 -> purchaseController:showPurchasesByCustomer(CustomerID),wait;
-   Op =:= 5 -> utils:inputNumber("Digite o id da compra: ", PurchaseID), purchaseController:makePurchaseReview(PurchaseID);
+   Op =:= 5 -> purchaseController:callMakePurchaseReview;
    Op =:= 6 -> start;
    customerInteraction(CustomerID)),
    customerInteraction(CustomerID);

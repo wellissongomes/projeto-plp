@@ -109,11 +109,24 @@ registerPurchase(EmployeeID, CustomerID) :-
 
 registerPurchaseByCustomer(CustomerID) :- 
   utils:inputNumber('ID do Empregado: ', EmployeeID),
-  registerPurchase(EmployeeID, CustomerID).
+  personController:existsEmployee(EmployeeID) -> 
+  (personController:existsSellerByID(EmployeeID) ->
+    registerPurchase(EmployeeID, CustomerID);
+    writeln("O ID informado não pertence a um vendedor."), wait);
+  writeln("Não existe funcionário com o ID informado."), wait.
 
 registerPurchaseByEmployee(EmployeeID) :- 
   utils:inputNumber('ID do Cliente: ', CustomerID),
-  registerPurchase(EmployeeID, CustomerID).
+  personController:existsCustomer(CustomerID), 
+  registerPurchase(EmployeeID, CustomerID);
+  writeln("Não existe cliente com o ID informado."), wait.
+
+callMakePurchaseReview :-
+  utils:inputNumber("Digite o id da compra: ", PurchaseID),
+  db:purchase(PurchaseID, _, _, _, _, _),
+  makePurchaseReview(PurchaseID);
+  writeln("Não existe compra com ID informado."),
+  wait.
 
 makePurchaseReview(PurchaseID) :-
   db:purchase(PurchaseID, EmployeeID, CustId, Score, Price, HasBeenReviwed),

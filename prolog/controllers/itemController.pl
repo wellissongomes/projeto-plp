@@ -47,7 +47,22 @@ showDrinks :-
   forall(db:drink(DrinkID, Name, Description, DrinkPrice, DrinkScore), 
          show:showItem(DrinkID, Name, Description, DrinkPrice, DrinkScore));
   writeln("\nNão há bebidas presentes no sistema.").
-  
+
+
+callRemoveCandy :-
+  utils:inputNumber("Digite o id do doce: ", CandyID),
+  db:candy(CandyID, _, _, _, _),
+  removeCandy(CandyID);
+  writeln("Não existe doce com ID informado."),
+  wait.
+
+callRemoveDrink :-
+  utils:inputNumber("Digite o id da bebida: ", DrinkID),
+  db:drink(DrinkID, _, _, _, _),
+  removeDrink(DrinkID);
+  writeln("Não existe bebida com ID informado."),
+  wait. 
+
 removeCandy(CandyID) :-
   db:candy(CandyID, Name, Description, CandyPrice, CandyScore),
   retract(db:candy(CandyID, Name, Description, CandyPrice, CandyScore)),
