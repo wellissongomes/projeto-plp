@@ -10,6 +10,9 @@ existsCustomer(CustomerID) :-
 existsEmployee(EmployeeID) :-
   db:employee(EmployeeID, _, _, _, _).
 
+existsSellerByID(EmployeeID) :-
+  db:employee(EmployeeID, _, _, _, "vendedor").
+
 existsOwner :-
   db:employee(_, _, _, _, "dono").
 
@@ -66,15 +69,16 @@ registerPerson(Name, Age) :-
   utils:inputNumber("Idade: ", Age).
 
 showEmployees :-
-  clear,
-  writeln("Funcionários\n"),
+  existsEmployee(Employee),
+  writeln("\e[1mFuncionários\e[0m\n"),
   forall(db:employee(EmployeeID, Ssn, Name, Age, Role),
-         show:showEmployee(EmployeeID, Ssn, Name, Age, Role)),
-  wait.
+         show:showEmployee(EmployeeID, Ssn, Name, Age, Role));
+  writeln("Não há funcionários presentes no sistema.").
 
 showCustomers :-
   clear,
-  writeln("Clientes\n"),
+  existsCustomer(Customer),
+  writeln("\e[1mClientes\e[0m\n"),
   forall(db:customer(CustomerID, Ssn, Name, Age, Role),
-         show:showCustomer(CustomerID, Ssn, Name, Age, Role)),
-  wait.
+         show:showCustomer(CustomerID, Ssn, Name, Age, Role));
+  writeln("Não há clientes presentes no sistema.").

@@ -27,10 +27,10 @@ slogan :-
 
 chatLogin :-
   writeln('Como você deseja logar no sistema?\n'),
-  writeln('(1) logar como dono'),
-  writeln('(2) logar como funcionário'),
-  writeln('(3) logar como cliente'),
-  writeln('(4) sair\n'),
+  writeln('(1) Logar como dono'),
+  writeln('(2) Logar como funcionário'),
+  writeln('(3) Logar como cliente'),
+  writeln('(4) Sair\n'),
   writeln('----------------------').
 
 loginScreen :-
@@ -39,7 +39,7 @@ loginScreen :-
 
 ownerOptions :-
   writeln('--------------------------'),
-  writeln('Funcionalidades do dono  |'),
+  writeln('Funcionalidades do \e[1mDono\e[0m  |'),
   writeln('--------------------------'),
   writeln('O que você deseja fazer?'),
   writeln('(1) Cadastrar funcionário'),
@@ -56,7 +56,7 @@ ownerOptions :-
 
 customerOptions :-
   writeln('----------------------------------'),
-  writeln('Funcionalidades do Cliente       |'),
+  writeln('Funcionalidades do \e[1mCliente\e[0m       |'),
   writeln('----------------------------------'),
   writeln('O que você deseja fazer?'),
   writeln('(1) Listar produtos bem avaliados'),
@@ -68,9 +68,9 @@ customerOptions :-
   writeln('----------------------------------').
 
 employeeOptions :-
-  writeln('---------------------------------'),
-  writeln('Funcionalidades do Funcionário  |'),
-  writeln('---------------------------------'),
+  writeln('----------------------------------'),
+  writeln('Funcionalidades do \e[1mFuncionário\e[0m   |'),
+  writeln('----------------------------------'),
   writeln('O que você deseja fazer?'),
   writeln('(1) Cadastrar cliente'),
   writeln('(2) Cadastrar venda'),
