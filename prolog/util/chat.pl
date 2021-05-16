@@ -27,13 +27,11 @@ slogan :-
 
 chatLogin :-
   writeln('Como você deseja logar no sistema?\n'),
-  writeln('(1) logar como dono'),
-  writeln('(2) logar como funcionário'),
-  writeln('(3) logar como cliente'),
-  writeln('(4) sair\n'),
-  writeln('----------------------'),
-  write('Número: '),
-  read(Z).
+  writeln('(1) Logar como dono'),
+  writeln('(2) Logar como funcionário'),
+  writeln('(3) Logar como cliente'),
+  writeln('(4) Sair\n'),
+  writeln('----------------------').
 
 loginScreen :-
   slogan,
@@ -41,7 +39,7 @@ loginScreen :-
 
 ownerOptions :-
   writeln('--------------------------'),
-  writeln('Funcionalidades do dono  |'),
+  writeln('Funcionalidades do \e[1mDono\e[0m  |'),
   writeln('--------------------------'),
   writeln('O que você deseja fazer?'),
   writeln('(1) Cadastrar funcionário'),
@@ -54,13 +52,11 @@ ownerOptions :-
   writeln('(8) Listar bebidas'),
   writeln('(9) Listar vendas'),
   writeln('(10) VOLTAR'),
-  writeln('--------------------------'),
-  write('Número: '),
-  read(Z).
+  writeln('--------------------------').
 
 customerOptions :-
   writeln('----------------------------------'),
-  writeln('Funcionalidades do Cliente       |'),
+  writeln('Funcionalidades do \e[1mCliente\e[0m       |'),
   writeln('----------------------------------'),
   writeln('O que você deseja fazer?'),
   writeln('(1) Listar produtos bem avaliados'),
@@ -69,20 +65,16 @@ customerOptions :-
   writeln('(4) Listar suas compras'),
   writeln('(5) Avaliar uma compra'),
   writeln('(6) VOLTAR'),
-  writeln('----------------------------------'),
-  write('Número: '),
-  read(Z).
+  writeln('----------------------------------').
 
 employeeOptions :-
-  writeln('---------------------------------'),
-  writeln('Funcionalidades do Funcionário  |'),
-  writeln('---------------------------------'),
+  writeln('----------------------------------'),
+  writeln('Funcionalidades do \e[1mFuncionário\e[0m   |'),
+  writeln('----------------------------------'),
   writeln('O que você deseja fazer?'),
   writeln('(1) Cadastrar cliente'),
   writeln('(2) Cadastrar venda'),
   writeln('(3) Listar clientes'),
   writeln('(4) Listar suas vendas'),
   writeln('(5) VOLTAR'),
-  writeln('---------------------------------'),
-  write('Número: '),
-  read(Z).
+  writeln('---------------------------------').

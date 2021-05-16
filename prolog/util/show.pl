@@ -17,7 +17,7 @@ showPurchase(PurchId, EmpId, CustId, Score, Price) :-
   format('ID do cliente: ~d~n', [CustId]),
   format('Avaliação (0 - 5): ~d~n', [Score]),
   format('Valor total a pagar: R$~2f~n', [Price]),
-  writeln('\nPedido:'),
+  writeln('\n\e[1mPedido:\e[0m'),
   writeln('\n\nDOCES\n'),
   forall((db:purchase_candy(PurchId, CandyId, Quantity),
          db:candy(CandyId, Name, Description, CandyPrice, ScoreCandy)),
