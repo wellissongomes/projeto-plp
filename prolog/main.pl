@@ -50,19 +50,7 @@ callEmployeeInteraction(EmployeeID) :-
   wait,
   start.
 
-callRemoveCandy :-
-  utils:inputNumber("Digite o id do doce: ", CandyID),
-  db:candy(CandyID, _, _, _, _),
-  itemController:removeCandy(CandyID);
-  writeln("Não existe doce com ID informado."),
-  wait.
 
-callRemoveDrink :-
-  utils:inputNumber("Digite o id da bebida: ", DrinkID),
-  db:drink(DrinkID, _, _, _, _),
-  itemController:removeDrink(DrinkID);
-  writeln("Não existe bebida com ID informado."),
-  wait. 
 
 ownerInteraction :-
   clear,
@@ -73,8 +61,8 @@ ownerInteraction :-
   (Op =:= 1 -> personController:registerEmployee;
    Op =:= 2 -> itemController:registerCandy;
    Op =:= 3 -> itemController:registerDrink;
-   Op =:= 4 -> callRemoveCandy;
-   Op =:= 5 -> callRemoveDrink;
+   Op =:= 4 -> itemController:callRemoveCandy;
+   Op =:= 5 -> itemController:callRemoveDrink;
    Op =:= 6 -> personController:showEmployees, wait;
    Op =:= 7 -> itemController:showCandies, wait;
    Op =:= 8 -> itemController:showDrinks, wait;
@@ -83,17 +71,6 @@ ownerInteraction :-
    ownerInteraction),
    ownerInteraction;
    ownerInteraction.
-
-
-
-callMakePurchaseReview(CustomerID) :-
-  utils:inputNumber("Digite o id da compra: ", PurchaseID),
-  db:purchase(PurchaseID, _, _, _, _, _),
-  purchaseController:makePurchaseReview(PurchaseID);
-  writeln("Não existe compra com ID informado."),
-  wait,
-  customerInteraction(CustomerID).
-
 
 
 customerInteraction(CustomerID) :-
@@ -105,7 +82,7 @@ customerInteraction(CustomerID) :-
    Op =:= 2 -> itemController:showCandyMenu;
    Op =:= 3 -> purchaseController:registerPurchaseByCustomer(CustomerID);
    Op =:= 4 -> purchaseController:showPurchasesByCustomer(CustomerID),wait;
-   Op =:= 5 -> callMakePurchaseReview(CustomerID);
+   Op =:= 5 -> purchaseController:callMakePurchaseReview;
    Op =:= 6 -> start;
    customerInteraction(CustomerID)),
    customerInteraction(CustomerID);

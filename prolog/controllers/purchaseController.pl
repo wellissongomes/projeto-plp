@@ -121,6 +121,13 @@ registerPurchaseByEmployee(EmployeeID) :-
   registerPurchase(EmployeeID, CustomerID);
   writeln("Não existe cliente com o ID informado."), wait.
 
+callMakePurchaseReview :-
+  utils:inputNumber("Digite o id da compra: ", PurchaseID),
+  db:purchase(PurchaseID, _, _, _, _, _),
+  makePurchaseReview(PurchaseID);
+  writeln("Não existe compra com ID informado."),
+  wait.
+
 makePurchaseReview(PurchaseID) :-
   db:purchase(PurchaseID, EmployeeID, CustId, Score, Price, HasBeenReviwed),
   (\+HasBeenReviwed -> 
