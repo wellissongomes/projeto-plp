@@ -70,6 +70,18 @@ ownerInteraction :-
    ownerInteraction;
    ownerInteraction.
 
+
+
+callMakePurchaseReview(CustomerID) :-
+  utils:inputNumber("Digite o id da compra: ", PurchaseID),
+  db:purchase(PurchaseID, _, _, _, _, _),
+  purchaseController:makePurchaseReview(PurchaseID);
+  writeln("Não existe compra com ID informado."),
+  wait,
+  customerInteraction(CustomerID).
+
+
+
 customerInteraction(CustomerID) :-
   clear,
   chat:slogan,
@@ -79,7 +91,7 @@ customerInteraction(CustomerID) :-
    Op =:= 2 -> itemController:showCandyMenu;
    Op =:= 3 -> purchaseController:registerPurchaseByCustomer(CustomerID);
    Op =:= 4 -> purchaseController:showPurchasesByCustomer(CustomerID),wait;
-   Op =:= 5 -> utils:inputNumber("Digite o id da compra: ", PurchaseID), purchaseController:makePurchaseReview(PurchaseID);
+   Op =:= 5 -> callMakePurchaseReview(CustomerID);
    Op =:= 6 -> start;
    customerInteraction(CustomerID)),
    customerInteraction(CustomerID);
