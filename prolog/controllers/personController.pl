@@ -27,15 +27,15 @@ registerCustomer :-
   db:nextId(ID),
   utils:input("CPF: ", Ssn),
 
-  ((db:customer(_, Ssn, _, _, _), \+db:employee(_, Ssn, Name, Age, _) -> writeln('Já existe um cliente cadastrado com o CPF informado.\n')) ;
+  ((db:customer(_, Ssn, _, _, _) -> writeln('\nJá existe um cliente cadastrado com o CPF informado.')) ;
 
-  (db:employee(_, Ssn, Name, Age, _) -> format('Olá, ~w~n~n', [Name]) ;
+  (db:employee(_, Ssn, Name, Age, _) -> format('\nOlá, ~w~n', [Name]) ;
    registerPerson(Name, Age)),
    
    utils:input("Digite seu endereço: ", Address),
    saveUser(ID, Ssn, Name, Age, Address),
    clear,
-   writeln("Cliente cadastrado com sucesso!\n"),
+   writeln("\nCliente cadastrado com sucesso!"),
    show:showCustomer(ID, Ssn, Name, Age, Address)),
    utils:wait.  
 
@@ -49,7 +49,7 @@ registerEmployee :-
   db:assertz(employee(ID, Ssn, Name, Age, Role)),
   clear,
   db:writeEmployee,
-  writeln("Funcionário cadastrado com sucesso!\n"),
+  writeln("\nFuncionário cadastrado com sucesso!\n"),
   show:showEmployee(ID, Ssn, Name, Age, Role),
   utils:wait.
 
