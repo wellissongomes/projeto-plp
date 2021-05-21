@@ -112,8 +112,8 @@ registerPurchaseByCustomer(CustomerID) :-
   personController:existsEmployee(EmployeeID) -> 
   (personController:existsSellerByID(EmployeeID) ->
     registerPurchase(EmployeeID, CustomerID);
-    writeln("\nO ID informado não pertence a um vendedor."), wait);
-  writeln("\nNão existe funcionário com o ID informado."), wait.
+    writeln("\nO ID informado não pertence a um vendedor."));
+  writeln("\nNão existe funcionário com o ID informado.").
 
 registerPurchaseByEmployee(EmployeeID) :- 
   utils:inputNumber('ID do Cliente: ', CustomerID),
