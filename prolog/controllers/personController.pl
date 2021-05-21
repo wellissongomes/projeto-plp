@@ -10,6 +10,9 @@ existsCustomer(CustomerID) :-
 existsEmployee(EmployeeID) :-
   db:employee(EmployeeID, _, _, _, _).
 
+existsSeller :-
+  db:employee(_, _, _, _, "vendedor").
+
 existsSellerByID(EmployeeID) :-
   db:employee(EmployeeID, _, _, _, "vendedor").
 

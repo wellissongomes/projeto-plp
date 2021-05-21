@@ -18,7 +18,7 @@ start :-
                 callOwnerInteraction;
                 personController:registerOwner,
                 start);
-   Op =:= 2 -> ((personController:existsEmployee(_) -> 
+   Op =:= 2 -> ((personController:existsSeller -> 
                 (utils:inputNumber("Digite o id do funcionário: ", EmployeeID),
                 personController:existsEmployee(EmployeeID),
                 callEmployeeInteraction(EmployeeID);
