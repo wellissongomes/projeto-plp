@@ -12,7 +12,8 @@ showItem(ItemId, Name, Description, Price, ScoreItem) :-
   writeln('-----------------------').
 
 showPurchase(PurchId, EmpId, CustId, Score, Price) :- 
-  format('\nID da compra: ~d~n', [PurchId]),
+  writeln('\n-----------------------'),
+  format('ID da compra: ~d~n', [PurchId]),
   format('ID do funcionário: ~d~n', [EmpId]),
   format('ID do cliente: ~d~n', [CustId]),
   format('Avaliação (0 - 5): ~d~n', [Score]),
