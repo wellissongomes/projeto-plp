@@ -19,11 +19,11 @@ start :-
                 personController:registerOwner,
                 start);
    Op =:= 2 -> ((personController:existsSeller -> 
-                (utils:inputNumber("Digite o id do funcionário: ", EmployeeID),
+                (utils:inputNumber("Digite o id do vendedor: ", EmployeeID),
                 personController:existsEmployee(EmployeeID),
                 callEmployeeInteraction(EmployeeID);
-                writeln("\nNão existe funcionário com o ID informado."));
-                writeln("\nNão existe funcionários cadastrados.")),
+                writeln("\nNão existe vendedor com o ID informado."));
+                writeln("\nNão existe vendendores cadastrados.")),
                 wait,
                 start);
    Op =:= 3 -> ((personController:existsCustomer(_)->
