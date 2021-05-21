@@ -34,7 +34,7 @@ registerDrink :-
   wait.
 
 showCandies :-
-  db:candy(DBCandiesID, _, _, _, _),
+  db:candy(_, _, _, _, _),
   writeln("\n\e[1mDoces\e[0m\n"),
   forall(db:candy(CandyID, Name, Description, CandyPrice, CandyScore), 
          show:showItem(CandyID, Name, Description, CandyPrice, CandyScore));
@@ -42,7 +42,7 @@ showCandies :-
   
 
 showDrinks :-
-  db:drink(DBDrinkID, _, _, _, _),
+  db:drink(_, _, _, _, _),
   writeln("\n\e[1mBebidas\e[0m\n"),
   forall(db:drink(DrinkID, Name, Description, DrinkPrice, DrinkScore), 
          show:showItem(DrinkID, Name, Description, DrinkPrice, DrinkScore));
