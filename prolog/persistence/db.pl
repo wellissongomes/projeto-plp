@@ -1,4 +1,4 @@
-:- module(db, [init/0, writePurchase/0, nextId/1, writeDrink/0, writePurchaseDrink/0, writeEmployee/0, writeCustomer/0]).
+:- module(db, [init/0, writePurchase/0, nextId/1, writeDrink/0, writePurchaseDrink/0, writeEmployee/0, writeCustomer/0, writeDrinkP/0, writeCandyP/0]).
 
 % PurchaseID, EmployeeID, CustomerID, Score, Price, HasBeenReviwed
 initPurchase :- dynamic purchase/6.
@@ -12,11 +12,23 @@ readCandy :- consult('./data/candy.bd').
 startCandy :- exists_file('./data/candy.bd') -> readCandy ; initCandy.
 writeCandy :- tell('./data/candy.bd'), listing(candy), told.
 
+% CandyID, Name, Description, Price, ScoreCandy
+initCandyP :- dynamic candy_p/5.
+readCandyP :- consult('./data/candy_p.bd').
+startCandyP :- exists_file('./data/candy_p.bd') -> readCandyP ; initCandyP.
+writeCandyP :- tell('./data/candy_p.bd'), listing(candy_p), told.
+
 % DrinkID, Name, Description, Price, ScoreDrink
 initDrink :- dynamic drink/5.
 readDrink :- consult('./data/drink.bd').
 startDrink :- exists_file('./data/drink.bd') -> readDrink ; initDrink.
 writeDrink :- tell('./data/drink.bd'), listing(drink), told.
+
+% DrinkID, Name, Description, Price, ScoreDrink
+initDrinkP :- dynamic drink_p/5.
+readDrinkP :- consult('./data/drink_p.bd').
+startDrinkP :- exists_file('./data/drink_p.bd') -> readDrinkP ; initDrinkP.
+writeDrinkP :- tell('./data/drink_p.bd'), listing(drink_p), told.
 
 % PurchaseID, CandyID, Quantity
 initPurchaseCandy :- dynamic purchase_candy/3.
@@ -48,4 +60,4 @@ startId :- exists_file('./data/id.bd') -> readId ; initId.
 writeId :- tell('./data/id.bd'), listing(id), told.
 nextId(N) :- id(X), retract(id(X)), N is X + 1, assert(id(N)), writeId.
 
-init :- startPurchase, startId, startCandy, startPurchaseCandy, startDrink, startPurchaseDrink, startEmployee, startCustomer.
+init :- startPurchase, startId, startCandy, startPurchaseCandy, startDrink, startPurchaseDrink, startEmployee, startCustomer, startDrinkP, startCandyP.

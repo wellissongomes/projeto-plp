@@ -21,14 +21,14 @@ showPurchase(PurchId, EmpId, CustId, Score, Price) :-
   writeln('\n\e[1mPedido:\e[0m'),
   writeln('\n\nDOCES\n'),
   forall((db:purchase_candy(PurchId, CandyId, Quantity),
-         db:candy(CandyId, Name, Description, CandyPrice, ScoreCandy)),
+         db:candy_p(CandyId, Name, Description, CandyPrice, ScoreCandy)),
          (format('Quantidade: ~d~n', [Quantity]),
          showItem(CandyId, Name, Description, CandyPrice, ScoreCandy))),
  
   writeln('\n\nBEBIDAS\n'),
  
   forall((db:purchase_drink(PurchId, DrinkID, Quantity),
-         db:drink(DrinkID, Name, Description, DrinkPrice, ScoreDrink)),
+         db:drink_p(DrinkID, Name, Description, DrinkPrice, ScoreDrink)),
          (format('Quantidade: ~d~n', [Quantity]),
          showItem(DrinkID, Name, Description, DrinkPrice, ScoreDrink))).
 
