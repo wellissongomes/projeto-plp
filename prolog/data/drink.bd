@@ -1,5 +1,0 @@
-:- dynamic drink/5.
-
-drink(1, "Água", "água sem gás", 1.5, 2).
-drink(2, "Água", "água com gás", 1.5, 4).
-

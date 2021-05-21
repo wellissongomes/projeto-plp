@@ -1,7 +1,0 @@
-:- dynamic customer/5.
-
-customer(1, "214124124", "wellisson", 20, "rua tal").
-customer(87, "22", "22", 22, "fds").
-customer(91, "3667377796", "Maria", 25, "sfda").
-customer(92, "342", "asf", 3, "sda").
-

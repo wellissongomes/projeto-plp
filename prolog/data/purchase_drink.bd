@@ -1,5 +1,0 @@
-:- dynamic purchase_drink/3.
-
-purchase_drink(81, 1, 1).
-purchase_drink(82, 2, 1).
-

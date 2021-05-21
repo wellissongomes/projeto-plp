@@ -1,5 +1,0 @@
-:- dynamic purchase_candy/3.
-
-purchase_candy(81, 1, 1).
-purchase_candy(82, 1, 1).
-

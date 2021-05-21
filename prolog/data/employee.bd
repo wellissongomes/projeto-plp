@@ -1,7 +1,0 @@
-:- dynamic employee/5.
-
-employee(1, "3678374696", "John Doe", 45, "dono").
-employee(2, "4578374696", "Jane Doe", 40, "vendedor").
-employee(3, "3667377796", "Maria", 25, "confeitero").
-employee(23, "22", "22", 22, "vendedor").
-

@@ -10,10 +10,10 @@ registerItem(Description, Price) :-
   utils:inputNumber("Preço: R$", Price).
 
 registerCandy :-
-  db:nextId(ID),
   utils:input("Nome do doce: ", Name),
   registerItem(Description, Price),
   Score is 5,
+  db:nextId(ID),
   assertz(db:candy(ID, Name, Description, Price, Score)),
   db:writeCandy,
   clear,
@@ -22,10 +22,10 @@ registerCandy :-
   wait.
 
 registerDrink :-
-  db:nextId(ID),
   utils:input("Nome da bebida: ", Name),
   registerItem(Description, Price),
   Score is 5,
+  db:nextId(ID),
   assertz(db:drink(ID, Name, Description, Price, Score)),
   db:writeDrink,
   clear,
@@ -50,35 +50,37 @@ showDrinks :-
 
 
 callRemoveCandy :-
-  utils:inputNumber("Digite o id do doce: ", CandyID),
+  (db:candy(_, _, _, _, _) ->
+  (utils:inputNumber("Digite o id do doce: ", CandyID),
   db:candy(CandyID, _, _, _, _),
   removeCandy(CandyID);
-  writeln("Não existe doce com ID informado."),
-  wait.
+  writeln("\nNão existe doce com ID informado."));
+  writeln("\nNão há doces no sistema.")).
+  
 
 callRemoveDrink :-
-  utils:inputNumber("Digite o id da bebida: ", DrinkID),
+  (db:drink(_, _, _, _, _)->
+  (utils:inputNumber("Digite o id da bebida: ", DrinkID),
   db:drink(DrinkID, _, _, _, _),
   removeDrink(DrinkID);
-  writeln("Não existe bebida com ID informado."),
-  wait. 
+  writeln("\nNão existe bebida com ID informado."));
+  writeln("\nNão há bebidas no sistema.")). 
 
 removeCandy(CandyID) :-
   db:candy(CandyID, Name, Description, CandyPrice, CandyScore),
   retract(db:candy(CandyID, Name, Description, CandyPrice, CandyScore)),
   db:writeCandy,
-  show:showItem(CandyID, Name, Description, CandyPrice, CandyScore),
+  clear,
   writeln("\nDoce removido com sucesso."),
-  wait.
+  show:showItem(CandyID, Name, Description, CandyPrice, CandyScore).
 
 removeDrink(DrinkID) :-
-  (db:drink(DrinkID, Name, Description, DrinkPrice, DrinkScore) ->
+  db:drink(DrinkID, Name, Description, DrinkPrice, DrinkScore),
   retract(db:drink(DrinkID, Name, Description, DrinkPrice, DrinkScore)),
   db:writeDrink,
-  show:showItem(DrinkID, Name, Description, DrinkPrice, DrinkScore),
-  writeln("\nBebida removida com sucesso.") ;
-  writeln("Bebida inexistente.")),
-  wait.
+  clear,
+  writeln("\nBebida removida com sucesso."),
+  show:showItem(DrinkID, Name, Description, DrinkPrice, DrinkScore).
 
 showCandyMenuWellRated :-
   clear,

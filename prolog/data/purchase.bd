@@ -1,5 +1,0 @@
-:- dynamic purchase/6.
-
-purchase(81, 2, 1, 5, 20001.5, false).
-purchase(82, 2, 1, 5, 20001.5, false).
-

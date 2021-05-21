@@ -4,11 +4,12 @@
 :- use_module('../util/show.pl').
 
 showPurchases :-
-  db:purchase(Purch, _, _, _, _, _),
+  clear,
+  db:purchase(_, _, _, _, _, _),
   writeln("\e[1mVendas\e[0m\n"),
   forall(db:purchase(PurchId, EmpId, CustId, Score, Price, _),
          show:showPurchase(PurchId, EmpId, CustId, Score, Price));
-  writeln("Não há vendas presentes no sistema.").
+  writeln("\nNão há vendas presentes no sistema.").
 
 showPurchasesByEmployee(EmployeeID) :-
   clear,
@@ -16,7 +17,7 @@ showPurchasesByEmployee(EmployeeID) :-
   writeln("\e[1mVendas\e[0m\n"),
   forall(db:purchase(PurchId, EmployeeID, CustId, Score, Price, _),
          show:showPurchase(PurchId, EmployeeID, CustId, Score, Price));
-  writeln("Não há vendas feitas pelo funcionário logado.").
+  writeln("\nNão há vendas feitas pelo funcionário logado.").
 
 showPurchasesByCustomer(CustomerID) :-
   clear,
@@ -24,14 +25,13 @@ showPurchasesByCustomer(CustomerID) :-
   writeln("\e[1mCompras\e[0m\n"),
   forall(db:purchase(PurchId, EmpId, CustomerID, Score, Price, _),
          show:showPurchase(PurchId, EmpId, CustomerID, Score, Price));
-  writeln("Não há compras feitas pelo cliente logado.").
+  writeln("\nNão há compras feitas pelo cliente logado.").
 
 showPurchase(ID) :- 
   clear,
   writeln("\e[1mCompra\e[0m\n"),
   db:purchase(ID, EmpId, CustId, Score, Price, _),
-  show:showPurchase(ID, EmpId, CustId, Score, Price),
-  wait.
+  show:showPurchase(ID, EmpId, CustId, Score, Price).
 
 totalPriceItem((Price, Quantity), TotalPrice) :- TotalPrice is (Price * Quantity).
 
@@ -112,35 +112,34 @@ registerPurchaseByCustomer(CustomerID) :-
   personController:existsEmployee(EmployeeID) -> 
   (personController:existsSellerByID(EmployeeID) ->
     registerPurchase(EmployeeID, CustomerID);
-    writeln("O ID informado não pertence a um vendedor."), wait);
-  writeln("Não existe funcionário com o ID informado."), wait.
+    writeln("\nO ID informado não pertence a um vendedor."), wait);
+  writeln("\nNão existe funcionário com o ID informado."), wait.
 
 registerPurchaseByEmployee(EmployeeID) :- 
   utils:inputNumber('ID do Cliente: ', CustomerID),
-  personController:existsCustomer(CustomerID), 
+  (personController:existsCustomer(CustomerID) ->
   registerPurchase(EmployeeID, CustomerID);
-  writeln("Não existe cliente com o ID informado."), wait.
+  writeln("\nNão existe cliente com o ID informado.")).
 
 callMakePurchaseReview :-
   utils:inputNumber("Digite o id da compra: ", PurchaseID),
   db:purchase(PurchaseID, _, _, _, _, _),
   makePurchaseReview(PurchaseID);
-  writeln("Não existe compra com ID informado."),
-  wait.
+  writeln("\nNão existe compra com ID informado.").
 
 makePurchaseReview(PurchaseID) :-
   db:purchase(PurchaseID, EmployeeID, CustId, Score, Price, HasBeenReviwed),
   (\+HasBeenReviwed -> 
    utils:inputNumber("Digite a avaliação (VALOR INTEIRO ENTRE 0 E 5): ", NewScore),
-   (NewScore < 0 -> clear, writeln("A avaliação não pode ser negativa.\n"), makePurchaseReview(PurchaseID) ;
-    NewScore > 5 -> clear, writeln("A avaliação não pode ser maior que 5.\n"), makePurchaseReview(PurchaseID) ;
+   (NewScore < 0 -> clear, writeln("\nA avaliação não pode ser negativa.\n"), makePurchaseReview(PurchaseID) ;
+    NewScore > 5 -> clear, writeln("\nA avaliação não pode ser maior que 5.\n"), makePurchaseReview(PurchaseID) ;
     retract(db:purchase(PurchaseID, EmployeeID, CustId, Score, Price, HasBeenReviwed)),
     assertz(db:purchase(PurchaseID, EmployeeID, CustId, NewScore, Price, true)),
     db:writePurchase,
     changeScoreCandies(PurchaseID, NewScore),
     changeScoreDrinks(PurchaseID, NewScore),
-    showPurchase(PurchaseID) ;
-    writeln("\nEssa compra já foi avaliada"))).
+    showPurchase(PurchaseID)); 
+    writeln("\nEssa compra já foi avaliada")).
 
 hasPurchase(PurchaseID) :- 
   db:purchase(PurchaseID, _, _, _, _, _).

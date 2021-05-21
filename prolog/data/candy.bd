@@ -1,7 +1,0 @@
-:- dynamic candy/5.
-
-candy(1, "caja", "doce de caja", 20000, 2).
-candy(2, "Arroz", "Doce", 346, 5).
-candy(3, "Chocolate", "Chocolate ao leite", 34646, 5).
-
-

@@ -24,41 +24,45 @@ saveUser(ID, Ssn, Name, Age, Address) :-
   db:writeCustomer.
 
 registerCustomer :- 
-  db:nextId(ID),
   utils:input("CPF: ", Ssn),
-
+  
   ((db:customer(_, Ssn, _, _, _) -> writeln('\nJá existe um cliente cadastrado com o CPF informado.')) ;
-
   (db:employee(_, Ssn, Name, Age, _) -> format('\nOlá, ~w~n', [Name]) ;
    registerPerson(Name, Age)),
-   
    utils:input("Digite seu endereço: ", Address),
+   db:nextId(ID),
    saveUser(ID, Ssn, Name, Age, Address),
    clear,
    writeln("\nCliente cadastrado com sucesso!"),
    show:showCustomer(ID, Ssn, Name, Age, Address)),
    utils:wait.  
 
-registerEmployee :- 
-  db:nextId(ID),
-  registerPerson(Ssn, Name, Age),
+chooseRole(Role) :-
   writeln("\n(1) Confeitero"),
   writeln("(2) Vendedor"),
   utils:inputNumber("\nCargo: ", Number),
-  (Number =:= 1 -> Role = "confeitero" ; Role = "vendedor"),
+  (Number =:= 1 -> Role = "confeitero" ;
+  Number =:= 2 -> Role = "vendedor"; chooseRole(Role)).
+
+registerEmployee :- 
+  utils:input("CPF: ", Ssn),
+  (db:employee(_, Ssn, _, _, _) -> writeln("\nJá existe um funcionário cadastrado com o CPF informado.");
+  (registerPerson(Name, Age),
+  chooseRole(Role),
+  db:nextId(ID),
   db:assertz(employee(ID, Ssn, Name, Age, Role)),
   clear,
-  db:writeEmployee,
   writeln("\nFuncionário cadastrado com sucesso!\n"),
-  show:showEmployee(ID, Ssn, Name, Age, Role),
-  utils:wait.
+  db:writeEmployee,
+  show:showEmployee(ID, Ssn, Name, Age, Role))), utils:wait.
 
 registerOwner :-
-  writeln("Não existe dono!"),
-  utils:input("\nDeseja cadastrar um dono? [s/n]: ", Op),
-  Op =:= "s",
+  writeln("\nNão existe dono!"),
+  utils:input("\nDeseja cadastrar um dono? [S - SIM ou qualquer letra para NÃO]: ", Op),
+  upcase_atom(Op,'S'),
+  utils:input("CPF: ", Ssn),
+  registerPerson(Name, Age),
   db:nextId(ID),
-  registerPerson(Ssn, Name, Age),
   db:assertz(employee(ID, Ssn, Name, Age, "dono")),
   clear,
   db:writeEmployee,
@@ -72,16 +76,17 @@ registerPerson(Name, Age) :-
   utils:inputNumber("Idade: ", Age).
 
 showEmployees :-
-  existsEmployee(Employee),
+  clear,
+  existsEmployee(_),
   writeln("\e[1mFuncionários\e[0m\n"),
   forall(db:employee(EmployeeID, Ssn, Name, Age, Role),
          show:showEmployee(EmployeeID, Ssn, Name, Age, Role));
-  writeln("Não há funcionários presentes no sistema.").
+  writeln("\nNão há funcionários presentes no sistema.").
 
 showCustomers :-
   clear,
-  existsCustomer(Customer),
+  existsCustomer(_),
   writeln("\e[1mClientes\e[0m\n"),
   forall(db:customer(CustomerID, Ssn, Name, Age, Role),
          show:showCustomer(CustomerID, Ssn, Name, Age, Role));
-  writeln("Não há clientes presentes no sistema.").
+  writeln("\nNão há clientes presentes no sistema.").
