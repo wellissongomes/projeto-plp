@@ -8,7 +8,7 @@
 
 ---
 
-<p align="center"> O nosso sistema a ser desenvolvido consiste em uma doceria, o qual o usuário irá interagir com um chatbot por meios de palavras chaves.
+<p align="center"> O nosso sistema a ser desenvolvido, que consiste em uma doceria, é baseado na interação do usuário com um chatbot por meios de palavras chaves.
     <br>
 </p>
 
