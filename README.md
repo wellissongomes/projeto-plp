@@ -27,7 +27,7 @@ Link para especificação: [clique aqui](https://docs.google.com/document/d/1zug
 
 ## 🏁 Iniciando <a name = "inicio"></a>
 
-Instruções de como reproduzir uma cópia do projeto para desenvolvê-lo ou testá-lo.
+Instruções de como reproduzir uma cópia do projeto para desenvolvê-lo ou testá-lo:
 
 ### Pré-requisitos
 
@@ -39,14 +39,14 @@ git clone https://github.com/wellissongomes/projeto-plp.git
 
 #### Para Haskell
 
-Entre na pasta clonada e logo após entre na pasta [haskell/](./haskell)
+Entre na pasta clonada, em seguida entre na pasta [haskell/](./haskell)
 
 ```
 cd projeto-plp/haskell
 ```
 
 Instale as dependências do projeto, para executar o script é necessario instalar o `cabal`,
-recomendo instalar a [Plataforma Haskell](https://www.haskell.org/platform/).
+recomenda-se instalar a [Plataforma Haskell](https://www.haskell.org/platform/).
 
 ```
 chmod +x dependencies.sh && ./dependencies.sh
@@ -60,7 +60,7 @@ chmod +x run.sh && ./run.sh
 
 #### Para Prolog
 
-Entre na pasta clonada e logo após entre na pasta [prolog/](./prolog)
+Entre na pasta clonada, em seguida entre na pasta [prolog/](./prolog)
 
 ```
 cd projeto-plp/prolog
