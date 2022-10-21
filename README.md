@@ -47,6 +47,12 @@ cd projeto-plp/haskell
 
 Instale as dependências do projeto, para executar o script é necessario instalar o `cabal`,
 recomenda-se instalar a [Plataforma Haskell](https://www.haskell.org/platform/).
+Para facilitar, esse é o comando no Ubuntu:
+```
+sudo apt-get update
+sudo apt-get install cabal-install
+```
+Agora instale as dependências:
 
 ```
 chmod +x dependencies.sh && ./dependencies.sh
